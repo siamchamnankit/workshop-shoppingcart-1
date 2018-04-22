@@ -1,0 +1,13 @@
+#docker run -it -p 3306:3306 -v /Users/ifew/mysql_db:/var/lib/mysql --name mysql_db mysql_db
+FROM mysql:5.5 AS workshop-shoppingcart-mysql
+  
+WORKDIR /var/lib/mysql
+
+ENV MYSQL_DATABASE workshop_shoppingcart
+ENV MYSQL_ROOT_USER root
+ENV MYSQL_ROOT_PASSWORD 1234
+ENV MYSQL_USER workshop
+ENV MYSQL_PASSWORD 1234
+
+EXPOSE 3306
+CMD ["mysqld"]

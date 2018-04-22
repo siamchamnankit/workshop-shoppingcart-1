@@ -299,3 +299,8 @@ __pycache__/
 .sonarqube
 #tests/api.IntegrationTest.Result
 #tests/api.UnitTest.Result
+
+# Robotframework result
+log.html
+output.xml
+report.html

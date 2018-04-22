@@ -4,7 +4,7 @@ Test Teardown    ปิดหน้าเบราเซอร์
 
 *** Variables ***
 ${URL}    http://54.254.234.208
-${BROWSER}    headlesschrome
+${BROWSER}    chrome
 
 *** Test Cases ***
 Open first page success

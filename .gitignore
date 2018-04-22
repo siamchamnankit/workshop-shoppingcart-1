@@ -36,9 +36,7 @@ bld/
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
-tests/atdd/*.png
-tests/atdd/*.html
-tests/atdd/*.xml
+
 #tests/api.UnitTest.Result
 
 # NUNIT
@@ -301,6 +299,6 @@ __pycache__/
 #tests/api.UnitTest.Result
 
 # Robotframework result
-log.html
-output.xml
-report.html
+tests/ui.AcceptanceTest/*.html
+tests/ui.AcceptanceTest/*.xml
+tests/ui.AcceptanceTest/*.png

@@ -29,6 +29,13 @@ namespace api
             services.AddDbContext<ProductsContext>(options => options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<ProductsService, ProductsService>();
 
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
+
             services.AddMvc();
         }
 
@@ -40,6 +47,7 @@ namespace api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors("MyPolicy");
             app.UseMvc();
         }
     }

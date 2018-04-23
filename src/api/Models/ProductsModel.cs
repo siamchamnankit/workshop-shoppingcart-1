@@ -15,10 +15,8 @@ namespace api.Models
         public string age { get; set; }
         public decimal price { get; set; }
         public string availability { get; set; }
-
         public string brand { get; set; }
         public int stockAvailability { get; set; }
 
     }
-
 }

@@ -302,3 +302,5 @@ __pycache__/
 tests/ui.AcceptanceTest/*.html
 tests/ui.AcceptanceTest/*.xml
 tests/ui.AcceptanceTest/*.png
+
+.DS_Store

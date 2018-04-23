@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SCK Shop</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="assets/css/sticky-footer-navbar.css" rel="stylesheet">
+    <style>
+        .main-content{
+            margin-top: 80px;
+        }
+
+        .product-name-section{
+            margin: 50px 0px;
+        }
+
+        .product-description{
+            font-size: 1.5em;
+        }
+        .product-description .description-item{
+            margin: 10px 0px;
+            clear: both;
+        }
+        
+        .product-description .description-item label{
+            float: left;
+        }
+
+        .product-description .description-item .description-value{
+            float: right;
+            width: 70%;
+        }
+
+        .checkout {
+            float: left;
+            border: 0;
+            margin-top: 50px;
+            padding: 6px 25px;
+            background-color: #6b6;
+            color: #fff;
+            font-size: 25px;
+            border-radius: 3px;
+            width: 300px;
+        }
+            
+        .checkout:hover {
+            background-color: #494;
+        }
+        
+
+    </style>
+  </head>
+
+  <body>
+
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+                <div class="container">
+                  <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                      <span class="sr-only">Toggle navigation</span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">SCK SHOP</a>
+                  </div>
+                </div>
+              </nav>
+
+            <div class="main-content container">
+                <div class="row">
+                    <div class="col md-12 product-name-section">
+                        <h1 id="product-name">Toy Name</h1>
+                    </div>
+                    <div class="col-md-4">
+                            <img src="http://placehold.it/400x600/000/fff" class="img-responsive text-center" alt="Responsive image">
+                    </div>
+                    <div class="col-md-8 product-description">
+                        <div class="description-item">
+                            <label>Brand</label>
+                            <div class="description-value" id="brand-value">50.00 THB</div>
+                        </div>
+                        <div class="description-item">
+                            <label>Gender</label>
+                            <div class="description-value" id="gender-value">50.00 THB</div>
+                        </div>
+                        <div class="description-item">
+                            <label>Age</label>
+                            <div class="description-value" id="age-value">50.00 THB</div>
+                        </div>
+                        <div class="description-item">
+                            <label>Price</label>
+                            <div class="description-value" id="price-value">50.00 THB</div>
+                        </div>
+                        <div class="description-item">
+                            <label>Shipping Method</label>
+                            <div class="description-value">Cash on Delivery</div>
+                        </div>
+                        <button class="checkout">Add to cart</button>
+                    </div>
+
+                </div>
+        
+            </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script>window.jQuery || document.write('<script src="assets/js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
+    <script src="assets/js/vendor/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $.ajax({
+                method: "GET",
+                url: "assets/data/products.json",
+                dataType: "json",
+            }).done(function(res) {
+                if (res.total > 0) {
+                    $(res.data).each(function(index, row) {
+                        $('#products').append(`
+                        <div class="item col-xs-4 col-lg-4">
+                            <div class="thumbnail">
+                                <img class="group list-group-image" src="http://placehold.it/400x250/000/fff" alt="" />
+                                <div class="caption">
+                                    <h4 class="group inner list-group-item-heading">` + row.name + `</h4>
+                                    <p class="group inner list-group-item-text">Product description... Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-6">
+                                            <p class="lead">` + row.price + `</p>
+                                        </div>
+                                        <div class="col-xs-12 col-md-6">
+                                            <a class="btn btn-success" href="http://www.jquery2dotnet.com">Add to cart</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        `)
+                    });
+                }
+            });
+        });
+        </script>
+  </body>
+</html>

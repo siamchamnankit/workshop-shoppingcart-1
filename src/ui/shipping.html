@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SCK Shop</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+
+    <!-- Custom styles for this template -->
+    <link href="assets/css/sticky-footer-navbar.css" rel="stylesheet">
+    <style>
+        .main-content{
+            margin-top: 80px;
+        }
+        .frb-group {
+	margin: 15px 0;
+}
+
+.frb ~ .frb {
+	margin-top: 5px;
+}
+
+.frb input[type="radio"]:empty {
+	display: none;
+}
+
+.frb input[type="radio"] ~ label:before {
+	font-family: FontAwesome;
+	content: '\f096';
+	position: absolute;
+	top: 50%;
+	margin-top: -11px;
+	left: 15px;
+	font-size: 22px;
+}
+
+.frb input[type="radio"]:checked ~ label:before {
+	content: '\f046';
+}
+
+.frb input[type="radio"] ~ label {
+	position: relative;
+	cursor: pointer;
+	width: 100%;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	background-color: #f2f2f2;
+}
+
+.frb input[type="radio"] ~ label:focus,
+.frb input[type="radio"] ~ label:hover{
+	box-shadow: 0px 0px 3px #333;
+}
+
+.frb input[type="radio"]:checked ~ label {
+	color: #fafafa;
+}
+
+.frb input[type="radio"]:checked ~ label {
+	background-color: #f2f2f2;
+}
+
+.frb.frb-success input[type="radio"]:checked ~ label {
+	background-color: #5cb85c;
+}
+
+.frb input[type="radio"]:empty ~ label span {
+	display: inline-block;
+}
+
+.frb input[type="radio"]:empty ~ label span.frb-title {
+	font-size: 16px;
+	font-weight: 700;
+	margin: 5px 5px 5px 50px;
+}
+
+.frb input[type="radio"]:empty ~ label span.frb-description {
+	font-weight: normal;
+	font-style: italic;
+	color: #999;
+	margin: 5px 5px 5px 50px;
+}
+
+.frb input[type="radio"]:empty:checked ~ label span.frb-description {
+	color: #fafafa;
+}
+
+.frb.frb-default input[type="radio"]:empty:checked ~ label span.frb-description {
+	color: #999;
+}
+
+.checkout {
+  float: right;
+  border: 0;
+  margin-top: 20px;
+  padding: 6px 25px;
+  background-color: #6b6;
+  color: #fff;
+  font-size: 25px;
+  border-radius: 3px;
+}
+    </style>
+  </head>
+
+  <body>
+
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+                <div class="container">
+                  <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                      <span class="sr-only">Toggle navigation</span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">SCK SHOP</a>
+                  </div>
+                  <div id="navbar" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                      <li class="active"><a href="#">Home</a></li>
+                      <li><a href="#about">About</a></li>
+                      <li><a href="#contact">Contact</a></li>
+                    </ul>
+                  </div><!--/.nav-collapse -->
+                </div>
+              </nav>
+
+    <!-- Begin page content -->
+    <div class="main-content container">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <h3>Shipping Address</h3>
+            
+            <div class="frb-group">
+                <div class="frb frb-success">
+                    <input type="radio" id="radio-button-1" name="radio-button" value="1">
+                    <label for="radio-button-1">
+                        <span class="frb-title">Lorem Ipsum</span>
+                        <span class="frb-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In semper quam nunc.</span>
+                    </label>
+                </div>        
+            </div>
+            <div class="frb-group">
+                <div class="frb frb-success">
+                    <input type="radio" id="radio-button-2" name="radio-button" value="2">
+                    <label for="radio-button-2">
+                        <span class="frb-title">Lorem Ipsum</span>
+                        <span class="frb-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In semper quam nunc.</span>
+                    </label>
+                </div>        
+            </div>
+            <button class="checkout">Delivery to this Address.</button>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script>window.jQuery || document.write('<script src="assets/js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
+    <script src="assets/js/vendor/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+      
+    });
+    </script>
+  </body>
+</html>

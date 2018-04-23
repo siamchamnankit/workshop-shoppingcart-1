@@ -18,5 +18,9 @@ namespace api.Services
         {
              return _context.Products.ToList();
         }
+
+        public ProductsModel getProductDetail(int id){
+            return _context.Products.Where(m => m.id == id).FirstOrDefault();
+        }
     }
 }

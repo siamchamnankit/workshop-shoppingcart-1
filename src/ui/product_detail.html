@@ -11,8 +11,6 @@
     <!-- Bootstrap core CSS -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="assets/css/sticky-footer-navbar.css" rel="stylesheet">
     <style>
         .main-content{
             margin-top: 80px;
@@ -86,19 +84,19 @@
                     <div class="col-md-8 product-description">
                         <div class="description-item">
                             <label>Brand</label>
-                            <div class="description-value" id="brand-value">50.00 THB</div>
+                            <div class="description-value" id="brand-value">N/A</div>
                         </div>
                         <div class="description-item">
                             <label>Gender</label>
-                            <div class="description-value" id="gender-value">50.00 THB</div>
+                            <div class="description-value" id="gender-value">N/A</div>
                         </div>
                         <div class="description-item">
                             <label>Age</label>
-                            <div class="description-value" id="age-value">50.00 THB</div>
+                            <div class="description-value" id="age-value">N/A</div>
                         </div>
                         <div class="description-item">
                             <label>Price</label>
-                            <div class="description-value" id="price-value">50.00 THB</div>
+                            <div class="description-value" id="price-value">N/A</div>
                         </div>
                         <div class="description-item">
                             <label>Shipping Method</label>
@@ -116,35 +114,30 @@
     <script src="assets/js/vendor/popper.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script type="text/javascript">
+        let params = new URLSearchParams(document.location.search.substring(1));
+        let product_id = params.get("id"); 
+        const redirectToIndex = () => location.href = 'http://localhost/';
+        if (!product_id) {
+            redirectToIndex();
+        }
+    
         $(document).ready(function() {
+            let product_url = "http://localhost:5001/api/products/"+product_id;
+
             $.ajax({
                 method: "GET",
-                url: "assets/data/products.json",
+                url: product_url,
                 dataType: "json",
             }).done(function(res) {
-                if (res.total > 0) {
-                    $(res.data).each(function(index, row) {
-                        $('#products').append(`
-                        <div class="item col-xs-4 col-lg-4">
-                            <div class="thumbnail">
-                                <img class="group list-group-image" src="http://placehold.it/400x250/000/fff" alt="" />
-                                <div class="caption">
-                                    <h4 class="group inner list-group-item-heading">` + row.name + `</h4>
-                                    <p class="group inner list-group-item-text">Product description... Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-                                    <div class="row">
-                                        <div class="col-xs-12 col-md-6">
-                                            <p class="lead">` + row.price + `</p>
-                                        </div>
-                                        <div class="col-xs-12 col-md-6">
-                                            <a class="btn btn-success" href="http://www.jquery2dotnet.com">Add to cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        `)
-                    });
+                if (!res) {
+                    redirectToIndex();
                 }
+                $("#product-name").text(res.name);
+                $("#brand-value").text(res.brand);
+                $("#gender-value").text(res.gender);
+                $("#age-value").text(res.age);
+                $("#price-value").text(res.price);
+            
             });
         });
         </script>

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Models;
+using api.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -9,11 +11,17 @@ namespace api.Controllers
     [Route("api/[controller]")]
     public class ProductsController : Controller
     {
-        // GET api/values
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly ProductsService _productService;
+
+        public ProductsController(ProductsService productService)
         {
-            return new string[] { "value1", "value2" };
+            _productService = productService;
+        }
+
+        [HttpGet]
+        public IEnumerable<ProductsModel> Get()
+        {
+            return _productService.list();
         }
 
         // GET api/values/5

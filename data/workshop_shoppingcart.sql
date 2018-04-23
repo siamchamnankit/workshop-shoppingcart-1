@@ -28,10 +28,10 @@ DROP TABLE IF EXISTS `cart`;
 CREATE TABLE `cart` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userId` int(10) DEFAULT NULL,
-  `subtotal` decimal(6,2) DEFAULT NULL,
-  `total` decimal(6,2) DEFAULT NULL,
+  `subtotal` decimal(6,2) DEFAULT 0.00,
+  `total` decimal(6,2) DEFAULT 0.00,
   `shippingMethod` varchar(20) DEFAULT NULL,
-  `shippingFee` decimal(3,2) DEFAULT NULL,
+  `shippingFee` decimal(3,2) DEFAULT 0.00,
   `shippingId` int(10) DEFAULT NULL,
   `createDatetime` datetime DEFAULT NULL,
   `updateDatetime` datetime DEFAULT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE `cart_product` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `cartId` int(10) DEFAULT NULL,
   `productId` int(10) DEFAULT NULL,
-  `quantity` int(3) DEFAULT NULL,
+  `quantity` int(3) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -64,8 +64,8 @@ CREATE TABLE `order` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `cartId` int(10) DEFAULT NULL,
   `userId` int(10) DEFAULT NULL,
-  `subtotal` decimal(6,2) DEFAULT NULL,
-  `total` decimal(6,2) DEFAULT NULL,
+  `subtotal` decimal(6,2) DEFAULT 0.00,
+  `total` decimal(6,2) DEFAULT 0.00,
   `shippingMethod` varchar(20) DEFAULT NULL,
   `shippingFee` decimal(3,2) DEFAULT NULL,
   `shippingId` int(10) DEFAULT NULL,
@@ -84,14 +84,14 @@ CREATE TABLE `order_products` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `orderId` int(10) DEFAULT NULL,
   `productId` int(10) DEFAULT NULL,
-  `quantity` int(3) DEFAULT NULL,
+  `quantity` int(3) DEFAULT 0,
   `name` varchar(255) DEFAULT NULL,
   `gender` enum('FEMALE','NEUTRAL','MALE') DEFAULT NULL,
   `age` enum('3_to_5','6_to_8','Baby','over8','Toddler') DEFAULT NULL,
-  `price` decimal(6,2) DEFAULT NULL,
+  `price` decimal(6,2) DEFAULT 0.00,
   `availability` enum('InStock','SoldOut') DEFAULT NULL,
   `brand` varchar(50) DEFAULT NULL,
-  `stockAvailability` int(3) DEFAULT NULL,
+  `stockAvailability` int(3) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -107,10 +107,10 @@ CREATE TABLE `products` (
   `name` varchar(255) DEFAULT NULL,
   `gender` enum('FEMALE','NEUTRAL','MALE') DEFAULT NULL,
   `age` enum('3_to_5','6_to_8','Baby','over8','Toddler') DEFAULT NULL,
-  `price` decimal(6,2) DEFAULT NULL,
+  `price` decimal(6,2) DEFAULT 0.00,
   `availability` enum('InStock','SoldOut') DEFAULT NULL,
   `brand` varchar(50) DEFAULT NULL,
-  `stockAvailability` int(3) DEFAULT NULL,
+  `stockAvailability` int(3) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

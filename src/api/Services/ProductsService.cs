@@ -16,7 +16,7 @@ namespace api.Services
 
         internal IEnumerable<ProductsModel> list()
         {
-             return _context.Products;
+             return _context.Products.ToList();
         }
     }
 }

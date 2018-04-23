@@ -28,7 +28,7 @@ DROP TABLE IF EXISTS `cart`;
 CREATE TABLE `cart` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userId` int(10) DEFAULT NULL,
-  `subtotal` decimal(6,2) DEFAULT 0.00,
+  `subtotal` decimal(6,2) DEFAULT 0.00, 
   `total` decimal(6,2) DEFAULT 0.00,
   `shippingMethod` varchar(20) DEFAULT NULL,
   `shippingFee` decimal(3,2) DEFAULT 0.00,

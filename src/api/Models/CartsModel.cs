@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace api.Models
 {
-    [Table("carts")]
+    [Table("cart")]
     public class CartsModel
     {
         public int id { get; set; }
@@ -19,5 +19,15 @@ namespace api.Models
         public DateTime createDatetime { get; set; }
         public DateTime updateDatetime { get; set; }
 
+        public List<CartProducts> cartProducts { get; set; }
+    }
+
+    [Table("cart_product")]
+    public class CartProducts
+    {
+        public int id { get; set; }
+        public int cartId { get; set; }
+        public int productId { get; set; }
+        public int quantity { get; set; }
     }
 }

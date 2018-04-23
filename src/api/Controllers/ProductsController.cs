@@ -19,7 +19,7 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<ProductsModel> Get()
+        public ProductsListModel Get()
         {
             return _productService.list();
         }

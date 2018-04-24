@@ -11,10 +11,10 @@ namespace api.Controllers
     [Route("api/[controller]")]
     public class CartsController : Controller
     {
-        private readonly CartsService _cartService;
+        private readonly ICartsService _cartService;
         private readonly IProductService _productService;
 
-        public CartsController(CartsService cartService, IProductService productService)
+        public CartsController(ICartsService cartService, IProductService productService)
         {
             _cartService = cartService;
             _productService = productService;
@@ -38,7 +38,6 @@ namespace api.Controllers
         public JsonResult Post([FromBody]AddCartInputModel product)
         {
             ProductsModel productModel = _productService.getProductDetail(product.id);
-            
             return Json(_cartService.add(productModel, product.quantity));
         }
 

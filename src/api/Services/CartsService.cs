@@ -5,7 +5,7 @@ using api.Models;
 
 namespace api.Services
 {
-    public class CartsService
+    public class CartsService : ICartsService
     {
         private readonly CartsContext _context;
         private readonly ProductsContext _productContext;
@@ -16,12 +16,12 @@ namespace api.Services
             _productContext = productContext;
         }
 
-        internal IEnumerable<CartsModel> list()
+        public IEnumerable<CartsModel> list()
         {
              return _context.Carts.ToList();
         }
 
-        internal AddCartOutputModel add(ProductsModel product, int quantity) {
+        public AddCartOutputModel add(ProductsModel product, int quantity) {
             CartsModel cartModel = this.createCart(1);
             this.addProductToCart(cartModel, product, quantity);
             return new AddCartOutputModel{

@@ -84,7 +84,7 @@
                     <div class="col-md-8 product-description">
                         <div class="description-item">
                             <label>Brand</label>
-                            <div class="description-value" id="brand-value">N/A</div>
+                            <div class="description-value" id="label-product-brand">N/A</div>
                         </div>
                         <div class="description-item">
                             <label>Gender</label>
@@ -96,7 +96,7 @@
                         </div>
                         <div class="description-item">
                             <label>Price</label>
-                            <div class="description-value" id="price-value">N/A</div>
+                            <div class="description-value" id="label-product-price">N/A</div>
                         </div>
                         <div class="description-item">
                             <label>Shipping Method</label>
@@ -133,11 +133,11 @@
                 if (!res) {
                     redirectToIndex();
                 }
-                $("#product-name").text(res.name);
-                $("#brand-value").text(res.brand);
+                $("#label-product-name").text(res.name);
+                $("#label-product-brand").text(res.brand);
                 $("#gender-value").text(res.gender);
                 $("#age-value").text(res.age);
-                $("#price-value").text(res.price);
+                $("#label-product-price").text(res.price);
             
             });
         });

@@ -19,16 +19,16 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<ProductsModel> Get()
+        public ProductsListModel Get()
         {
             return _productService.list();
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ProductsModel Get(int id)
         {
-            return "value";
+            return _productService.getProductDetail(id);
         }
 
         // POST api/values

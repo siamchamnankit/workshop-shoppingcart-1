@@ -6,6 +6,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace api.Models
 {
+    public class ProductsListModel
+    {
+        public int total { get; set; }
+        public List<ProductsModel> ProductsModel { get; set; }
+
+    }
+
     [Table("products")]
     public class ProductsModel
     {

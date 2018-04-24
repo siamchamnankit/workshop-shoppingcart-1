@@ -14,9 +14,21 @@ namespace api.Services
             _context = context;
         }
 
-        internal IEnumerable<ProductsModel> list()
+        internal ProductsListModel list()
+        {
+            ProductsListModel productsList = new ProductsListModel();
+            productsList.ProductsModel = _context.Products.ToList();
+            productsList.total = productsList.ProductsModel.Count();
+            return productsList;
+        }
+
+        internal IEnumerable<ProductsModel> list_products()
         {
              return _context.Products.ToList();
+        }
+
+        public ProductsModel getProductDetail(int id){
+            return _context.Products.Where(m => m.id == id).FirstOrDefault();
         }
     }
 }

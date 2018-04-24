@@ -20,7 +20,28 @@ namespace api.Services
         {
              return _context.Carts.ToList();
         }
-
+        public CartsModel getCart(int cartId, int userId=1) {
+            CartsModel cart = _context.Carts.Where(c => c.id == cartId).Where(c => c.userId == userId).FirstOrDefault();
+            List<CartProductsModel> cartProducts = _context.CartProducts.Where(c => c.cartId == cartId).ToList();
+            List<ProductInCartModel> productsInCart = new List<ProductInCartModel>();
+            foreach (CartProductsModel cartProduct in cartProducts)
+            {
+                ProductsModel product = _productContext.Products.Where(p => p.id == cartProduct.productId).FirstOrDefault();
+                productsInCart.Add(new ProductInCartModel{
+                    id = product.id,
+                    name = product.name,
+                    price = product.price,
+                    availability = product.availability,
+                    stockAvailability = product.stockAvailability,
+                    age = product.age,
+                    gender = product.gender,
+                    brand = product.brand,
+                    quantity = cartProduct.quantity
+                });
+            }
+            cart.CartProducts = productsInCart;
+            return cart;
+        }
         public AddCartOutputModel add(ProductsModel product, int quantity) {
             CartsModel cartModel = this.createCart(1);
             this.addProductToCart(cartModel, product, quantity);

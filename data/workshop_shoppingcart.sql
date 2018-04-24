@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.58)
 # Database: workshop_shoppingcart
-# Generation Time: 2018-04-23 10:59:24 +0000
+# Generation Time: 2018-04-24 09:42:38 +0000
 # ************************************************************
 
 
@@ -28,16 +28,36 @@ DROP TABLE IF EXISTS `cart`;
 CREATE TABLE `cart` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `userId` int(10) DEFAULT NULL,
-  `subtotal` decimal(6,2) DEFAULT NULL,
-  `total` decimal(6,2) DEFAULT NULL,
+  `subtotal` decimal(9,2) DEFAULT NULL,
+  `total` decimal(9,2) DEFAULT NULL,
   `shippingMethod` varchar(20) DEFAULT NULL,
-  `shippingFee` decimal(3,2) DEFAULT NULL,
+  `shippingFee` decimal(5,2) DEFAULT NULL,
   `shippingId` int(10) DEFAULT NULL,
   `createDatetime` datetime DEFAULT NULL,
   `updateDatetime` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+LOCK TABLES `cart` WRITE;
+/*!40000 ALTER TABLE `cart` DISABLE KEYS */;
+
+INSERT INTO `cart` (`id`, `userId`, `subtotal`, `total`, `shippingMethod`, `shippingFee`, `shippingId`, `createDatetime`, `updateDatetime`)
+VALUES
+	(1,1,100.99,100.99,'ok',9.99,1,'0000-00-00 00:00:00','0000-00-00 00:00:00'),
+	(2,1,10.00,10.00,'OK',9.99,1,'2018-04-24 11:29:36','2018-04-24 11:29:36'),
+	(3,1,10.00,10.00,'OK',9.99,1,'2018-04-24 11:33:59','2018-04-24 11:33:59'),
+	(4,1,10.00,10.00,'OK',9.99,1,'2018-04-24 11:40:24','2018-04-24 11:40:24'),
+	(5,1,119.95,119.95,'Cast on Delivery',9.99,1,'2018-04-24 11:52:11','2018-04-24 11:52:11'),
+	(6,1,239.90,239.90,'Cast on Delivery',9.99,1,'2018-04-24 11:59:23','2018-04-24 11:59:23'),
+	(7,1,12.95,12.95,'Cast on Delivery',9.99,1,'2018-04-24 12:32:30','2018-04-24 12:32:30'),
+	(8,1,12.95,12.95,'Cast on Delivery',9.99,1,'2018-04-24 12:32:42','2018-04-24 12:32:42'),
+	(9,1,12.95,12.95,'Cast on Delivery',9.99,1,'2018-04-24 12:33:01','2018-04-24 12:33:01'),
+	(10,1,12.95,12.95,'Cast on Delivery',9.99,1,'2018-04-24 12:34:51','2018-04-24 12:34:51'),
+	(11,1,12.95,12.95,'Cast on Delivery',9.99,1,'2018-04-24 12:39:12','2018-04-24 12:39:12'),
+	(12,1,12.95,12.95,'Cast on Delivery',9.99,1,'2018-04-24 12:39:23','2018-04-24 12:39:23');
+
+/*!40000 ALTER TABLE `cart` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table cart_product
@@ -53,6 +73,23 @@ CREATE TABLE `cart_product` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+LOCK TABLES `cart_product` WRITE;
+/*!40000 ALTER TABLE `cart_product` DISABLE KEYS */;
+
+INSERT INTO `cart_product` (`id`, `cartId`, `productId`, `quantity`)
+VALUES
+	(1,1,1,10),
+	(2,1,2,10),
+	(3,6,1,2),
+	(4,7,2,1),
+	(5,8,2,1),
+	(6,9,2,1),
+	(7,10,2,1),
+	(8,11,2,1),
+	(9,12,2,1);
+
+/*!40000 ALTER TABLE `cart_product` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table order
@@ -64,11 +101,16 @@ CREATE TABLE `order` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `cartId` int(10) DEFAULT NULL,
   `userId` int(10) DEFAULT NULL,
-  `subtotal` decimal(6,2) DEFAULT NULL,
-  `total` decimal(6,2) DEFAULT NULL,
+  `subtotal` decimal(9,2) DEFAULT NULL,
+  `total` decimal(9,2) DEFAULT NULL,
   `shippingMethod` varchar(20) DEFAULT NULL,
-  `shippingFee` decimal(3,2) DEFAULT NULL,
-  `shippingId` int(10) DEFAULT NULL,
+  `shippingFee` decimal(5,2) DEFAULT NULL,
+  `fullname` varchar(100) DEFAULT NULL,
+  `address1` varchar(100) DEFAULT NULL,
+  `address2` varchar(100) DEFAULT NULL,
+  `city` varchar(100) DEFAULT NULL,
+  `province` varchar(100) DEFAULT NULL,
+  `postcode` varchar(5) DEFAULT NULL,
   `createDatetime` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -88,7 +130,7 @@ CREATE TABLE `order_products` (
   `name` varchar(255) DEFAULT NULL,
   `gender` enum('FEMALE','NEUTRAL','MALE') DEFAULT NULL,
   `age` enum('3_to_5','6_to_8','Baby','over8','Toddler') DEFAULT NULL,
-  `price` decimal(6,2) DEFAULT NULL,
+  `price` decimal(9,2) DEFAULT NULL,
   `availability` enum('InStock','SoldOut') DEFAULT NULL,
   `brand` varchar(50) DEFAULT NULL,
   `stockAvailability` int(3) DEFAULT NULL,
@@ -107,7 +149,7 @@ CREATE TABLE `products` (
   `name` varchar(255) DEFAULT NULL,
   `gender` enum('FEMALE','NEUTRAL','MALE') DEFAULT NULL,
   `age` enum('3_to_5','6_to_8','Baby','over8','Toddler') DEFAULT NULL,
-  `price` decimal(6,2) DEFAULT NULL,
+  `price` decimal(9,2) DEFAULT NULL,
   `availability` enum('InStock','SoldOut') DEFAULT NULL,
   `brand` varchar(50) DEFAULT NULL,
   `stockAvailability` int(3) NOT NULL DEFAULT '0',

@@ -13,6 +13,19 @@ namespace api.Models
 
     }
 
+    public class ProductInCartModel
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+        public string gender { get; set; }
+        public string age { get; set; }
+        public decimal price { get; set; }
+        public string availability { get; set; }
+        public string brand { get; set; }
+        public int stockAvailability { get; set; }
+        public int quantity { get; set; }
+    }
+
     [Table("products")]
     public class ProductsModel
     {
@@ -24,6 +37,8 @@ namespace api.Models
         public string availability { get; set; }
         public string brand { get; set; }
         public int stockAvailability { get; set; }
+
+        public List<CartProductsModel> CartProducts { get; set; }
 
     }
 }

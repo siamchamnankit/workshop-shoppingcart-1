@@ -21,6 +21,15 @@ namespace api.Services
              return _context.Carts.ToList();
         }
 
+        public CartsModel getCart(int cartId, int userId=1) {
+            CartsModel cart = _context.Carts.Where(c => c.id == cartId).FirstOrDefault();
+            List<CartProductsModel> cartProducts = _context.CartProducts.ToList();
+
+            cart.CartProducts = cartProducts;
+
+            return cart;
+        }
+
         internal AddCartOutputModel add(int product_id, int quantity) {
             ProductsService productsService = new ProductsService(_productContext);
             ProductsModel productModel = productsService.getProductDetail(product_id);

@@ -14,16 +14,27 @@ namespace api.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CartsModel>()
-                        .HasKey(m => m.id);
+            // modelBuilder.Entity<CartsModel>()
+            //             .HasKey(m => new {m.id});
+            modelBuilder.Entity<CartProductsModel>()
+                        .HasKey(t => new { t.cartId, t.productId });
 
             modelBuilder.Entity<CartProductsModel>()
-                        .HasKey(a => a.id);
-
-            modelBuilder.Entity<CartsModel>()
-                        .HasMany(a => a.CartProducts)
-                        .WithOne(m => m.Carts)
+                        .HasOne(a => a.Cart)
+                        .WithMany(m => m.CartProducts)
                         .HasForeignKey(a => a.cartId);
+
+            modelBuilder.Entity<CartProductsModel>()
+                        .HasOne(a => a.Product)
+                        .WithMany(m => m.CartProducts)
+                        .HasForeignKey(a => a.productId);
+
+                        
+
+            // modelBuilder.Entity<CartsModel>()
+            //             .HasMany(a => a.CartProducts)
+            //             .WithOne(m => m.Carts)
+            //             .HasForeignKey(a => a.cartId);
         }
     }
 }

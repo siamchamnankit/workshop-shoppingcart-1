@@ -25,5 +25,7 @@ namespace api.Models
         public string brand { get; set; }
         public int stockAvailability { get; set; }
 
+        public List<CartProductsModel> CartProducts { get; set; }
+
     }
 }

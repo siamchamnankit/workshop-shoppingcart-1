@@ -28,7 +28,9 @@ namespace api.Models
         public int cartId { get; set; }
         public int productId { get; set; }
         public int quantity { get; set; }
-        public CartsModel Carts { get; set; }
+        public CartsModel Cart { get; set; }
+
+        public ProductsModel Product { get; set; }
     }
 
     public class AddCartOutputModel

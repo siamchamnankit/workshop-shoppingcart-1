@@ -61,7 +61,6 @@ namespace api.Services
             return cartModel;
         }
 
-
         private CartProductsModel addProductToCart(CartsModel cartModel, ProductsModel product, int quantity) {
            CartProductsModel cartProductModel = new CartProductsModel{
                cartId = cartModel.id,

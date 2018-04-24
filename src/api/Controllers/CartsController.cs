@@ -12,10 +12,12 @@ namespace api.Controllers
     public class CartsController : Controller
     {
         private readonly CartsService _cartService;
+        private readonly IProductService _productService;
 
-        public CartsController(CartsService cartService)
+        public CartsController(CartsService cartService, IProductService productService)
         {
             _cartService = cartService;
+            _productService = productService;
         }
 
         [HttpGet]
@@ -35,7 +37,9 @@ namespace api.Controllers
         [HttpPost]
         public JsonResult Post([FromBody]AddCartInputModel product)
         {
-            return Json(_cartService.add(product.id, product.quantity));
+            ProductsModel productModel = _productService.getProductDetail(product.id);
+            
+            return Json(_cartService.add(productModel, product.quantity));
         }
 
         // PUT api/values/5

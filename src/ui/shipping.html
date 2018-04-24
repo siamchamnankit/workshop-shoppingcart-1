@@ -139,23 +139,20 @@
             
             <div class="frb-group">
                 <div class="frb frb-success">
-                    <input type="radio" id="radio-button-1" name="radio-button" value="1">
-                    <label for="radio-button-1">
-                        <span class="frb-title">Lorem Ipsum</span>
-                        <span class="frb-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In semper quam nunc.</span>
+                    <input type="radio" id="shipping-id" name="shipping-id" value="1">
+                    <label for="shipping-id">
+                        <span class="frb-title"><span id="textbox-user-fullname">Chonnikan Tobunrueang</span></span>
+                        <span class="frb-description">
+                            <span id="textbox-address1">3 อาคารพร้อมพันธ์ 3 ห้อง 1001</span> 
+                            <span id="textbox-address2">แขวงจอมพล</span> 
+                            <span id="textbox-city">เขตจตุจักร</span> 
+                            <span id="textbox-province">จังหวัดกรุงเทพ</span>
+                            <span id="textbox-postcode">10900</span>
+                        </span>
                     </label>
                 </div>        
             </div>
-            <div class="frb-group">
-                <div class="frb frb-success">
-                    <input type="radio" id="radio-button-2" name="radio-button" value="2">
-                    <label for="radio-button-2">
-                        <span class="frb-title">Lorem Ipsum</span>
-                        <span class="frb-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In semper quam nunc.</span>
-                    </label>
-                </div>        
-            </div>
-            <button class="checkout">Delivery to this Address.</button>
+            <button class="checkout" id="button-confirm-shipping-address">Delivery to this Address.</button>
         </div>
     </div>
 
@@ -163,9 +160,30 @@
     <script>window.jQuery || document.write('<script src="assets/js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
     <script src="assets/js/vendor/popper.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/core.js"></script>
     <script type="text/javascript">
     $(document).ready(function() {
-      
+        let cartId = localStorage.getItem('cartId');
+        if (!cartId) {
+            redirectToIndex();
+        }
+        $('#button-confirm-shipping-address').click(function() {
+            let cart_url = getApiURL("api/orders");
+            $.ajax({
+            method: "POST",
+            url: cart_url,
+            dataType: "json",
+            data: JSON.stringify({ "id": cartId, "address": { id: $('#shipping-id').val() } }),
+            contentType: "application/json"
+            }).done(function(res) {
+                if (!res.id) {
+                    alert("Something went wrong!");
+                } else {
+                    localStorage.setItem("cartId", "");
+                    redirectToOrderSummary();
+                }
+            });
+        });
     });
     </script>
   </body>

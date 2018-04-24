@@ -21,34 +21,47 @@ namespace api.Services
              return _context.Carts.ToList();
         }
 
-        internal AddCartOutputModel add(int product_id, int quantity) {
-            ProductsService productsService = new ProductsService(_productContext);
-            ProductsModel productModel = productsService.getProductDetail(product_id);
+        internal AddCartOutputModel add(ProductsModel product, int quantity) {
+            CartsModel cartModel = this.createCart(1);
+            this.addProductToCart(cartModel, product, quantity);
+            return new AddCartOutputModel{
+                id = cartModel.id
+            };
+        }
+
+        private CartsModel createCart(int user_id){
             CartsModel cartModel = new CartsModel{
-                userId = 1,
-                subtotal = productModel.price * quantity,
-                total = productModel.price * quantity,
-                shippingMethod = "Cast on Delivery",
-                shippingFee = 50,
-                shippingId = 1,
+                userId = user_id,
                 createDatetime = DateTime.Now,
                 updateDatetime = DateTime.Now
             };
             _context.Carts.Add(cartModel);
             _context.SaveChanges();
-            this.addCartProduct(cartModel.id, product_id, quantity);
-            return new AddCartOutputModel{
-                id = cartModel.id
-            };
+            return cartModel;
         }
-        private CartProductsModel addCartProduct(int cartId, int productId, int quantity) {
+
+        private void calculateCart(CartsModel cartModel) {
+            List<CartProductsModel> _cartproducts = cartModel.CartProducts.ToList();
+            foreach (CartProductsModel product in _cartproducts) {
+                Console.WriteLine(product.id);
+            }
+        }
+        private CartProductsModel addProductToCart(CartsModel cartModel, ProductsModel product, int quantity) {
            CartProductsModel cartProductModel = new CartProductsModel{
-               cartId = cartId,
-               productId = productId,
+               cartId = cartModel.id,
+               productId = product.id,
                quantity = quantity
            };
            _context.CartProducts.Add(cartProductModel);
            _context.SaveChanges();
+
+            cartModel.shippingFee = 50;
+            cartModel.shippingMethod = "Cast on Delivery";
+            cartModel.subtotal = product.price * quantity;
+            cartModel.total = (product.price * quantity)+50;
+            _context.Carts.Update(cartModel);
+            _context.SaveChanges();
+            
            return cartProductModel;
         }
     }

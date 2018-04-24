@@ -113,16 +113,17 @@
     <script>window.jQuery || document.write('<script src="assets/js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
     <script src="assets/js/vendor/popper.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/core.js"></script>
     <script type="text/javascript">
         let params = new URLSearchParams(document.location.search.substring(1));
         let product_id = params.get("id"); 
-        const redirectToIndex = () => location.href = 'http://localhost/';
+        
         if (!product_id) {
             redirectToIndex();
         }
     
         $(document).ready(function() {
-            let product_url = "http://localhost:5001/api/products/"+product_id;
+            let product_url = getApiURL("api/products/")+product_id;
 
             $.ajax({
                 method: "GET",

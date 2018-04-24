@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -10,165 +11,85 @@
 
     <!-- Bootstrap core CSS -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/product-list.css" rel="stylesheet">
+</head>
 
-    <!-- Custom styles for this template -->
-    <link href="assets/css/sticky-footer-navbar.css" rel="stylesheet">
-    <style>
-        .main-content{
-            margin-top: 80px;
-        }
-        .glyphicon { margin-right:5px; }
-.thumbnail
-{
-    margin-bottom: 20px;
-    padding: 0px;
-    -webkit-border-radius: 0px;
-    -moz-border-radius: 0px;
-    border-radius: 0px;
-}
+<body>
 
-.item.list-group-item
-{
-    float: none;
-    width: 100%;
-    background-color: #fff;
-    margin-bottom: 10px;
-}
-.item.list-group-item:nth-of-type(odd):hover,.item.list-group-item:hover
-{
-    background: #428bca;
-}
-
-.item.list-group-item .list-group-image
-{
-    margin-right: 10px;
-}
-.item.list-group-item .thumbnail
-{
-    margin-bottom: 0px;
-}
-.item.list-group-item .caption
-{
-    padding: 9px 9px 0px 9px;
-}
-.item.list-group-item:nth-of-type(odd)
-{
-    background: #eeeeee;
-}
-
-.item.list-group-item:before, .item.list-group-item:after
-{
-    display: table;
-    content: " ";
-}
-
-.item.list-group-item img
-{
-    float: left;
-}
-.item.list-group-item:after
-{
-    clear: both;
-}
-.list-group-item-text
-{
-    margin: 0 0 11px;
-}
-
-    </style>
-  </head>
-
-  <body>
-
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-                <div class="container">
-                  <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                      <span class="sr-only">Toggle navigation</span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">SCK SHOP</a>
-                  </div>
-                  <div id="navbar" class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
-                      <li class="active"><a href="#">Home</a></li>
-                      <li><a href="#about">About</a></li>
-                      <li><a href="#contact">Contact</a></li>
-                    </ul>
-                  </div><!--/.nav-collapse -->
-                </div>
-              </nav>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">SCK SHOP</a>
+            </div>
+        </div>
+    </nav>
 
     <!-- Begin page content -->
     <div class="main-content container">
-                <div class="well well-sm">
-            <strong>Category Title</strong>
+        <div class="well well-sm">
+            <strong>Category Toys </strong> &nbsp;&nbsp;&nbsp;&nbsp;
             <div class="btn-group">
-                <a href="#" id="list" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-th-list"></span>List</a> 
-                <a href="#" id="grid" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-th"></span>Grid</a>
+                <a href="#" id="list" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-th-list"></span>List</a>
+                <a href="#" id="grid" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-th"></span>Grid</a>
             </div>
         </div>
 
         <div id="products" class="row list-group"></div>
-        
+
     </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script>window.jQuery || document.write('<script src="assets/js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
     <script src="assets/js/vendor/popper.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/core.js"></script>
     <script type="text/javascript">
-    $(document).ready(function() {
-        $('#list').click(function(event){event.preventDefault();$('#products .item').addClass('list-group-item');});
-        $('#grid').click(function(event){event.preventDefault();$('#products .item').removeClass('list-group-item');$('#products .item').addClass('grid-group-item');});
+        $(document).ready(function () {
+            $('#list').click(function (event) { event.preventDefault(); $('#products .item').addClass('list-group-item'); });
+            $('#grid').click(function (event) { event.preventDefault(); $('#products .item').removeClass('list-group-item'); $('#products .item').addClass('grid-group-item'); });
+            
+            let product_list_url = getApiURL("api/products/");
 
-        $.ajax({
-            method: "GET",
-            url: "assets/data/products.json",
-            dataType: "json",
-        }).done(function(res) {
-            if (res.total > 0) {
-                $(res.data).each(function(index, row) {
-                    $('#products').append(`
+            $.ajax({
+                method: "GET",
+                url: product_list_url,
+                dataType: "json",
+            }).done(function (res) {
+                
+                    $(res.productsModel).each(function (index, row) {
+                        $('#products').append(`
                     <div class="item col-xs-4 col-lg-4">
                         <div class="thumbnail">
-                            <img class="group list-group-image" src="http://placehold.it/400x250/000/fff" alt="" />
+                            <img class="group list-group-image" src="https://placeimg.com/400/250/tech" alt="" />
                             <div class="caption">
                                 <h4 class="group inner list-group-item-heading">` + row.name + `</h4>
-                                <p class="group inner list-group-item-text">Product description... Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+                                <p class="group inner list-group-item-text"></p>
                                 <div class="row">
                                     <div class="col-xs-12 col-md-6">
-                                        <p class="lead">` + row.price + `</p>
+                                        <p class="lead">` + row.price + ` THB</p>
                                     </div>
                                     <div class="col-xs-12 col-md-6">
-                                        <a class="btn btn-success" href="http://www.jquery2dotnet.com">Add to cart</a>
+                                        <a class="btn btn-success" href="product_detail.html?id=` + row.id + ` ">View detail</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     `)
-                });
-            }
+                    });
+                
+            });
         });
-    });
     </script>
-  </body>
+</body>
+
 </html>

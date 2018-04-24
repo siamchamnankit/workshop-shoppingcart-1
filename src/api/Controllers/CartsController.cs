@@ -23,19 +23,11 @@ namespace api.Controllers
         {
             return _cartService.list();
         }
-
         
-        [HttpGet("getcart/{id}")]
+        [HttpGet("{id}")]
         public CartsModel GetCart(int id)
         {
             return _cartService.getCart(1, 1);
-        }
-
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
         }
 
         // POST api/values
@@ -45,16 +37,5 @@ namespace api.Controllers
             return Json(_cartService.add(product.id, product.quantity));
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

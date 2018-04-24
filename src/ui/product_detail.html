@@ -140,6 +140,25 @@
                 $("#label-product-price").text(res.price);
             
             });
+
+            $('#button-add-product-to-cart').click(function(){
+                $(this).attr('disabled', 'disabled');
+                let cart_url = getApiURL("api/carts");
+                $.ajax({
+                method: "POST",
+                url: cart_url,
+                dataType: "json",
+                data: JSON.stringify({ "id": product_id, "quantity": 1 }),
+                contentType: "application/json"
+                }).done(function(res) {
+                    if (!res.id) {
+                        alert("Something went wrong!");
+                    } else {
+                        localStorage.setItem("cartId", res.id);
+                        redirectToCart();
+                    }
+                });
+            })
         });
         </script>
   </body>

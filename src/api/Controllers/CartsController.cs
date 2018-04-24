@@ -24,6 +24,13 @@ namespace api.Controllers
             return _cartService.list();
         }
 
+        
+        [HttpGet("getcart/{id}")]
+        public CartsModel GetCart(int id)
+        {
+            return _cartService.getCart(1, 1);
+        }
+
         // GET api/values/5
         [HttpGet("{id}")]
         public string Get(int id)

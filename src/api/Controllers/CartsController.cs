@@ -29,7 +29,8 @@ namespace api.Controllers
         [HttpGet("{id}")]
         public CartsModel GetCart(int id)
         {
-            return _cartService.getCart(id);
+            int userId = 1;
+            return _cartService.getCart(id, userId);
         }
 
         // POST api/values

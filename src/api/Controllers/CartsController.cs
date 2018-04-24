@@ -24,10 +24,10 @@ namespace api.Controllers
             return _cartService.list();
         }
         
-        [HttpGet("{id}")]
+        [HttpGet("getcart/{id}")]
         public CartsModel GetCart(int id)
         {
-            return _cartService.getCart(1, 1);
+            return _cartService.getCart(id);
         }
 
         // POST api/values

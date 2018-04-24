@@ -12,17 +12,19 @@ namespace api.Controllers
     [Route("api/[controller]")]
     public class OrdersController : Controller
     {
-        public OrdersController()
-        {
-            
-        }
 
+        private readonly OrdersService _ordersService;
+
+        public OrdersController(OrdersService ordersService)
+        {
+            _ordersService = ordersService;
+        }
         // POST api/values
         [HttpPost]
         public JsonResult Post([FromBody]OrdersModel order)
         {
-            String response = "{id:" + order.id + "}";
-            return Json(JObject.Parse(response));
+            int userId = 1;
+            return Json(_ordersService.create(order.id, userId));
         }
 
     }

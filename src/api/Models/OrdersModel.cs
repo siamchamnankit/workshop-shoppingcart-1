@@ -42,4 +42,10 @@ namespace api.Models
         public int stockAvailability { get; set; }
         
     }
+
+    public class CreateOrderOutputModel
+    {
+        public int id { get; set; }
+
+    }
 }

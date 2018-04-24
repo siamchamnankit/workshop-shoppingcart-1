@@ -39,6 +39,28 @@ namespace api.Services
             };
             _orderContext.Orders.Add(order);
             _orderContext.SaveChanges();
+
+            List<CartProductsModel> cartProducts = _cartContext.CartProducts.Where(c => c.cartId == cartId).ToList();
+            List<OrderProductsModel> orderProducts = new List<OrderProductsModel>();
+            foreach (CartProductsModel cartProduct in cartProducts)
+            {
+                ProductsModel product = _productContext.Products.Where(p => p.id == cartProduct.productId).FirstOrDefault();
+                _orderContext.OrderProducts.Add(new OrderProductsModel{
+                    orderId = order.id,
+                    productId = product.id,
+                    quantity = cartProduct.quantity,
+                    name = product.name,
+                    price = product.price,
+                    availability = product.availability,
+                    stockAvailability = product.stockAvailability,
+                    age = product.age,
+                    gender = product.gender,
+                    brand = product.brand
+                });
+            }
+            
+            _orderContext.SaveChanges();
+
             return new CreateOrderOutputModel{id = order.id};
         }
     }

@@ -76,7 +76,7 @@
             <div class="main-content container">
                 <div class="row">
                     <div class="col md-12 product-name-section">
-                        <h1 id="product-name">Toy Name</h1>
+                        <h1 id="label-product-name">Toy Name</h1>
                     </div>
                     <div class="col-md-4">
                             <img src="http://placehold.it/400x600/000/fff" class="img-responsive text-center" alt="Responsive image">
@@ -84,7 +84,7 @@
                     <div class="col-md-8 product-description">
                         <div class="description-item">
                             <label>Brand</label>
-                            <div class="description-value" id="brand-value">N/A</div>
+                            <div class="description-value" id="label-product-brand">N/A</div>
                         </div>
                         <div class="description-item">
                             <label>Gender</label>
@@ -96,13 +96,13 @@
                         </div>
                         <div class="description-item">
                             <label>Price</label>
-                            <div class="description-value" id="price-value">N/A</div>
+                            <div class="description-value" id="label-product-price">N/A</div>
                         </div>
                         <div class="description-item">
                             <label>Shipping Method</label>
                             <div class="description-value">Cash on Delivery</div>
                         </div>
-                        <button class="checkout">Add to cart</button>
+                        <button class="checkout" id="button-add-product-to-cart">Add to cart</button>
                     </div>
 
                 </div>
@@ -113,16 +113,17 @@
     <script>window.jQuery || document.write('<script src="assets/js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
     <script src="assets/js/vendor/popper.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/core.js"></script>
     <script type="text/javascript">
         let params = new URLSearchParams(document.location.search.substring(1));
         let product_id = params.get("id"); 
-        const redirectToIndex = () => location.href = 'http://localhost/';
+        
         if (!product_id) {
             redirectToIndex();
         }
     
         $(document).ready(function() {
-            let product_url = "http://localhost:5001/api/products/"+product_id;
+            let product_url = getApiURL("api/products/")+product_id;
 
             $.ajax({
                 method: "GET",
@@ -132,13 +133,32 @@
                 if (!res) {
                     redirectToIndex();
                 }
-                $("#product-name").text(res.name);
-                $("#brand-value").text(res.brand);
+                $("#label-product-name").text(res.name);
+                $("#label-product-brand").text(res.brand);
                 $("#gender-value").text(res.gender);
                 $("#age-value").text(res.age);
-                $("#price-value").text(res.price);
+                $("#label-product-price").text(res.price);
             
             });
+
+            $('#button-add-product-to-cart').click(function(){
+                $(this).attr('disabled', 'disabled');
+                let cart_url = getApiURL("api/carts");
+                $.ajax({
+                method: "POST",
+                url: cart_url,
+                dataType: "json",
+                data: JSON.stringify({ "id": product_id, "quantity": 1 }),
+                contentType: "application/json"
+                }).done(function(res) {
+                    if (!res.id) {
+                        alert("Something went wrong!");
+                    } else {
+                        localStorage.setItem("cartId", res.id);
+                        redirectToCart();
+                    }
+                });
+            })
         });
         </script>
   </body>

@@ -30,4 +30,16 @@ namespace api.Models
         public int quantity { get; set; }
         public CartsModel Carts { get; set; }
     }
+
+    public class AddCartOutputModel
+    {
+        public int id { get; set; }
+
+    }
+
+    public class AddCartInputModel 
+    {
+        public int id { get; set; }
+        public int quantity { get; set; }
+    }
 }

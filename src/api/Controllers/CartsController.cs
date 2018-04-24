@@ -33,8 +33,9 @@ namespace api.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public JsonResult Post([FromBody]AddCartInputModel product)
         {
+            return Json(_cartService.add(product.id, product.quantity));
         }
 
         // PUT api/values/5

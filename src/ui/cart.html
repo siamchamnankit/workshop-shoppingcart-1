@@ -59,7 +59,7 @@
                 <div class="product-quantity">
                     <input type="number" value="2" min="1">
                 </div>
-                <div class="product-price">25.98</div>
+                <div class="product-price" style="display: none" >25.98</div>
                 <div class="product-line-price">25.98</div>
             </div>
                 
@@ -67,17 +67,17 @@
                 <div class="col-md-6 remarks">
                     <div class="remark-item">
                         <label>Shipping method</label>
-                        <div class="remark-value">Cash on Delivery</div>
+                        <div class="remark-value" id="label-shipping-method">Cash on Delivery</div>
                     </div>
                     <div class="remark-item">
                         <label>Shipping Fee</label>
-                        <div class="remark-value">50.00 THB</div>
+                        <div class="remark-value" id="label-shipping-fee">50.00 THB</div>
                     </div>
                 </div>
                 <div class="col-md-6 totals">
                     <div class="totals-item">
                         <label>Subtotal</label>
-                        <div class="totals-value" id="cart-subtotal">71.97</div>
+                        <div class="totals-value" id="label-subtotal">71.97</div>
                     </div>
                     <div class="totals-item">
                         <label>Shipping Fee</label>
@@ -130,7 +130,7 @@
         
             /* Update totals display */
             $('.totals-value').fadeOut(fadeTime, function() {
-                $('#cart-subtotal').html(subtotal.toFixed(2));
+                $('#label-subtotal').html(subtotal.toFixed(2));
                 $('#cart-shipping').html(shipping.toFixed(2));
                 $('#cart-total').html(total.toFixed(2));
                 if(total == 0){
@@ -173,8 +173,32 @@
         }
   
     });
-  
- 
     </script>
+ <script src="assets/js/core.js"></script>
+ <script type="text/javascript">
+     let params = new URLSearchParams(document.location.search.substring(1));
+     let cart_id = params.get("id"); 
+     
+     if (!cart_id) {
+         redirectToIndex();
+     }
+ 
+     $(document).ready(function() {
+         let cart_url = getApiURL("api/carts/")+cart_id;
+
+         $.ajax({
+             method: "GET",
+             url: cart_url,
+             dataType: "json",
+         }).done(function(res) {
+             if (!res) {
+                 redirectToIndex();
+             }
+             $("#label-shipping-method").text(res.shippingMethod);
+             $("#label-shipping-fee").text(res.shippingFee);
+             $("#label-subtotal").text(res.subtotal);
+         });
+     });
+     </script>
   </body>
 </html>

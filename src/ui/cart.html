@@ -77,7 +77,8 @@
                
             </div>
                 
-            <button class="checkout">Process to checkout</button>
+            <button class="checkout" id="button-confirm-cart"
+            onclick="window.location.href = 'shipping.html?id=1'">Process to checkout</button>
         </div>
         
     </div>
@@ -186,7 +187,7 @@
              }
           
              $("#label-shipping-method").text(res.shippingMethod);
-             $("#label-shipping-fee").text(res.shippingFee);
+             $("#label-shipping-fee").text(res.shippingFee.toFixed(2));
              $("#label-subtotal").text(res.subtotal);
 
               $(res.CartProducts).each(function (index, row) {

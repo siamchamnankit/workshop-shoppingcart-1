@@ -3,7 +3,7 @@ Library    SeleniumLibrary
 Test Teardown    ปิดหน้าเบราเซอร์
 
 *** Variables ***
-${URL}     http://54.254.234.208
+${URL}     http://localhost
 
 *** Test Cases ***
 ผู้ใช้สามารถสั่งซื้อสินค้าได้สำเร็จ
@@ -34,12 +34,10 @@ ${URL}     http://54.254.234.208
     Click Button    button-add-product-to-cart
 
 แสดงรายการสินค้าที่อยู่ในตะกร้าสินค้า
-    Wait Until Element Contains     label-product-id-2-name    43 Piece dinner Set    3s
-    Wait Until Element Contains     label-product-id-2-brand    CoolKidz    3s
-    Wait Until Element Contains     label-product-id-2-price    12.95    3s
-    Wait Until Element Contains     option-product-id-2-quantity    1    3s
-    Wait Until Element Contains     label-product-id-2-item-total    12.95    3s
-    Wait Until Element Contains     label-subtotal    62.95    3s
+    Wait Until Page Contains     43 Piece dinner Set    3s
+    Wait Until Page Contains     CoolKidz    3s
+    Wait Until Page Contains     12.95    3s
+    Wait Until Element Contains     label-subtotal    12.95    3s
     Wait Until Element Contains     label-shipping-fee    50.00    3s
 
 กดยืนยันการสั่งซื้อสินค้า

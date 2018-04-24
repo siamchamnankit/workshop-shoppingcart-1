@@ -102,8 +102,7 @@
                             <label>Shipping Method</label>
                             <div class="description-value">Cash on Delivery</div>
                         </div>
-                        <button class="checkout" id="button-add-product-to-cart" 
-                        onclick="window.location.href = 'cart.html?id=1'">Add to cart</button>
+                        <button class="checkout" id="button-add-product-to-cart">Add to cart</button>
                     </div>
 
                 </div>
@@ -156,7 +155,7 @@
                         alert("Something went wrong!");
                     } else {
                         localStorage.setItem("cartId", res.id);
-                        redirectToCart();
+                        redirectToCart(res.id);
                     }
                 });
             })

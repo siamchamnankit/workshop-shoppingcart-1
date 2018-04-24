@@ -23,9 +23,26 @@ namespace api.Services
 
         public CartsModel getCart(int cartId, int userId=1) {
             CartsModel cart = _context.Carts.Where(c => c.id == cartId).FirstOrDefault();
-            List<CartProductsModel> cartProducts = _context.CartProducts.ToList();
-
-            cart.CartProducts = cartProducts;
+            List<CartProductsModel> cartProducts = _context.CartProducts.Where(c => c.cartId == cartId).ToList();
+        
+            foreach (CartProductsModel cartProduct in cartProducts)
+            {
+                ProductsModel product = _productContext.Products.Where(p => p.id == cartProduct.productId).FirstOrDefault();
+                
+                ProductInCartModel productInCart = new ProductInCartModel{
+                    id = product.id,
+                    name = product.name,
+                    price = product.price,
+                    availability = product.availability,
+                    stockAvailability = product.stockAvailability,
+                    age = product.age,
+                    gender = product.gender,
+                    brand = product.brand,
+                    quantity = cartProduct.quantity
+                };
+                System.Console.WriteLine(productInCart.id);
+                cart.CartProducts = new List<ProductInCartModel> { productInCart };
+            }
 
             return cart;
         }

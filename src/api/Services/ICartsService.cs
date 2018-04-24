@@ -7,6 +7,7 @@ namespace api.Services
     {
         IEnumerable<CartsModel> list();
         AddCartOutputModel add(ProductsModel product, int quantity);
+        CartsModel getCart(int cartId, int userId);
 
     }
 }

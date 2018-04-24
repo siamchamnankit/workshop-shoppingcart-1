@@ -20,7 +20,7 @@ namespace api.Services
         {
              return _context.Carts.ToList();
         }
-        public CartsModel getCart(int cartId, int userId=1) {
+        public CartsModel getCart(int cartId, int userId) {
             CartsModel cart = _context.Carts.Where(c => c.id == cartId).Where(c => c.userId == userId).FirstOrDefault();
             List<CartProductsModel> cartProducts = _context.CartProducts.Where(c => c.cartId == cartId).ToList();
             List<ProductInCartModel> productsInCart = new List<ProductInCartModel>();
@@ -61,12 +61,7 @@ namespace api.Services
             return cartModel;
         }
 
-        private void calculateCart(CartsModel cartModel) {
-            List<CartProductsModel> _cartproducts = cartModel.CartProducts.ToList();
-            foreach (CartProductsModel product in _cartproducts) {
-                Console.WriteLine(product.id);
-            }
-        }
+
         private CartProductsModel addProductToCart(CartsModel cartModel, ProductsModel product, int quantity) {
            CartProductsModel cartProductModel = new CartProductsModel{
                cartId = cartModel.id,

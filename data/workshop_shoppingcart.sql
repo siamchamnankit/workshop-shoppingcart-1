@@ -5,9 +5,9 @@
 # http://www.sequelpro.com/
 # https://github.com/sequelpro/sequelpro
 #
-# Host: 127.0.0.1 (MySQL 5.5.58)
+# Host: 127.0.0.1 (MySQL 5.5.60)
 # Database: workshop_shoppingcart
-# Generation Time: 2018-04-23 10:59:24 +0000
+# Generation Time: 2018-04-24 08:45:51 +0000
 # ************************************************************
 
 
@@ -31,13 +31,22 @@ CREATE TABLE `cart` (
   `subtotal` decimal(6,2) DEFAULT NULL,
   `total` decimal(6,2) DEFAULT NULL,
   `shippingMethod` varchar(20) DEFAULT NULL,
-  `shippingFee` decimal(3,2) DEFAULT NULL,
+  `shippingFee` decimal(5,2) DEFAULT NULL,
   `shippingId` int(10) DEFAULT NULL,
   `createDatetime` datetime DEFAULT NULL,
   `updateDatetime` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+LOCK TABLES `cart` WRITE;
+/*!40000 ALTER TABLE `cart` DISABLE KEYS */;
+
+INSERT INTO `cart` (`id`, `userId`, `subtotal`, `total`, `shippingMethod`, `shippingFee`, `shippingId`, `createDatetime`, `updateDatetime`)
+VALUES
+	(1,1,12.95,62.95,'Cash on Delivery',50.00,1,'0000-00-00 00:00:00','0000-00-00 00:00:00');
+
+/*!40000 ALTER TABLE `cart` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table cart_product
@@ -53,6 +62,15 @@ CREATE TABLE `cart_product` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+LOCK TABLES `cart_product` WRITE;
+/*!40000 ALTER TABLE `cart_product` DISABLE KEYS */;
+
+INSERT INTO `cart_product` (`id`, `cartId`, `productId`, `quantity`)
+VALUES
+	(1,1,2,1);
+
+/*!40000 ALTER TABLE `cart_product` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table order

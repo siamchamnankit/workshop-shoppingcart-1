@@ -49,18 +49,8 @@
                 <label class="product-line-price">Price(THB)</label>
             </div>
             
-            <div class="product">
-                <div class="product-details">
-                    <div class="product-title">43 Piece dinner Set by CoolKidz</div>
-                    <div class="product-description">Gender FEMALE   Age 3 to 5</div>
-                    <div class="product-availability">In Stock</div>
-                    <button class="remove-product">Delete</button>
-                </div>
-                <div class="product-quantity">
-                    <input type="number" value="2" min="1">
-                </div>
-                <div class="product-price" style="display: none" >25.98</div>
-                <div class="product-line-price">25.98</div>
+            <div class="product" id="products">
+               
             </div>
                 
             <div class="row">
@@ -194,9 +184,26 @@
              if (!res) {
                  redirectToIndex();
              }
+          
              $("#label-shipping-method").text(res.shippingMethod);
              $("#label-shipping-fee").text(res.shippingFee);
              $("#label-subtotal").text(res.subtotal);
+
+              $(res.CartProducts).each(function (index, row) {
+                        $('#products').append(`
+                        <div class="product-details">
+                        <div class="product-title">` + row.name + ` &nbsp by &nbsp ` + row.brand + `</div>
+                        <div class="product-description">Gender &nbsp` + row.gender + ` &nbsp  Age &nbsp` + row.age + `</div>
+                        <div class="product-availability">` + row.availability + `</div>
+                        <button class="remove-product">Delete</button>
+                        </div>
+                        <div class="product-quantity">
+                            <input type="number" value="` + row.quantity + `" min="1">
+                        </div>
+                        <div class="product-price" style="display: none" >` + row.price + `</div>
+                        <div class="product-line-price">` + row.price + `</div>
+                    `)
+                    });
          });
      });
      </script>

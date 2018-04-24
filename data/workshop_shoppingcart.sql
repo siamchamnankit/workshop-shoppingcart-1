@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.58)
 # Database: workshop_shoppingcart
-# Generation Time: 2018-04-24 09:42:38 +0000
+# Generation Time: 2018-04-24 09:52:23 +0000
 # ************************************************************
 
 
@@ -92,12 +92,12 @@ VALUES
 UNLOCK TABLES;
 
 
-# Dump of table order
+# Dump of table orders
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `order`;
+DROP TABLE IF EXISTS `orders`;
 
-CREATE TABLE `order` (
+CREATE TABLE `orders` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `cartId` int(10) DEFAULT NULL,
   `userId` int(10) DEFAULT NULL,

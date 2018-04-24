@@ -34,6 +34,7 @@ namespace api
             services.AddDbContext<OrdersContext>(options => options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IProductService, ProductsService>();
             services.AddScoped<ICartsService, CartsService>();
+            services.AddScoped<OrdersService, OrdersService>();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {

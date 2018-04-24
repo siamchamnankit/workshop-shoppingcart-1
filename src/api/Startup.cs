@@ -31,6 +31,7 @@ namespace api
         {
             services.AddDbContext<ProductsContext>(options => options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<CartsContext>(options => options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<OrdersContext>(options => options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IProductService, ProductsService>();
             services.AddScoped<ICartsService, CartsService>();
 

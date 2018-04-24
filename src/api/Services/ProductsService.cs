@@ -5,7 +5,7 @@ using api.Models;
 
 namespace api.Services
 {
-    public class ProductsService
+    public class ProductsService : IProductService
     {
         private readonly ProductsContext _context;
 
@@ -14,7 +14,7 @@ namespace api.Services
             _context = context;
         }
 
-        internal ProductsListModel list()
+        public ProductsListModel list()
         {
             ProductsListModel productsList = new ProductsListModel();
             productsList.ProductsModel = _context.Products.ToList();
@@ -22,7 +22,7 @@ namespace api.Services
             return productsList;
         }
 
-        internal IEnumerable<ProductsModel> list_products()
+        public IEnumerable<ProductsModel> list_products()
         {
              return _context.Products.ToList();
         }

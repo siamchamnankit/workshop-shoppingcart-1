@@ -1,3 +1,4 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Models
@@ -14,6 +15,12 @@ namespace api.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.Entity<CartsModel>()
+                        .HasMany(a => a.CartProducts)
+                        .WithOne(m => m.Carts)
+                        .HasForeignKey(a => a.cartId);
+            
         }
     }
 }

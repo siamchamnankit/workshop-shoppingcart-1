@@ -51,12 +51,13 @@
     <script>window.jQuery || document.write('<script src="assets/js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
     <script src="assets/js/vendor/popper.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/core.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('#list').click(function (event) { event.preventDefault(); $('#products .item').addClass('list-group-item'); });
             $('#grid').click(function (event) { event.preventDefault(); $('#products .item').removeClass('list-group-item'); $('#products .item').addClass('grid-group-item'); });
             
-            let product_list_url = "http://localhost:5001/api/products/";
+            let product_list_url = getApiURL("api/products/");
 
             $.ajax({
                 method: "GET",
@@ -64,7 +65,7 @@
                 dataType: "json",
             }).done(function (res) {
                 
-                    $(res).each(function (index, row) {
+                    $(res.productsModel).each(function (index, row) {
                         $('#products').append(`
                     <div class="item col-xs-4 col-lg-4">
                         <div class="thumbnail">

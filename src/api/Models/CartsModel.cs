@@ -18,16 +18,16 @@ namespace api.Models
         public int shippingId { get; set; }
         public DateTime createDatetime { get; set; }
         public DateTime updateDatetime { get; set; }
-
-        public List<CartProducts> cartProducts { get; set; }
+        public List<CartProductsModel> CartProducts { get; set; }
     }
 
     [Table("cart_product")]
-    public class CartProducts
+    public class CartProductsModel
     {
         public int id { get; set; }
         public int cartId { get; set; }
         public int productId { get; set; }
         public int quantity { get; set; }
+        public CartsModel Carts { get; set; }
     }
 }

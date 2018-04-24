@@ -24,12 +24,11 @@ namespace api.Services
         public CartsModel getCart(int cartId, int userId=1) {
             CartsModel cart = _context.Carts.Where(c => c.id == cartId).FirstOrDefault();
             List<CartProductsModel> cartProducts = _context.CartProducts.Where(c => c.cartId == cartId).ToList();
-        
+            List<ProductInCartModel> productsInCart = new List<ProductInCartModel>();
             foreach (CartProductsModel cartProduct in cartProducts)
             {
                 ProductsModel product = _productContext.Products.Where(p => p.id == cartProduct.productId).FirstOrDefault();
-                
-                ProductInCartModel productInCart = new ProductInCartModel{
+                productsInCart.Add(new ProductInCartModel{
                     id = product.id,
                     name = product.name,
                     price = product.price,
@@ -39,11 +38,9 @@ namespace api.Services
                     gender = product.gender,
                     brand = product.brand,
                     quantity = cartProduct.quantity
-                };
-                System.Console.WriteLine(productInCart.id);
-                cart.CartProducts = new List<ProductInCartModel> { productInCart };
+                });
             }
-
+            cart.CartProducts = productsInCart;
             return cart;
         }
 

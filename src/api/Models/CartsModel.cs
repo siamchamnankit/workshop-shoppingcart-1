@@ -18,7 +18,7 @@ namespace api.Models
         public int shippingId { get; set; }
         public DateTime createDatetime { get; set; }
         public DateTime updateDatetime { get; set; }
-        public List<CartProductsModel> CartProducts { get; set; }
+        public List<ProductInCartModel> CartProducts { get; set; }
     }
 
     [Table("cart_product")]

@@ -5,7 +5,7 @@ namespace api.Models
 {
     public class OrdersContext : DbContext
     {
-        public OrdersContext(DbContextOptions<CartsContext> dbContextOptions) :
+        public OrdersContext(DbContextOptions<OrdersContext> dbContextOptions) :
             base(dbContextOptions)
         {
         }

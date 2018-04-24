@@ -3,7 +3,7 @@ Library    SeleniumLibrary
 Test Teardown    ปิดหน้าเบราเซอร์
 
 *** Variables ***
-${URL}     http://localhost
+${URL}     http://54.254.234.208
 
 *** Test Cases ***
 ผู้ใช้สามารถสั่งซื้อสินค้าได้สำเร็จ
@@ -55,8 +55,7 @@ ${URL}     http://localhost
     Click Button    button-confirm-shipping-address
 
 แสดงผลการสั่งซื้อ
-    Wait Until Page Contains     Thank You    3s
-    Wait Until Element Is Visible     label-order-id    3s
+    Wait Until Page Contains     Thank you    3s
 
 ปิดหน้าเบราเซอร์
     Close Browser

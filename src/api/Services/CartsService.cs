@@ -44,7 +44,10 @@ namespace api.Services
         }
         public AddCartOutputModel add(ProductsModel product, int quantity) {
             CartsModel cartModel = this.createCart(1);
-            this.addProductToCart(cartModel, product, quantity);
+            CartProductsModel cartProductsModel = this.addProductToCart(cartModel, product, quantity);
+            cartModel = this.calculate(cartModel);
+            _context.Carts.Update(cartModel);
+            _context.SaveChanges();            
             return new AddCartOutputModel{
                 id = cartModel.id
             };
@@ -69,15 +72,28 @@ namespace api.Services
            };
            _context.CartProducts.Add(cartProductModel);
            _context.SaveChanges();
-
-            cartModel.shippingFee = 50;
-            cartModel.shippingMethod = "Cast on Delivery";
-            cartModel.subtotal = product.price * quantity;
-            cartModel.total = (product.price * quantity)+50;
-            _context.Carts.Update(cartModel);
-            _context.SaveChanges();
             
            return cartProductModel;
+        }
+
+        private CartsModel calculate(CartsModel cart) {
+            decimal subtotal = 0;
+            decimal total = 0;
+            decimal shippingFee = 50;
+            string shippingMethod = "Cash on Delivery";
+            List<CartProductsModel> cartProducts = _context.CartProducts.Where(c => c.cartId == cart.id).ToList();
+            
+            foreach (var cartProduct in cartProducts)
+            {
+                ProductsModel product = _productContext.Products.Where(p => p.id == cartProduct.productId).FirstOrDefault();
+                subtotal += product.price * cartProduct.quantity;
+            }
+            total = subtotal + shippingFee;
+            cart.subtotal = subtotal;
+            cart.total = total;
+            cart.shippingFee = shippingFee;
+            cart.shippingMethod = shippingMethod;
+            return cart;
         }
     }
 }

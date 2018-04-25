@@ -55,15 +55,15 @@ namespace api.IntegrationTest
             };
             List<ProductInCartModel> productsInCart = new List<ProductInCartModel>();
             productsInCart.Add(new ProductInCartModel{
-                price = 119.95M,
+                price = (Decimal)119.95,
                 quantity = 1
             });
 
             CartsService cartsService = new CartsService(_cartContext, _productContext);
             var actualResult = cartsService.calculate(cartModel, productsInCart);
 
-            Assert.Equal(119.95M, actualResult.subtotal);
-            Assert.Equal(169.95M, actualResult.total);
+            Assert.Equal((Decimal)119.95, actualResult.subtotal);
+            Assert.Equal((Decimal)169.95, actualResult.total);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace api.IntegrationTest
         public void When_Get_List_Then_Total_Products_Should_Be_2()
         {
 
-            var _productOptions = new DbContextOptionsBuilder<ProductsContext>().UseInMemoryDatabase("products_total").Options;
+            var _productOptions = new DbContextOptionsBuilder<ProductsContext>().UseInMemoryDatabase("products_totalls").Options;
             var _productContext = new ProductsContext(_productOptions);
 
             ProductsModel productData1 = new ProductsModel{
@@ -89,6 +89,35 @@ namespace api.IntegrationTest
             var actualResult = productsService.list_products();
 
             var expectedResult = _productContext.Products.ToList();
+
+            Assert.Equal(expectedResult, actualResult);
+        }
+
+        [Fact]
+        public void When_Get_Product_With_Id_2_Then_Show_Only_This_Product()
+        {
+
+            var _productOptions = new DbContextOptionsBuilder<ProductsContext>().UseInMemoryDatabase("products_detail").Options;
+            var _productContext = new ProductsContext(_productOptions);
+
+            ProductsModel productData = new ProductsModel{
+                    id = 2,
+                    name = "43 Piece dinner Set",
+                    price = (Decimal)12.95,
+                    availability = "InStock",
+                    stockAvailability = 10,
+                    age = "3_to_5",
+                    gender = "FEMALE",
+                    brand = "CoolKidz"
+                };
+
+            _productContext.Products.Add(productData);
+            _productContext.SaveChanges();
+
+            ProductsService productsService = new ProductsService(_productContext);
+            var actualResult = productsService.getProductDetail(2);
+
+            var expectedResult = _productContext.Products.First();
 
             Assert.Equal(expectedResult, actualResult);
         }

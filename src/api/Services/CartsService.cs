@@ -23,6 +23,13 @@ namespace api.Services
         public CartsModel getCart(int cartId, int userId) {
             CartsModel cart = _context.Carts.Where(c => c.id == cartId).Where(c => c.userId == userId).FirstOrDefault();
             List<CartProductsModel> cartProducts = _context.CartProducts.Where(c => c.cartId == cartId).ToList();
+            List<ProductInCartModel> productsInCart = this.getProductInCart(cart.id);
+            cart.CartProducts = productsInCart;
+            return cart;
+        }
+
+        public List<ProductInCartModel> getProductInCart(int cartId) {
+            List<CartProductsModel> cartProducts = this.getCartProducts(cartId);
             List<ProductInCartModel> productsInCart = new List<ProductInCartModel>();
             foreach (CartProductsModel cartProduct in cartProducts)
             {
@@ -39,13 +46,18 @@ namespace api.Services
                     quantity = cartProduct.quantity
                 });
             }
-            cart.CartProducts = productsInCart;
-            return cart;
+            return productsInCart;
+        }
+
+        public List<CartProductsModel> getCartProducts(int cartId) {
+            List<CartProductsModel> cartProducts = _context.CartProducts.Where(c => c.cartId == cartId).ToList();
+            return cartProducts;
         }
         public AddCartOutputModel add(ProductsModel product, int quantity) {
             CartsModel cartModel = this.createCart(1);
             CartProductsModel cartProductsModel = this.addProductToCart(cartModel, product, quantity);
-            cartModel = this.calculate(cartModel);
+            List<ProductInCartModel> productsInCart = this.getProductInCart(cartModel.id);
+            cartModel = this.calculate(cartModel, productsInCart);
             _context.Carts.Update(cartModel);
             _context.SaveChanges();            
             return new AddCartOutputModel{
@@ -76,17 +88,14 @@ namespace api.Services
            return cartProductModel;
         }
 
-        private CartsModel calculate(CartsModel cart) {
+        public CartsModel calculate(CartsModel cart, List<ProductInCartModel> productsInCart) {
             decimal subtotal = 0;
             decimal total = 0;
             decimal shippingFee = 50;
             string shippingMethod = "Cash on Delivery";
-            List<CartProductsModel> cartProducts = _context.CartProducts.Where(c => c.cartId == cart.id).ToList();
-            
-            foreach (var cartProduct in cartProducts)
+            foreach (var productInCart in productsInCart)
             {
-                ProductsModel product = _productContext.Products.Where(p => p.id == cartProduct.productId).FirstOrDefault();
-                subtotal += product.price * cartProduct.quantity;
+                subtotal += productInCart.price * productInCart.quantity;
             }
             total = subtotal + shippingFee;
             cart.subtotal = subtotal;

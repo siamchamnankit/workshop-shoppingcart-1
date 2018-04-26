@@ -15,10 +15,10 @@ namespace api.IntegrationTest
         [Fact]
         public void When_Create_New_Cart_With_Product_ID2_And_Quantity2_And_Should_Be_Get_CartID1()
         {
-            var _cartOptions = new DbContextOptionsBuilder<CartsContext>().UseInMemoryDatabase("carts").Options;
+            var _cartOptions = new DbContextOptionsBuilder<CartsContext>().UseInMemoryDatabase("create_new_cart_carts").Options;
             var _cartContext = new CartsContext(_cartOptions);
 
-            var _productOptions = new DbContextOptionsBuilder<ProductsContext>().UseInMemoryDatabase("products").Options;
+            var _productOptions = new DbContextOptionsBuilder<ProductsContext>().UseInMemoryDatabase("create_new_cart_products").Options;
             var _productContext = new ProductsContext(_productOptions);
 
             ProductsModel productsData = new ProductsModel{
@@ -43,10 +43,10 @@ namespace api.IntegrationTest
         [Fact]
         public void When_Calculate_Cart_With_One_Product_Price_119_95_Should_Be_Total_equal_169_95()
         {
-            var _cartOptions = new DbContextOptionsBuilder<CartsContext>().UseInMemoryDatabase("carts").Options;
+            var _cartOptions = new DbContextOptionsBuilder<CartsContext>().UseInMemoryDatabase("calculate_carts").Options;
             var _cartContext = new CartsContext(_cartOptions);
 
-            var _productOptions = new DbContextOptionsBuilder<ProductsContext>().UseInMemoryDatabase("products").Options;
+            var _productOptions = new DbContextOptionsBuilder<ProductsContext>().UseInMemoryDatabase("calculate_products").Options;
             var _productContext = new ProductsContext(_productOptions);
             CartsModel cartModel = new CartsModel{
                 userId = 1,
@@ -69,10 +69,10 @@ namespace api.IntegrationTest
         [Fact]
         public void When_Get_Cart_By_Id_1_And_Should_Be_Get_This_Cart_Detail()
         {
-            var _cartOptions = new DbContextOptionsBuilder<CartsContext>().UseInMemoryDatabase("carts_detail").Options;
+            var _cartOptions = new DbContextOptionsBuilder<CartsContext>().UseInMemoryDatabase("get_carts_carts_detail").Options;
             var _cartContext = new CartsContext(_cartOptions);
 
-            var _productOptions = new DbContextOptionsBuilder<ProductsContext>().UseInMemoryDatabase("carts_products_detail").Options;
+            var _productOptions = new DbContextOptionsBuilder<ProductsContext>().UseInMemoryDatabase("get_carts_carts_products_detail").Options;
             var _productContext = new ProductsContext(_productOptions);
 
             CartsModel cartModel = new CartsModel{

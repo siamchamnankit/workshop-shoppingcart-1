@@ -6,8 +6,8 @@ namespace api.Services
     public interface IProductService
     {
         ProductsModel getProductDetail(int id);
-        ProductsListModel list();
-        IEnumerable<ProductsModel> list_products();
+        ProductsListModel list(string age, string gender);
+        List<ProductsModel> list_products(string age, string gender);
 
     }
 }

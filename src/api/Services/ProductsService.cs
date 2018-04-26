@@ -14,17 +14,27 @@ namespace api.Services
             _context = context;
         }
 
-        public ProductsListModel list()
+        public ProductsListModel list(string age = "", string gender = "")
         {
             ProductsListModel productsList = new ProductsListModel();
-            productsList.ProductsModel = _context.Products.ToList();
+            productsList.ProductsModel = this.list_products(age, gender);
             productsList.total = productsList.ProductsModel.Count();
             return productsList;
         }
 
-        public IEnumerable<ProductsModel> list_products()
+        public List<ProductsModel> list_products(string age = "", string gender = "")
         {
-             return _context.Products.ToList();
+            var products = _context.Products;
+            if (age != "" && gender != "") {
+                return products.Where(m => age != "" && m.age == age).Where(m => gender != "" && m.gender == gender).ToList();
+            }
+            if (age != "") {
+                return products.Where(m => m.age == age).ToList();
+            }
+            if (gender != "") {
+                return products.Where(m => m.gender == gender).ToList();
+            }
+            return products.ToList();
         }
 
         public ProductsModel getProductDetail(int id){

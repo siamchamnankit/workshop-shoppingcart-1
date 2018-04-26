@@ -101,7 +101,7 @@
                     url: product_list_url,
                     dataType: "json",
                 }).done(function (res) {
-
+                    $('#products').html('');
                     $(res.ProductsModel).each(function (index, row) {
                         $('#products').append(
                             `

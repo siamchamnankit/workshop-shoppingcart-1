@@ -19,9 +19,9 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        public ProductsListModel Get()
+        public ProductsListModel Get(string age = "", string gender = "")
         {
-            return _productService.list();
+            return _productService.list(age, gender.ToUpper());
         }
 
         // GET api/products/5

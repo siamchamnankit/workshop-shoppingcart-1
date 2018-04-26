@@ -19,12 +19,6 @@ namespace api.Controllers
             _cartService = cartService;
             _productService = productService;
         }
-
-        [HttpGet]
-        public IEnumerable<CartsModel> Get()
-        {
-            return _cartService.list();
-        }
         
         [HttpGet("{id}")]
         public CartsModel GetCart(int id)

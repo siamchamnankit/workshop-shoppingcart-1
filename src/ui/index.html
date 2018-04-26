@@ -33,6 +33,25 @@
 
     <!-- Begin page content -->
     <div class="main-content container">
+        <div>
+            <select name="age-value" id="age-input">
+                <option value="">All</option>
+                <option value="Toddler">Toddler</option>
+                <option value="Baby">Baby</option>
+                <option value="3_to_5">3 - 5</option>
+                <option value="6_to_8">6 - 8</option>
+                <option value="over8"> 8+ </option>
+            </select>
+
+            <select name="gender-value" id="gender-input">
+                <option value="">All</option>
+                <option value="Neutral">Neutral</option>
+                <option value="Female">Female</option>
+                <option value="Male">Male</option>
+            </select>
+
+            <button class="btn-success" id="search-button">Search</button>
+        </div>
         <div class="well well-sm">
             <strong>Category Toys </strong> &nbsp;&nbsp;&nbsp;&nbsp;
             <div class="btn-group">
@@ -48,48 +67,84 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script>window.jQuery || document.write('<script src="assets/js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
+    <script>
+        window.jQuery || document.write('<script src="assets/js/vendor/jquery-3.2.1.min.js"><\/script>')
+    </script>
     <script src="assets/js/vendor/popper.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="assets/js/core.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#list').click(function (event) { event.preventDefault(); $('#products .item').addClass('list-group-item'); });
-            $('#grid').click(function (event) { event.preventDefault(); $('#products .item').removeClass('list-group-item'); $('#products .item').addClass('grid-group-item'); });
-            
-            let product_list_url = getApiURL("api/products/");
-
-            $.ajax({
-                method: "GET",
-                url: product_list_url,
-                dataType: "json",
-            }).done(function (res) {
+            $('#list').click(function (event) {
+                event.preventDefault();
+                $('#products .item').addClass('list-group-item');
+            });
+            $('#grid').click(function (event) {
+                event.preventDefault();
+                $('#products .item').removeClass('list-group-item');
+                $('#products .item').addClass('grid-group-item');
+            });
+            const search = (age = "", gender = "") => {
                 
+                let product_list_url = getApiURL("api/products/");
+                const params = {age, gender};
+                const inputsParams = Object.keys(params)
+                                           .filter((x) => params[x] != "")
+                                           .map((key) => `${key}=${params[key]}`);
+                
+                if (inputsParams.length > 0) {
+                    product_list_url += `?${inputsParams.join("&")}`
+                }
+                
+                $.ajax({
+                    method: "GET",
+                    url: product_list_url,
+                    dataType: "json",
+                }).done(function (res) {
+
                     $(res.ProductsModel).each(function (index, row) {
-                        $('#products').append(`
+                        $('#products').append(
+                            `
                     <div class="item col-xs-4 col-lg-4">
                         <div class="thumbnail">
                             <img class="group list-group-image" src="https://placeimg.com/400/250/tech" alt="" />
                             <div class="caption">
-                                <h4 class="group inner list-group-item-heading">` + row.name + `</h4>
+                                <h4 class="group inner list-group-item-heading">` +
+                            row.name +
+                            `</h4>
                                 <p class="group inner list-group-item-text"></p>
                                 <div class="row">
                                     <div class="col-xs-12 col-md-6">
-                                        <p class="lead">` + row.price + ` THB</p>
+                                        <p class="lead">` +
+                            row.price +
+                            ` THB</p>
                                     </div>
                                     <div class="col-xs-12 col-md-6">
-                                        <a class="btn btn-success" id=link-product-detail-id-`
-                                        + row.id + ` href="product_detail.html?id=`
-                                        + row.id + ` ">View detail</a>
+                                        <a class="btn btn-success" id=link-product-detail-id-` +
+                            row.id + ` href="product_detail.html?id=` +
+                            row.id +
+                            ` ">View detail</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    `)
+                    `
+                        )
                     });
-                
-            });
+
+                });
+
+            }
+            $("#search-button").click((event) => {
+                event.preventDefault();
+                const age = $('#age-input').val();
+                const gender = $('#gender-input').val();
+                search(age, gender)
+            })
+
+            search();
+
         });
     </script>
 </body>

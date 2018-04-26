@@ -111,6 +111,15 @@ namespace api.IntegrationTest
 
             Assert.Equal(cartModel, actualResult);
         }
+        [Fact]
+        public void AddCartInputModel_should_be_correctly(){
+            AddCartInputModel input = new AddCartInputModel{
+                id = 1,
+                quantity = 10
+            };
+            Assert.Equal(1, input.id);
+            Assert.Equal(10, input.quantity);
+        }
     }
 }
 

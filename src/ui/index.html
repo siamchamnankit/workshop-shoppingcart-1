@@ -61,7 +61,7 @@
                     <span class="glyphicon glyphicon-th"></span>Grid</a>
             </div>
         </div>
-
+        <div id="total" style="font-weight: bold;"></div>
         <div id="products" class="row list-group"></div>
 
     </div>
@@ -102,6 +102,7 @@
                     dataType: "json",
                 }).done(function (res) {
                     $('#products').html('');
+                    $('#total').html(`${res.ProductsModel.length} toys found`)
                     $(res.ProductsModel).each(function (index, row) {
                         $('#products').append(
                             `

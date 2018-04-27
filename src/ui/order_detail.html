@@ -127,9 +127,9 @@
                         `
                                 <tr>
                                     <td>`+ element.name +`</td>
-                                    <td class="text-center">`+ element.price +`</td>
+                                    <td class="text-center">`+ (element.price*1).toFixed(2) +`</td>
                                     <td class="text-center">`+ element.quantity +`</td>
-                                    <td class="text-right">`+ (element.price * element.quantity) +`</td>
+                                    <td class="text-right">`+ (element.price * element.quantity).toFixed(2) +`</td>
                                 </tr>
                             `
                     )
@@ -142,7 +142,7 @@
                             <td class="thick-line"></td>
                             <td class="thick-line"></td>
                             <td class="thick-line text-center"><strong>Subtotal</strong></td>
-                            <td class="thick-line text-right">`+ res.order.subtotal +`</td>
+                            <td class="thick-line text-right">`+ (res.order.subtotal).toFixed(2) +`</td>
                         </tr>
                         <tr>
                             <td class="no-line"></td>

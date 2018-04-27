@@ -188,7 +188,7 @@
           
              $("#label-shipping-method").text(res.shippingMethod);
              $("#label-shipping-fee").text(res.shippingFee.toFixed(2));
-             $("#label-subtotal").text(res.subtotal);
+             $("#label-subtotal").text(res.subtotal.toFixed(2));
 
               $(res.CartProducts).each(function (index, row) {
                         $('#products').append(`

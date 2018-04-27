@@ -48,4 +48,15 @@ namespace api.Models
         public int id { get; set; }
 
     }
+
+    public class OrderDetailOutput
+    {
+        public OrdersModel order { get; set; }
+        public ProductsListOutput products { get; set; }
+    }
+
+    public class ProductsListOutput {
+        public int total { get; set; }
+        public List<OrderProductsModel> data { get; set; }
+    }
 }

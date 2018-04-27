@@ -11,6 +11,7 @@ ${URL}     http://54.254.234.208
     ค้าหาสินค้า ช่วงอายุ 3 ถึง 5 ปี และเพศหญิง
     เลือกสินค้า 43 Piece dinner Set
     แสดงรายละเอียดสินค้า 43 Piece dinner Set
+    เพิ่มจำนวนสินค้าที่ต้องการจะซื้อเป็น 2 ชิ้น
     เพิ่มสินค้าเข้าตะกร้า
     แสดงรายการสินค้าที่อยู่ในตะกร้าสินค้า
     กดยืนยันการสั่งซื้อสินค้า
@@ -41,6 +42,10 @@ ${URL}     http://54.254.234.208
     Wait Until Element Contains     label-product-brand    CoolKidz    3s
     Wait Until Element Contains     label-product-price    12.95    3s
 
+เพิ่มจำนวนสินค้าที่ต้องการจะซื้อเป็น 2 ชิ้น
+    Select From List by Value    product-quantity    2 
+    Wait Until Element Contains     product-total-price   25.9    3s
+    
 เพิ่มสินค้าเข้าตะกร้า
     Click Button    button-add-product-to-cart
 
@@ -48,7 +53,7 @@ ${URL}     http://54.254.234.208
     Wait Until Page Contains     43 Piece dinner Set    3s
     Wait Until Page Contains     CoolKidz    3s
     Wait Until Page Contains     12.95    3s
-    Wait Until Element Contains     label-subtotal    12.95    3s
+    Wait Until Element Contains     label-subtotal    25.9    3s
     Wait Until Element Contains     label-shipping-fee    50.00    3s
 
 กดยืนยันการสั่งซื้อสินค้า

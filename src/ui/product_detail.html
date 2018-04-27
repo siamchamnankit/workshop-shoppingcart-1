@@ -96,12 +96,20 @@
                         </div>
                         <div class="description-item">
                             <label>Price</label>
-                            <div class="description-value" id="label-product-price">N/A</div>
+                            <div class="description-value">
+                                <span id="label-product-price">N/A</span> THB
+                            </div>
                         </div>
                         <div class="description-item">
                             <label>Quantity</label>
                             <div class="description-value">
                                 <select id="product-quantity"></select>
+                            </div>
+                        </div>
+                        <div class="description-item">
+                            <label>Total</label>
+                            <div class="description-value">
+                                <span id="product-total">N/A</span> THB
                             </div>
                         </div>
                         <div class="description-item">
@@ -121,6 +129,7 @@
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/js/core.js"></script>
         <script type="text/javascript">
+            let updateTotal = (quantity) => $('#product-total').html(quantity * $("#label-product-price").html());
             let params = new URLSearchParams(document.location.search.substring(1));
             let product_id = params.get("id"); 
             
@@ -140,7 +149,7 @@
                         redirectToIndex();
                     }
                     $('#product-quantity').html();
-                    for (var i = 1; i < res.stockAvailability; i++) {
+                    for (var i = 1; i <= res.stockAvailability; i++) {
                         $('#product-quantity').append($('<option>', {
                             value: i,
                             text: i
@@ -151,7 +160,11 @@
                     $("#gender-value").text(res.gender);
                     $("#age-value").text(res.age);
                     $("#label-product-price").text(res.price);
-                
+                    updateTotal(1);
+                });
+
+                $('#product-quantity').change(function() {
+                    updateTotal(this.value);
                 });
 
                 $('#button-add-product-to-cart').click(function(){

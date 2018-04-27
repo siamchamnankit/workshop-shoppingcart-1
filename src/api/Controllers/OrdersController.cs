@@ -27,5 +27,12 @@ namespace api.Controllers
             return Json(_ordersService.create(order.id, userId));
         }
 
+        // GET api/orders/5
+        [HttpGet("{id}")]
+        public OrderDetailOutput Get(int id)
+        {
+            return _ordersService.get(id);
+        }
+
     }
 }

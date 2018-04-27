@@ -109,7 +109,7 @@
                         <div class="description-item">
                             <label>Total</label>
                             <div class="description-value">
-                                <span id="product-total">N/A</span> THB
+                                <span id="product-total-price">N/A</span> THB
                             </div>
                         </div>
                         <div class="description-item">
@@ -129,7 +129,7 @@
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/js/core.js"></script>
         <script type="text/javascript">
-            let updateTotal = (quantity) => $('#product-total').html(quantity * $("#label-product-price").html());
+            let updateTotal = (quantity) => $('#product-total-price').html(Math.round((quantity * $("#label-product-price").html()) * 100) / 100);
             let params = new URLSearchParams(document.location.search.substring(1));
             let product_id = params.get("id"); 
             

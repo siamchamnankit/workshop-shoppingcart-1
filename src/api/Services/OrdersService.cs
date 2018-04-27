@@ -63,5 +63,18 @@ namespace api.Services
 
             return new CreateOrderOutputModel{id = order.id};
         }
+
+        public OrderDetailOutput get(int id) {
+            var orderDetail = _orderContext.Orders.Where(m => m.id == id).FirstOrDefault();
+            var orderProducts = _orderContext.OrderProducts.Where(m => m.orderId == id).ToList();
+            OrderDetailOutput orderDetailOutput = new OrderDetailOutput{
+                order =  orderDetail,
+                products = new ProductsListOutput{
+                    total = orderProducts.Count(),
+                    data = orderProducts
+                }
+            };
+            return orderDetailOutput;
+        }
     }
 }

@@ -34,7 +34,7 @@ namespace api.IntegrationTest
             var actualResult = cartsService.calculate(cartModel, productsInCart);
 
             Assert.Equal(119.95M, actualResult.subtotal);
-            Assert.Equal(169.95M, actualResult.total);
+            Assert.Equal(269.95M, actualResult.total);
         }
 
         [Fact]

@@ -1,0 +1,71 @@
+<html>
+<body style="font-family: monospace;">
+<div style="white-space: pre;background-color: #EEF4ED;">using System;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">using System.Collections.Generic;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">using System.Linq;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">using api.Models;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">namespace api.Services</div>
+<div style="white-space: pre;background-color: #EEF4ED;">{</div>
+<div style="white-space: pre;background-color: #EEF4ED;">    public class OrdersService</div>
+<div style="white-space: pre;background-color: #EEF4ED;">    {</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        private readonly CartsContext _cartContext;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        </div>
+<div style="white-space: pre;background-color: #EEF4ED;">        private readonly ProductsContext _productContext;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        private readonly OrdersContext _orderContext;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">&nbsp;</div>
+<div style="white-space: pre;background-color: #D2EACE;">        public OrdersService(CartsContext cartContext, ProductsContext productContext, OrdersContext orderContext)</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        {</div>
+<div style="white-space: pre;background-color: #D2EACE;">            _cartContext = cartContext;</div>
+<div style="white-space: pre;background-color: #D2EACE;">            _productContext = productContext;</div>
+<div style="white-space: pre;background-color: #D2EACE;">            _orderContext = orderContext;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;">&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        public CreateOrderOutputModel create(int cartId, int userId = 1) {</div>
+<div style="white-space: pre;background-color: #D2EACE;">            CartsService cartsService = new CartsService(_cartContext, _productContext);</div>
+<div style="white-space: pre;background-color: #D2EACE;">            CartsModel cart = cartsService.getCart(cartId, userId);</div>
+<div style="white-space: pre;background-color: #D2EACE;">            OrdersModel order = new OrdersModel{</div>
+<div style="white-space: pre;background-color: #D2EACE;">                cartId = cart.id,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                userId = userId,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                subtotal = cart.subtotal,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                total = cart.total,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                shippingMethod = cart.shippingMethod,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                shippingFee = cart.shippingFee,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                fullname = &quot;Chonnikan Tobunrueang&quot;,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                address1 = &quot;3 อาคารพร้อมพันธ์ 3 ห้อง 1001&quot;,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                address2 = &quot;จอมพล&quot;,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                city = &quot;จตุจักร&quot;,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                province = &quot;กรุงเทพ&quot;,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                postcode = &quot;10900&quot;,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                createDatetime = DateTime.Now,</div>
+<div style="white-space: pre;background-color: #D2EACE;">            };</div>
+<div style="white-space: pre;background-color: #D2EACE;">            _orderContext.Orders.Add(order);</div>
+<div style="white-space: pre;background-color: #D2EACE;">            _orderContext.SaveChanges();</div>
+<div style="white-space: pre;background-color: #EEF4ED;">&nbsp;</div>
+<div style="white-space: pre;background-color: #D2EACE;">            List&lt;CartProductsModel&gt; cartProducts = _cartContext.CartProducts.Where(c =&gt; c.cartId == cartId).ToList();</div>
+<div style="white-space: pre;background-color: #D2EACE;">            List&lt;OrderProductsModel&gt; orderProducts = new List&lt;OrderProductsModel&gt;();</div>
+<div style="white-space: pre;background-color: #D2EACE;">            foreach (CartProductsModel cartProduct in cartProducts)</div>
+<div style="white-space: pre;background-color: #EEF4ED;">            {</div>
+<div style="white-space: pre;background-color: #D2EACE;">                ProductsModel product = _productContext.Products.Where(p =&gt; p.id == cartProduct.productId).FirstOrDefault();</div>
+<div style="white-space: pre;background-color: #D2EACE;">                _orderContext.OrderProducts.Add(new OrderProductsModel{</div>
+<div style="white-space: pre;background-color: #D2EACE;">                    orderId = order.id,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                    productId = product.id,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                    quantity = cartProduct.quantity,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                    name = product.name,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                    price = product.price,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                    availability = product.availability,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                    stockAvailability = product.stockAvailability,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                    age = product.age,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                    gender = product.gender,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                    brand = product.brand</div>
+<div style="white-space: pre;background-color: #D2EACE;">                });</div>
+<div style="white-space: pre;background-color: #EEF4ED;">            }</div>
+<div style="white-space: pre;background-color: #EEF4ED;">            </div>
+<div style="white-space: pre;background-color: #D2EACE;">            _orderContext.SaveChanges();</div>
+<div style="white-space: pre;background-color: #EEF4ED;">&nbsp;</div>
+<div style="white-space: pre;background-color: #D2EACE;">            return new CreateOrderOutputModel{id = order.id};</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;">    }</div>
+<div style="white-space: pre;background-color: #EEF4ED;">}</div>
+</body>
+</html>

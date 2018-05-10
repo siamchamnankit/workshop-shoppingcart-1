@@ -1,0 +1,111 @@
+<html>
+<body style="font-family: monospace;">
+<div style="white-space: pre;background-color: #EEF4ED;">using System;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">using System.Collections.Generic;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">using System.Linq;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">using api.Models;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">namespace api.Services</div>
+<div style="white-space: pre;background-color: #EEF4ED;">{</div>
+<div style="white-space: pre;background-color: #EEF4ED;">    public class CartsService : ICartsService</div>
+<div style="white-space: pre;background-color: #EEF4ED;">    {</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        private readonly CartsContext _context;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        private readonly ProductsContext _productContext;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">&nbsp;</div>
+<div style="white-space: pre;background-color: #D2EACE;">        public CartsService(CartsContext context, ProductsContext productContext)</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        {</div>
+<div style="white-space: pre;background-color: #D2EACE;">            _context = context;</div>
+<div style="white-space: pre;background-color: #D2EACE;">            _productContext = productContext;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        </div>
+<div style="white-space: pre;background-color: #EEF4ED;">        public CartsModel getCart(int cartId, int userId) {</div>
+<div style="white-space: pre;background-color: #D2EACE;">            CartsModel cart = _context.Carts.Where(c =&gt; c.id == cartId).Where(c =&gt; c.userId == userId).FirstOrDefault();</div>
+<div style="white-space: pre;background-color: #D2EACE;">            List&lt;CartProductsModel&gt; cartProducts = _context.CartProducts.Where(c =&gt; c.cartId == cartId).ToList();</div>
+<div style="white-space: pre;background-color: #D2EACE;">            List&lt;ProductInCartModel&gt; productsInCart = this.getProductInCart(cart.id);</div>
+<div style="white-space: pre;background-color: #D2EACE;">            cart.CartProducts = productsInCart;</div>
+<div style="white-space: pre;background-color: #D2EACE;">            return cart;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;">&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        public List&lt;ProductInCartModel&gt; getProductInCart(int cartId) {</div>
+<div style="white-space: pre;background-color: #D2EACE;">            List&lt;CartProductsModel&gt; cartProducts = this.getCartProducts(cartId);</div>
+<div style="white-space: pre;background-color: #D2EACE;">            List&lt;ProductInCartModel&gt; productsInCart = new List&lt;ProductInCartModel&gt;();</div>
+<div style="white-space: pre;background-color: #D2EACE;">            foreach (CartProductsModel cartProduct in cartProducts)</div>
+<div style="white-space: pre;background-color: #EEF4ED;">            {</div>
+<div style="white-space: pre;background-color: #D2EACE;">                ProductsModel product = _productContext.Products.Where(p =&gt; p.id == cartProduct.productId).FirstOrDefault();</div>
+<div style="white-space: pre;background-color: #D2EACE;">                productsInCart.Add(new ProductInCartModel{</div>
+<div style="white-space: pre;background-color: #D2EACE;">                    id = product.id,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                    name = product.name,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                    price = product.price,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                    availability = product.availability,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                    stockAvailability = product.stockAvailability,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                    age = product.age,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                    gender = product.gender,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                    brand = product.brand,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                    quantity = cartProduct.quantity</div>
+<div style="white-space: pre;background-color: #D2EACE;">                });</div>
+<div style="white-space: pre;background-color: #EEF4ED;">            }</div>
+<div style="white-space: pre;background-color: #D2EACE;">            return productsInCart;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;">&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        public List&lt;CartProductsModel&gt; getCartProducts(int cartId) {</div>
+<div style="white-space: pre;background-color: #D2EACE;">            List&lt;CartProductsModel&gt; cartProducts = _context.CartProducts.Where(c =&gt; c.cartId == cartId).ToList();</div>
+<div style="white-space: pre;background-color: #D2EACE;">            return cartProducts;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        public AddCartOutputModel add(ProductsModel product, int quantity) {</div>
+<div style="white-space: pre;background-color: #D2EACE;">            CartsModel cartModel = this.createCart(1);</div>
+<div style="white-space: pre;background-color: #D2EACE;">            CartProductsModel cartProductsModel = this.addProductToCart(cartModel, product, quantity);</div>
+<div style="white-space: pre;background-color: #D2EACE;">            List&lt;ProductInCartModel&gt; productsInCart = this.getProductInCart(cartModel.id);</div>
+<div style="white-space: pre;background-color: #D2EACE;">            cartModel = this.calculate(cartModel, productsInCart);</div>
+<div style="white-space: pre;background-color: #D2EACE;">            _context.Carts.Update(cartModel);</div>
+<div style="white-space: pre;background-color: #D2EACE;">            _context.SaveChanges();            </div>
+<div style="white-space: pre;background-color: #D2EACE;">            return new AddCartOutputModel{</div>
+<div style="white-space: pre;background-color: #D2EACE;">                id = cartModel.id</div>
+<div style="white-space: pre;background-color: #D2EACE;">            };</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;">&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        private CartsModel createCart(int user_id){</div>
+<div style="white-space: pre;background-color: #D2EACE;">            CartsModel cartModel = new CartsModel{</div>
+<div style="white-space: pre;background-color: #D2EACE;">                userId = user_id,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                createDatetime = DateTime.Now,</div>
+<div style="white-space: pre;background-color: #D2EACE;">                updateDatetime = DateTime.Now</div>
+<div style="white-space: pre;background-color: #D2EACE;">            };</div>
+<div style="white-space: pre;background-color: #D2EACE;">            _context.Carts.Add(cartModel);</div>
+<div style="white-space: pre;background-color: #D2EACE;">            _context.SaveChanges();</div>
+<div style="white-space: pre;background-color: #D2EACE;">            return cartModel;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;">&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        private CartProductsModel addProductToCart(CartsModel cartModel, ProductsModel product, int quantity) {</div>
+<div style="white-space: pre;background-color: #D2EACE;">           CartProductsModel cartProductModel = new CartProductsModel{</div>
+<div style="white-space: pre;background-color: #D2EACE;">               cartId = cartModel.id,</div>
+<div style="white-space: pre;background-color: #D2EACE;">               productId = product.id,</div>
+<div style="white-space: pre;background-color: #D2EACE;">               quantity = quantity</div>
+<div style="white-space: pre;background-color: #D2EACE;">           };</div>
+<div style="white-space: pre;background-color: #D2EACE;">           _context.CartProducts.Add(cartProductModel);</div>
+<div style="white-space: pre;background-color: #D2EACE;">           _context.SaveChanges();</div>
+<div style="white-space: pre;background-color: #EEF4ED;">            </div>
+<div style="white-space: pre;background-color: #D2EACE;">           return cartProductModel;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;">&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        public CartsModel calculate(CartsModel cart, List&lt;ProductInCartModel&gt; productsInCart) {</div>
+<div style="white-space: pre;background-color: #D2EACE;">            if (productsInCart.Count() == 0) </div>
+<div style="white-space: pre;background-color: #D2EACE;">                return cart;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">            </div>
+<div style="white-space: pre;background-color: #D2EACE;">            decimal subtotal = 0;</div>
+<div style="white-space: pre;background-color: #D2EACE;">            decimal total = 0;</div>
+<div style="white-space: pre;background-color: #D2EACE;">            decimal shippingFee = 50;</div>
+<div style="white-space: pre;background-color: #D2EACE;">            string shippingMethod = &quot;Cash on Delivery&quot;;</div>
+<div style="white-space: pre;background-color: #D2EACE;">            foreach (var productInCart in productsInCart)</div>
+<div style="white-space: pre;background-color: #EEF4ED;">            {</div>
+<div style="white-space: pre;background-color: #D2EACE;">                subtotal += productInCart.price * productInCart.quantity;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">            }</div>
+<div style="white-space: pre;background-color: #D2EACE;">            total = subtotal + shippingFee;</div>
+<div style="white-space: pre;background-color: #D2EACE;">            cart.subtotal = subtotal;</div>
+<div style="white-space: pre;background-color: #D2EACE;">            cart.total = total;</div>
+<div style="white-space: pre;background-color: #D2EACE;">            cart.shippingFee = shippingFee;</div>
+<div style="white-space: pre;background-color: #D2EACE;">            cart.shippingMethod = shippingMethod;</div>
+<div style="white-space: pre;background-color: #D2EACE;">            return cart;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;">    }</div>
+<div style="white-space: pre;background-color: #EEF4ED;">}</div>
+</body>
+</html>

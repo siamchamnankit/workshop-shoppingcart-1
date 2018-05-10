@@ -1,0 +1,48 @@
+<html>
+<body style="font-family: monospace;">
+<div style="white-space: pre;background-color: #EEF4ED;">using System;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">using System.Collections.Generic;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">using System.Linq;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">using api.Models;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">namespace api.Services</div>
+<div style="white-space: pre;background-color: #EEF4ED;">{</div>
+<div style="white-space: pre;background-color: #EEF4ED;">    public class ProductsService : IProductService</div>
+<div style="white-space: pre;background-color: #EEF4ED;">    {</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        private readonly ProductsContext _context;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">&nbsp;</div>
+<div style="white-space: pre;background-color: #D2EACE;">        public ProductsService(ProductsContext context)</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        {</div>
+<div style="white-space: pre;background-color: #D2EACE;">            _context = context;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;">&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        public ProductsListModel list(string age = &quot;&quot;, string gender = &quot;&quot;)</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        {</div>
+<div style="white-space: pre;background-color: #D2EACE;">            ProductsListModel productsList = new ProductsListModel();</div>
+<div style="white-space: pre;background-color: #D2EACE;">            productsList.ProductsModel = this.list_products(age, gender);</div>
+<div style="white-space: pre;background-color: #D2EACE;">            productsList.total = productsList.ProductsModel.Count();</div>
+<div style="white-space: pre;background-color: #D2EACE;">            return productsList;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;">&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        public List&lt;ProductsModel&gt; list_products(string age = &quot;&quot;, string gender = &quot;&quot;)</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        {</div>
+<div style="white-space: pre;background-color: #D2EACE;">            var products = _context.Products;</div>
+<div style="white-space: pre;background-color: #D2EACE;">            if (age != &quot;&quot; &amp;&amp; gender != &quot;&quot;) {</div>
+<div style="white-space: pre;background-color: #D2EACE;">                return products.Where(m =&gt; age != &quot;&quot; &amp;&amp; m.age == age).Where(m =&gt; gender != &quot;&quot; &amp;&amp; m.gender == gender).ToList();</div>
+<div style="white-space: pre;background-color: #EEF4ED;">            }</div>
+<div style="white-space: pre;background-color: #D2EACE;">            if (age != &quot;&quot;) {</div>
+<div style="white-space: pre;background-color: #D2EACE;">                return products.Where(m =&gt; m.age == age).ToList();</div>
+<div style="white-space: pre;background-color: #EEF4ED;">            }</div>
+<div style="white-space: pre;background-color: #D2EACE;">            if (gender != &quot;&quot;) {</div>
+<div style="white-space: pre;background-color: #D2EACE;">                return products.Where(m =&gt; m.gender == gender).ToList();</div>
+<div style="white-space: pre;background-color: #EEF4ED;">            }</div>
+<div style="white-space: pre;background-color: #D2EACE;">            return products.ToList();</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;">&nbsp;</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        public ProductsModel getProductDetail(int id){</div>
+<div style="white-space: pre;background-color: #D2EACE;">            return _context.Products.Where(m =&gt; m.id == id).FirstOrDefault();</div>
+<div style="white-space: pre;background-color: #EEF4ED;">        }</div>
+<div style="white-space: pre;background-color: #EEF4ED;">    }</div>
+<div style="white-space: pre;background-color: #EEF4ED;">}</div>
+</body>
+</html>

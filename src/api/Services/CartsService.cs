@@ -86,7 +86,7 @@ namespace api.Services
 
         public CartsModel calculate(CartsModel cart, List<ProductInCartModel> productsInCart) {
             if (productsInCart.Count() == 0) 
-                return cart;
+                return cart; 
             
             decimal subtotal = 0;
             decimal total = 0;

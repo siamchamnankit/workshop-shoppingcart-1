@@ -34,7 +34,7 @@ namespace api.IntegrationTest
             var actualResult = cartsService.calculate(cartModel, productsInCart);
 
             Assert.Equal(119.95M, actualResult.subtotal);
-            Assert.Equal(169.95M, actualResult.total);
+            Assert.Equal(144.95M, actualResult.total);
         }
 
         [Fact]
@@ -60,7 +60,7 @@ namespace api.IntegrationTest
             var actualResult = cartsService.calculate(cartModel, productsInCart);
 
             Assert.Equal(0.00M, actualResult.subtotal);
-            Assert.Equal(50.00M, actualResult.total);
+            Assert.Equal(25.00M, actualResult.total);
         }
 
         [Fact]
@@ -111,7 +111,7 @@ namespace api.IntegrationTest
             var actualResult = cartsService.calculate(cartModel, productsInCart);
     
             Assert.Equal(123.90M, actualResult.subtotal);
-            Assert.Equal(173.90M, actualResult.total);
+            Assert.Equal(148.90M, actualResult.total);
         }
 
         [Fact]
@@ -137,7 +137,7 @@ namespace api.IntegrationTest
             var actualResult = cartsService.calculate(cartModel, productsInCart);
     
             Assert.Equal(25.90M, actualResult.subtotal);
-            Assert.Equal(75.90M, actualResult.total);
+            Assert.Equal(50.90M, actualResult.total);
         }
 
         [Fact]
@@ -167,7 +167,7 @@ namespace api.IntegrationTest
             var actualResult = cartsService.calculate(cartModel, productsInCart);
     
             Assert.Equal(75.8M, actualResult.subtotal);
-            Assert.Equal(125.80M, actualResult.total);
+            Assert.Equal(100.80M, actualResult.total);
         }
     }
 }

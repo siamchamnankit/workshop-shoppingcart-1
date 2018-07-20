@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SCK Shop</title>
+    <title>PTT Shop</title>
 
     <!-- Bootstrap core CSS -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
@@ -68,7 +68,7 @@
                       <span class="icon-bar"></span>
                       <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">SCK SHOP</a>
+                    <a class="navbar-brand" href="#">PTT SHOP</a>
                   </div>
                 </div>
               </nav>
@@ -129,7 +129,7 @@
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/js/core.js"></script>
         <script type="text/javascript">
-            let updateTotal = (quantity) => $('#product-total-price').html(Math.round((quantity * $("#label-product-price").html()) * 100) / 100);
+            let updateTotal = (quantity) => $('#product-total-price').html( (quantity * $("#label-product-price").html()).toFixed(2) ) ;
             let params = new URLSearchParams(document.location.search.substring(1));
             let product_id = params.get("id"); 
             

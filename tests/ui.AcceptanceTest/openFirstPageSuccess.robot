@@ -9,7 +9,7 @@ ${BROWSER}    chrome
 *** Test Cases ***
 Open first page success
     เปิดหน้าแรก
-    พบชื่อร้านค้า    Shuhari Shopping Cart
+    พบชื่อร้านค้า    SCK Shop
 
 *** Keywords ***
 เปิดหน้าแรก

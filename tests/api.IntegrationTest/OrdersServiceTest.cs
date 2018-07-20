@@ -63,7 +63,7 @@ namespace api.IntegrationTest
             //     id = 1
             //  };
 
-            Assert.Equal(1, actualResult.id);
+            Assert.Equal(2, actualResult.id);
 
             
             
@@ -81,7 +81,7 @@ namespace api.IntegrationTest
             }
         }
 
-        //[Fact]
+        [Fact]
         public void When_Get_Order_Id_1_Should_Be_Return_Only_This_Order() 
         {
             var _orderOptions = new DbContextOptionsBuilder<OrdersContext>().UseInMemoryDatabase("create_order_orders_detail_2").Options;

@@ -1,3 +1,4 @@
+﻿Test
 # SonarQube
 https://sonarcloud.io/dashboard?id=workshop-shoppingcart
 

@@ -3,7 +3,7 @@ Library    SeleniumLibrary
 # Test Teardown    ปิดหน้าเบราเซอร์
 
 *** Variables ***
-${URL}     http://3.1.20.19
+${URL}     http://3.0.91.31
 
 *** Test Cases ***
 ผู้ใช้สามารถค้นหาสินค้าได้สำเร็จ

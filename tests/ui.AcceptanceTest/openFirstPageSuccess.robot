@@ -3,7 +3,7 @@ Library    SeleniumLibrary
 Test Teardown    ปิดหน้าเบราเซอร์
 
 *** Variables ***
-${URL}    http://54.254.234.208
+${URL}    http://3.1.20.19
 ${BROWSER}    chrome
 
 *** Test Cases ***

@@ -21,6 +21,7 @@ ${URL}     http://3.0.91.31
 เข้าหน้าแสดงรายการสินค้า พบรายการสินค้าทั้งหมด
     Open Browser    ${URL}    chrome
     Wait Until Page Contains     43 Piece dinner Set    3s
+    Capture Page Screenshot
 
 เลือกสินค้า 43 Piece dinner Set
     Click Element    link-product-detail-id-2
@@ -29,6 +30,7 @@ ${URL}     http://3.0.91.31
     Wait Until Element Contains     label-product-name    43 Piece dinner Set    3s
     Wait Until Element Contains     label-product-brand    CoolKidz    3s
     Wait Until Element Contains     label-product-price    12.95    3s
+    Capture Page Screenshot
 
 เพิ่มสินค้าเข้าตะกร้า
     Click Button    button-add-product-to-cart
@@ -39,6 +41,7 @@ ${URL}     http://3.0.91.31
     Wait Until Page Contains     12.95    3s
     Wait Until Element Contains     label-subtotal    12.95    3s
     Wait Until Element Contains     label-shipping-fee    25.00    3s
+    Capture Page Screenshot
 
 กดยืนยันการสั่งซื้อสินค้า
     Click Button    button-confirm-cart
@@ -50,12 +53,14 @@ ${URL}     http://3.0.91.31
     Wait Until Element Contains     textbox-city    จตุจักร    3s
     Wait Until Element Contains     textbox-province    กรุงเทพ    3s
     Wait Until Element Contains     textbox-postcode    10900    3s
+    Capture Page Screenshot
 
 ยืนยันที่อยู่ในการจัดส่ง
     Click Button    button-confirm-shipping-address
 
 แสดงผลการสั่งซื้อ
     Wait Until Page Contains     Thank you    3s
+    Capture Page Screenshot
 
 ปิดหน้าเบราเซอร์
     Close Browser

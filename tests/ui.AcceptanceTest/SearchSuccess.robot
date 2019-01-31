@@ -33,6 +33,7 @@ ${URL}     http://3.0.91.31
     Wait Until Page Contains     Princess Palace    3s
     Wait Until Page Contains     Best Friends Forever Magnetic Dress Up    3s
     Wait Until Page Contains     Princess Training Bicycle    3s
+    Capture Page Screenshot
 
 เลือกสินค้า 43 Piece dinner Set
     Click Element    link-product-detail-id-2

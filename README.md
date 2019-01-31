@@ -1,6 +1,4 @@
-﻿Test
-Tbank
-# SonarQube
+﻿# SonarQube
 https://sonarcloud.io/dashboard?id=workshop-shoppingcart
 
 # Install UI

@@ -17,15 +17,10 @@ namespace api.IntegrationTest
         private List<ProductInCartModel> _productsInCart;
 
         public CartsTest(){
-            _cartModel = new CartsModel{
-                userId = 1,
-                createDatetime = DateTime.Now,
-                updateDatetime = DateTime.Now
-            };
+            _cartModel = new CartsModel();
             _cartsService = new CartsService(null, null);
 
             _productsInCart= new List<ProductInCartModel>();
-
         }
 
         [Fact]

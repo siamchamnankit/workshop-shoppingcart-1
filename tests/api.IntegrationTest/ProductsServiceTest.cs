@@ -13,41 +13,19 @@ namespace api.IntegrationTest
 {
     public class ProductsTest
     {
+
         [Fact]
         public void When_Get_List_Then_Total_Products_Should_Be_2()
         {
 
-            var _productOptions = new DbContextOptionsBuilder<ProductsContext>().UseInMemoryDatabase("products_totalls").Options;
-            var _productContext = new ProductsContext(_productOptions);
-
-            ProductsModel productData1 = new ProductsModel{
-                    id = 1,
-                    name = "Balance Training Bicycle",
-                    price = (Decimal)119.95,
-                    availability = "InStock",
-                    stockAvailability = 1,
-                    age = "3_to_5",
-                    gender = "NEUTRAL",
-                    brand = "SportsFun"
-                };
-
-            ProductsModel productData2 = new ProductsModel{
-                    id = 2,
-                    name = "43 Piece dinner Set",
-                    price = (Decimal)12.95,
-                    availability = "InStock",
-                    stockAvailability = 10,
-                    age = "3_to_5",
-                    gender = "FEMALE",
-                    brand = "CoolKidz"
-                };
-            
-            _productContext.Products.Add(productData1);
-            _productContext.Products.Add(productData2);
+            ProductsContext _productContext = initialProductsContext("products_totalls");
+                        
+            _productContext.Products.Add(TestingProduct._1_Balance_Training_Bicycle);
+            _productContext.Products.Add(TestingProduct._2_43_Piece_dinner_Set);
             _productContext.SaveChanges();
 
-            ProductsService productsService = new ProductsService(_productContext);
-            var actualResult = productsService.list();
+            ProductsService _productsService = new ProductsService(_productContext);
+            var actualResult = _productsService.list();
 
             Assert.Equal(2, actualResult.total);
         }
@@ -56,33 +34,10 @@ namespace api.IntegrationTest
         public void When_Get_List_Products_Then_Show_All_Products()
         {
 
-            var _productOptions = new DbContextOptionsBuilder<ProductsContext>().UseInMemoryDatabase("products_list").Options;
-            var _productContext = new ProductsContext(_productOptions);
-
-            ProductsModel productData1 = new ProductsModel{
-                    id = 1,
-                    name = "Balance Training Bicycle",
-                    price = (Decimal)119.95,
-                    availability = "InStock",
-                    stockAvailability = 1,
-                    age = "3_to_5",
-                    gender = "NEUTRAL",
-                    brand = "SportsFun"
-                };
-
-            ProductsModel productData2 = new ProductsModel{
-                    id = 2,
-                    name = "43 Piece dinner Set",
-                    price = (Decimal)12.95,
-                    availability = "InStock",
-                    stockAvailability = 10,
-                    age = "3_to_5",
-                    gender = "FEMALE",
-                    brand = "CoolKidz"
-                };
+            ProductsContext _productContext = initialProductsContext("products_list");
             
-            _productContext.Products.Add(productData1);
-            _productContext.Products.Add(productData2);
+            _productContext.Products.Add(TestingProduct._1_Balance_Training_Bicycle);
+            _productContext.Products.Add(TestingProduct._2_43_Piece_dinner_Set);
             _productContext.SaveChanges();
 
             ProductsService productsService = new ProductsService(_productContext);
@@ -97,21 +52,9 @@ namespace api.IntegrationTest
         public void When_Get_Product_With_Id_2_Then_Show_Only_This_Product()
         {
 
-            var _productOptions = new DbContextOptionsBuilder<ProductsContext>().UseInMemoryDatabase("products_detail").Options;
-            var _productContext = new ProductsContext(_productOptions);
+            ProductsContext _productContext = initialProductsContext("products_detail");
 
-            ProductsModel productData = new ProductsModel{
-                    id = 2,
-                    name = "43 Piece dinner Set",
-                    price = (Decimal)12.95,
-                    availability = "InStock",
-                    stockAvailability = 10,
-                    age = "3_to_5",
-                    gender = "FEMALE",
-                    brand = "CoolKidz"
-                };
-
-            _productContext.Products.Add(productData);
+            _productContext.Products.Add(TestingProduct._2_43_Piece_dinner_Set);
             _productContext.SaveChanges();
 
             ProductsService productsService = new ProductsService(_productContext);
@@ -125,76 +68,20 @@ namespace api.IntegrationTest
         [Fact]
         public void When_Filter_age_Is_3_to_5_And_gender_Is_female_Then_Show_Filtered_Products()
         {
-            var _productOptions = new DbContextOptionsBuilder<ProductsContext>().UseInMemoryDatabase("products_list_filter").Options;
-            var _productContext = new ProductsContext(_productOptions);
-            ProductsService productsService = new ProductsService(_productContext);
+            ProductsContext _productContext = initialProductsContext("products_list_filter");
 
-            ProductsModel productDataId2 = new ProductsModel{
-                id = 2,
-                name = "43 Piece dinner Set",
-                price = (Decimal)12.95,
-                availability = "InStock",
-                stockAvailability = 10,
-                age = "3_to_5",
-                gender = "FEMALE",
-                brand = "CoolKidz"
-            };
-
-            ProductsModel productDataId1 = new ProductsModel{
-                id = 1,
-                name = "Balance Training Bicycle",
-                price = (Decimal)119.95,
-                availability = "InStock",
-                stockAvailability = 10,
-                age = "3_to_5",
-                gender = "NEUTRAL",
-                brand = "SportsFun"
-            };
-
-            ProductsModel productDataId7 = new ProductsModel{
-                id = 7,
-                name = "Best Friends Forever Magnetic Dress Up",
-                price = (Decimal)24.95,
-                availability = "InStock",
-                stockAvailability = 10,
-                age = "3_to_5",
-                gender = "FEMALE",
-                brand = "CoolKidz"
-            };
-
-            ProductsModel productDataId8 = new ProductsModel{
-                id = 8,
-                name = "City Garage Truck Lego",
-                price = (Decimal)19.95,
-                availability = "",
-                stockAvailability = 10,
-                age = "3_to_5",
-                gender = "NEUTRAL",
-                brand = "Lego"
-            };
-
-            ProductsModel productDataId20 = new ProductsModel{
-                id = 20,
-                name = "Creator Beach House Lego",
-                price = (Decimal)39.95,
-                availability = "",
-                stockAvailability = 10,
-                age = "6_to_8",
-                gender = "NEUTRAL",
-                brand = "Lego"
-            };
-            
-            _productContext.Products.Add(productDataId2);
-            _productContext.Products.Add(productDataId1);
-            _productContext.Products.Add(productDataId7);
-            _productContext.Products.Add(productDataId8);
-            _productContext.Products.Add(productDataId20);
+            _productContext.Products.Add(TestingProduct._2_43_Piece_dinner_Set);
+            _productContext.Products.Add(TestingProduct._1_Balance_Training_Bicycle);
+            _productContext.Products.Add(TestingProduct._7_Best_Friends_Forever_Magnetic_Dress_Up);
+            _productContext.Products.Add(TestingProduct._8_City_Garage_Truck_Lego);
+            _productContext.Products.Add(TestingProduct._20_Creator_Beach_House_Lego);
             _productContext.SaveChanges();
 
             List<ProductsModel> expectedResult = new List<ProductsModel>();
-            expectedResult.Add(productDataId2);
-            expectedResult.Add(productDataId7);
+            expectedResult.Add(TestingProduct._2_43_Piece_dinner_Set);
+            expectedResult.Add(TestingProduct._7_Best_Friends_Forever_Magnetic_Dress_Up);
 
+            ProductsService productsService = new ProductsService(_productContext);
             var actualResult = productsService.list_products("3_to_5", "FEMALE");
 
             Assert.Equal(expectedResult, actualResult);
@@ -204,33 +91,58 @@ namespace api.IntegrationTest
         [Fact]
         public void When_Filter_age_Is_3_to_5_And_gender_Is_female_Then_Show_Filtered_Products_And_Total()
         {
-            var _productOptions = new DbContextOptionsBuilder<ProductsContext>().UseInMemoryDatabase("products_list_filter_total").Options;
-            var _productContext = new ProductsContext(_productOptions);
+            ProductsContext _productContext = initialProductsContext("products_list_filter_totals");
+
+            _productContext.Products.Add(TestingProduct._2_43_Piece_dinner_Set);
+            _productContext.Products.Add(TestingProduct._1_Balance_Training_Bicycle);
+            _productContext.Products.Add(TestingProduct._7_Best_Friends_Forever_Magnetic_Dress_Up);
+            _productContext.Products.Add(TestingProduct._8_City_Garage_Truck_Lego);
+            _productContext.Products.Add(TestingProduct._20_Creator_Beach_House_Lego);
+            _productContext.SaveChanges();
+
+            List<ProductsModel> products = new List<ProductsModel>();
+            products.Add(TestingProduct._2_43_Piece_dinner_Set);
+            products.Add(TestingProduct._7_Best_Friends_Forever_Magnetic_Dress_Up);
+
             ProductsService productsService = new ProductsService(_productContext);
+            var actualResult = productsService.list("3_to_5", "FEMALE");
 
-            ProductsModel productDataId2 = new ProductsModel{
-                id = 2,
-                name = "43 Piece dinner Set",
-                price = (Decimal)12.95,
-                availability = "InStock",
-                stockAvailability = 10,
-                age = "3_to_5",
-                gender = "FEMALE",
-                brand = "CoolKidz"
-            };
+            Assert.Equal(2, actualResult.total);
+            Assert.Equal(products, actualResult.ProductsModel);
+        }
+        
+        private ProductsContext initialProductsContext(string databaseName) {
+            var _productOptions = new DbContextOptionsBuilder<ProductsContext>().UseInMemoryDatabase(databaseName).Options;
+            return new ProductsContext(_productOptions);
+        }
 
-            ProductsModel productDataId1 = new ProductsModel{
-                id = 1,
-                name = "Balance Training Bicycle",
-                price = (Decimal)119.95,
-                availability = "InStock",
-                stockAvailability = 10,
-                age = "3_to_5",
-                gender = "NEUTRAL",
-                brand = "SportsFun"
-            };
+    }
 
-            ProductsModel productDataId7 = new ProductsModel{
+    public class TestingProduct {
+            public static ProductsModel _1_Balance_Training_Bicycle = new ProductsModel{
+                    id = 1,
+                    name = "Balance Training Bicycle",
+                    price = (Decimal)119.95,
+                    availability = "InStock",
+                    stockAvailability = 1,
+                    age = "3_to_5",
+                    gender = "NEUTRAL",
+                    brand = "SportsFun"
+                };
+
+            public static ProductsModel _2_43_Piece_dinner_Set = new ProductsModel{
+                    id = 2,
+                    name = "43 Piece dinner Set",
+                    price = (Decimal)12.95,
+                    availability = "InStock",
+                    stockAvailability = 10,
+                    age = "3_to_5",
+                    gender = "FEMALE",
+                    brand = "CoolKidz"
+                };
+
+            
+            public static ProductsModel _7_Best_Friends_Forever_Magnetic_Dress_Up = new ProductsModel{
                 id = 7,
                 name = "Best Friends Forever Magnetic Dress Up",
                 price = (Decimal)24.95,
@@ -241,7 +153,7 @@ namespace api.IntegrationTest
                 brand = "CoolKidz"
             };
 
-            ProductsModel productDataId8 = new ProductsModel{
+            public static ProductsModel _8_City_Garage_Truck_Lego = new ProductsModel{
                 id = 8,
                 name = "City Garage Truck Lego",
                 price = (Decimal)19.95,
@@ -252,7 +164,7 @@ namespace api.IntegrationTest
                 brand = "Lego"
             };
 
-            ProductsModel productDataId20 = new ProductsModel{
+            public static ProductsModel _20_Creator_Beach_House_Lego = new ProductsModel{
                 id = 20,
                 name = "Creator Beach House Lego",
                 price = (Decimal)39.95,
@@ -262,23 +174,7 @@ namespace api.IntegrationTest
                 gender = "NEUTRAL",
                 brand = "Lego"
             };
-            
-            _productContext.Products.Add(productDataId2);
-            _productContext.Products.Add(productDataId1);
-            _productContext.Products.Add(productDataId7);
-            _productContext.Products.Add(productDataId8);
-            _productContext.Products.Add(productDataId20);
-            _productContext.SaveChanges();
 
-            List<ProductsModel> products = new List<ProductsModel>();
-            products.Add(productDataId2);
-            products.Add(productDataId7);
-
-            var actualResult = productsService.list("3_to_5", "FEMALE");
-
-            Assert.Equal(2, actualResult.total);
-            Assert.Equal(products, actualResult.ProductsModel);
-        }
     }
 }
 

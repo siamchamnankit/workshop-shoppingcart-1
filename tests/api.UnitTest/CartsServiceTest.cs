@@ -35,26 +35,18 @@ namespace api.IntegrationTest
             return returnList;
         }
 
-        [Fact]
-        public void When_Calculate_Cart_With_One_Product_Price_119_95_Should_Be_Total_equal_169_95()
+        [Theory]
+        [InlineData(0, 1 ,50.00)]
+        [InlineData(119.95, 1 ,169.95)]
+        [InlineData(119.95, 2 ,289.90)]
+        public void When_Calculate_Only_One_Product_Cart_Total_With_Shipping_fee(decimal price, int quantity, decimal expectTotal)
         {
-            List<ProductInCartModel> _productsInCart = _createOnlyOneProductInCart(119.95M , 1);
+            List<ProductInCartModel> _productsInCart = _createOnlyOneProductInCart(price , quantity);
 
             CartsService cartsService = new CartsService(null, null);
             var actualResult = cartsService.calculate(_cartModel, _productsInCart);
 
-            Assert.Equal(169.95M, actualResult.total);
-        }
-
-        [Fact]
-        public void When_Calculate_Cart_With_One_Product_Price_0_Should_Be_Total_equal_50()
-        {
-            List<ProductInCartModel> _productsInCart = _createOnlyOneProductInCart(0.00M , 1);
-
-            CartsService cartsService = new CartsService(null, null);
-            var actualResult = cartsService.calculate(_cartModel, _productsInCart);
-
-            Assert.Equal(50.00M, actualResult.total);
+            Assert.Equal(expectTotal, actualResult.total);
         }
 
         [Fact]
@@ -64,19 +56,6 @@ namespace api.IntegrationTest
             var actualResult = cartsService.calculate(_cartModel, _productsInCart);
 
             Assert.Equal(0.00M, actualResult.total);
-        }
-
-
-
-        [Fact]
-        public void When_Calculate_Cart_With_One_Products_Price_12_95_With_2_Items_Should_Be_Total_equal_75_90()
-        {
-            List<ProductInCartModel> _productsInCart = _createOnlyOneProductInCart(12.95M , 2);
-
-            CartsService cartsService = new CartsService(null, null);
-            var actualResult = cartsService.calculate(_cartModel, _productsInCart);
-    
-            Assert.Equal(75.90M, actualResult.total);
         }
 
         [Fact]

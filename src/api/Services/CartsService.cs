@@ -90,7 +90,7 @@ namespace api.Services
             
             decimal subtotal = 0;
             decimal total = 0;
-            decimal shippingFee = 25;
+            decimal shippingFee = 50;
             string shippingMethod = "Cash on Delivery";
             foreach (var productInCart in productsInCart)
             {

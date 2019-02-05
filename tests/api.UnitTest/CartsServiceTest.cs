@@ -11,7 +11,8 @@ namespace api.IntegrationTest
 {
     public class CartsTest
     {   
-
+        
+        CartsService _cartsService;
         private CartsModel _cartModel;
         private List<ProductInCartModel> _productsInCart;
 
@@ -21,58 +22,40 @@ namespace api.IntegrationTest
                 createDatetime = DateTime.Now,
                 updateDatetime = DateTime.Now
             };
+            _cartsService = new CartsService(null, null);
+
             _productsInCart= new List<ProductInCartModel>();
 
         }
 
-        private List<ProductInCartModel> _createOnlyOneProductInCart (decimal price, int quantity) 
+        [Fact]
+        public void When_Calculate_Cart_With_Zero_Product_Should_Be_Total_equal_0()
         {
-            List<ProductInCartModel> returnList = new List<ProductInCartModel>();
-            returnList.Add(new ProductInCartModel{
-                price = price,
-                quantity = quantity
-            });
-            return returnList;
+            var actualResult = _cartsService.calculate(_cartModel, _productsInCart);
+
+            Assert.Equal(0.00M, actualResult.total);
         }
 
         [Theory]
         [InlineData(0, 1 ,50.00)]
         [InlineData(119.95, 1 ,169.95)]
         [InlineData(119.95, 2 ,289.90)]
-        public void When_Calculate_Only_One_Product_Cart_Total_With_Shipping_fee(decimal price, int quantity, decimal expectTotal)
+        public void When_Calculate_Only_One_Product_Cart_Total_Should_be_Add_Shipping_fee(decimal price, int quantity, decimal expectTotal)
         {
-            List<ProductInCartModel> _productsInCart = _createOnlyOneProductInCart(price , quantity);
+            _productsInCart.Add(new ProductInCartModel{price = price, quantity = quantity});
 
-            CartsService cartsService = new CartsService(null, null);
-            var actualResult = cartsService.calculate(_cartModel, _productsInCart);
+            var actualResult = _cartsService.calculate(_cartModel, _productsInCart);
 
             Assert.Equal(expectTotal, actualResult.total);
         }
 
         [Fact]
-        public void When_Calculate_Cart_With_Zero_Product_Should_Be_Total_equal_0()
-        {
-            CartsService cartsService = new CartsService(null, null);
-            var actualResult = cartsService.calculate(_cartModel, _productsInCart);
-
-            Assert.Equal(0.00M, actualResult.total);
-        }
-
-        [Fact]
         public void When_Calculate_Cart_With_Two_Products_Price_12_95_and_110_95_Should_Be_Total_equal_173_90()
         {
-            _productsInCart.Add(new ProductInCartModel{
-                price = 12.95M,
-                quantity = 1
-            });
+            _productsInCart.Add(new ProductInCartModel{price = 12.95M, quantity = 1});
+            _productsInCart.Add(new ProductInCartModel{price = 110.95M,quantity = 1});
 
-            _productsInCart.Add(new ProductInCartModel{
-                price = 110.95M,
-                quantity = 1
-            });
-
-            CartsService cartsService = new CartsService(null, null);
-            var actualResult = cartsService.calculate(_cartModel, _productsInCart);
+            var actualResult = _cartsService.calculate(_cartModel, _productsInCart);
     
             Assert.Equal(173.90M, actualResult.total);
         }
@@ -80,19 +63,11 @@ namespace api.IntegrationTest
         [Fact]
         public void When_Calculate_Cart_With_Two_Products_Price_12_95_And_24_95_With_2_Items_Should_Be_Total_equal_125_80()
         {
-            _productsInCart.Add(new ProductInCartModel{
-                price = 12.95M,
-                quantity = 2
-            });
-            _productsInCart.Add(new ProductInCartModel{
-                price = 24.95M,
-                quantity = 2
-            });
+            _productsInCart.Add(new ProductInCartModel{price = 12.95M, quantity = 2});
+            _productsInCart.Add(new ProductInCartModel{price = 24.95M, quantity = 2});
 
-            CartsService cartsService = new CartsService(null, null);
-            var actualResult = cartsService.calculate(_cartModel, _productsInCart);
-    
-            Assert.Equal(75.8M, actualResult.subtotal);
+            var actualResult = _cartsService.calculate(_cartModel, _productsInCart);
+
             Assert.Equal(125.80M, actualResult.total);
         }
 

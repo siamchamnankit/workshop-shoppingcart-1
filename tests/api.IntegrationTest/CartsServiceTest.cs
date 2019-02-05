@@ -63,7 +63,7 @@ namespace api.IntegrationTest
             var actualResult = cartsService.calculate(cartModel, productsInCart);
 
             Assert.Equal((Decimal)119.95, actualResult.subtotal);
-            Assert.Equal((Decimal)144.95, actualResult.total);
+            Assert.Equal((Decimal)169.95, actualResult.total);
         }
 
         [Fact]

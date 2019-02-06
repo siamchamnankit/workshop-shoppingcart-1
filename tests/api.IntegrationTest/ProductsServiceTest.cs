@@ -11,170 +11,143 @@ using Xunit;
 
 namespace api.IntegrationTest
 {
-    public class ProductsTest
+    public class ProductsTest : IClassFixture<DatabaseFixture>
     {
+        private DatabaseFixture _fixture;
+        private ProductsService _productsService;
 
-        [Fact]
-        public void When_Get_List_Then_Total_Products_Should_Be_2()
+        public ProductsTest(DatabaseFixture fixture)
         {
+            this._fixture = fixture;
 
-            ProductsContext _productContext = initialProductsContext("products_totalls");
-                        
-            _productContext.Products.Add(TestingProduct._1_Balance_Training_Bicycle);
-            _productContext.Products.Add(TestingProduct._2_43_Piece_dinner_Set);
-            _productContext.SaveChanges();
-
-            ProductsService _productsService = new ProductsService(_productContext);
-            var actualResult = _productsService.list();
-
-            Assert.Equal(2, actualResult.total);
+            _productsService = new ProductsService(fixture.productContext);
         }
 
+
         [Fact]
-        public void When_Get_List_Products_Then_Show_All_Products()
+        public void When_Get_List_Then_Total_Products_Should_Be_5()
         {
+            var expectedResult = new List<ProductsModel>();
+            expectedResult.Add(_fixture._1_Balance_Training_Bicycle);
+            expectedResult.Add(_fixture._2_43_Piece_dinner_Set);
+            expectedResult.Add(_fixture._7_Best_Friends_Forever_Magnetic_Dress_Up);
+            expectedResult.Add(_fixture._8_City_Garage_Truck_Lego);
+            expectedResult.Add(_fixture._20_Creator_Beach_House_Lego);
 
-            ProductsContext _productContext = initialProductsContext("products_list");
+            var actualResult = _productsService.list();
+
+            Assert.Equal(5, actualResult.total);
+            Assert.Equal(expectedResult, actualResult.ProductsModel);
             
-            _productContext.Products.Add(TestingProduct._1_Balance_Training_Bicycle);
-            _productContext.Products.Add(TestingProduct._2_43_Piece_dinner_Set);
-            _productContext.SaveChanges();
-
-            ProductsService productsService = new ProductsService(_productContext);
-            var actualResult = productsService.list_products();
-
-            var expectedResult = _productContext.Products.ToList();
-
-            Assert.Equal(expectedResult, actualResult);
         }
 
         [Fact]
         public void When_Get_Product_With_Id_2_Then_Show_Only_This_Product()
         {
-
-            ProductsContext _productContext = initialProductsContext("products_detail");
-
-            _productContext.Products.Add(TestingProduct._2_43_Piece_dinner_Set);
-            _productContext.SaveChanges();
-
-            ProductsService productsService = new ProductsService(_productContext);
-            var actualResult = productsService.getProductDetail(2);
-
-            var expectedResult = _productContext.Products.First();
-
-            Assert.Equal(expectedResult, actualResult);
+            var actualResult = _productsService.getProductDetail(2);
+            Assert.Equal(_fixture._2_43_Piece_dinner_Set, actualResult);
         }
 
-        [Fact]
-        public void When_Filter_age_Is_3_to_5_And_gender_Is_female_Then_Show_Filtered_Products()
-        {
-            ProductsContext _productContext = initialProductsContext("products_list_filter");
 
-            _productContext.Products.Add(TestingProduct._2_43_Piece_dinner_Set);
-            _productContext.Products.Add(TestingProduct._1_Balance_Training_Bicycle);
-            _productContext.Products.Add(TestingProduct._7_Best_Friends_Forever_Magnetic_Dress_Up);
-            _productContext.Products.Add(TestingProduct._8_City_Garage_Truck_Lego);
-            _productContext.Products.Add(TestingProduct._20_Creator_Beach_House_Lego);
-            _productContext.SaveChanges();
-
-            List<ProductsModel> expectedResult = new List<ProductsModel>();
-            expectedResult.Add(TestingProduct._2_43_Piece_dinner_Set);
-            expectedResult.Add(TestingProduct._7_Best_Friends_Forever_Magnetic_Dress_Up);
-
-            ProductsService productsService = new ProductsService(_productContext);
-            var actualResult = productsService.list_products("3_to_5", "FEMALE");
-
-            Assert.Equal(expectedResult, actualResult);
-        }
-
-        
         [Fact]
         public void When_Filter_age_Is_3_to_5_And_gender_Is_female_Then_Show_Filtered_Products_And_Total()
         {
-            ProductsContext _productContext = initialProductsContext("products_list_filter_totals");
+            var expectedResult = new List<ProductsModel>();
+            expectedResult.Add(_fixture._2_43_Piece_dinner_Set);
+            expectedResult.Add(_fixture._7_Best_Friends_Forever_Magnetic_Dress_Up);
 
-            _productContext.Products.Add(TestingProduct._2_43_Piece_dinner_Set);
-            _productContext.Products.Add(TestingProduct._1_Balance_Training_Bicycle);
-            _productContext.Products.Add(TestingProduct._7_Best_Friends_Forever_Magnetic_Dress_Up);
-            _productContext.Products.Add(TestingProduct._8_City_Garage_Truck_Lego);
-            _productContext.Products.Add(TestingProduct._20_Creator_Beach_House_Lego);
-            _productContext.SaveChanges();
-
-            List<ProductsModel> products = new List<ProductsModel>();
-            products.Add(TestingProduct._2_43_Piece_dinner_Set);
-            products.Add(TestingProduct._7_Best_Friends_Forever_Magnetic_Dress_Up);
-
-            ProductsService productsService = new ProductsService(_productContext);
-            var actualResult = productsService.list("3_to_5", "FEMALE");
+            var actualResult = _productsService.list("3_to_5", "FEMALE");
 
             Assert.Equal(2, actualResult.total);
-            Assert.Equal(products, actualResult.ProductsModel);
-        }
-        
-        private ProductsContext initialProductsContext(string databaseName) {
-            var _productOptions = new DbContextOptionsBuilder<ProductsContext>().UseInMemoryDatabase(databaseName).Options;
-            return new ProductsContext(_productOptions);
+            Assert.Equal(expectedResult, actualResult.ProductsModel);
         }
 
     }
 
-    public class TestingProduct {
-            public static ProductsModel _1_Balance_Training_Bicycle = new ProductsModel{
-                    id = 1,
-                    name = "Balance Training Bicycle",
-                    price = (Decimal)119.95,
-                    availability = "InStock",
-                    stockAvailability = 1,
-                    age = "3_to_5",
-                    gender = "NEUTRAL",
-                    brand = "SportsFun"
-                };
+    public class DatabaseFixture : IDisposable
+    {
+        public ProductsContext productContext;
 
-            public static ProductsModel _2_43_Piece_dinner_Set = new ProductsModel{
-                    id = 2,
-                    name = "43 Piece dinner Set",
-                    price = (Decimal)12.95,
-                    availability = "InStock",
-                    stockAvailability = 10,
-                    age = "3_to_5",
-                    gender = "FEMALE",
-                    brand = "CoolKidz"
-                };
+        public ProductsModel _1_Balance_Training_Bicycle = new ProductsModel
+        {
+            id = 1,
+            name = "Balance Training Bicycle",
+            price = (Decimal)119.95,
+            availability = "InStock",
+            stockAvailability = 1,
+            age = "3_to_5",
+            gender = "NEUTRAL",
+            brand = "SportsFun"
+        };
 
-            
-            public static ProductsModel _7_Best_Friends_Forever_Magnetic_Dress_Up = new ProductsModel{
-                id = 7,
-                name = "Best Friends Forever Magnetic Dress Up",
-                price = (Decimal)24.95,
-                availability = "InStock",
-                stockAvailability = 10,
-                age = "3_to_5",
-                gender = "FEMALE",
-                brand = "CoolKidz"
-            };
+        public ProductsModel _2_43_Piece_dinner_Set = new ProductsModel
+        {
+            id = 2,
+            name = "43 Piece dinner Set",
+            price = (Decimal)12.95,
+            availability = "InStock",
+            stockAvailability = 10,
+            age = "3_to_5",
+            gender = "FEMALE",
+            brand = "CoolKidz"
+        };
 
-            public static ProductsModel _8_City_Garage_Truck_Lego = new ProductsModel{
-                id = 8,
-                name = "City Garage Truck Lego",
-                price = (Decimal)19.95,
-                availability = "",
-                stockAvailability = 10,
-                age = "3_to_5",
-                gender = "NEUTRAL",
-                brand = "Lego"
-            };
 
-            public static ProductsModel _20_Creator_Beach_House_Lego = new ProductsModel{
-                id = 20,
-                name = "Creator Beach House Lego",
-                price = (Decimal)39.95,
-                availability = "",
-                stockAvailability = 10,
-                age = "6_to_8",
-                gender = "NEUTRAL",
-                brand = "Lego"
-            };
+        public ProductsModel _7_Best_Friends_Forever_Magnetic_Dress_Up = new ProductsModel
+        {
+            id = 7,
+            name = "Best Friends Forever Magnetic Dress Up",
+            price = (Decimal)24.95,
+            availability = "InStock",
+            stockAvailability = 10,
+            age = "3_to_5",
+            gender = "FEMALE",
+            brand = "CoolKidz"
+        };
 
+        public ProductsModel _8_City_Garage_Truck_Lego = new ProductsModel
+        {
+            id = 8,
+            name = "City Garage Truck Lego",
+            price = (Decimal)19.95,
+            availability = "",
+            stockAvailability = 10,
+            age = "3_to_5",
+            gender = "NEUTRAL",
+            brand = "Lego"
+        };
+
+        public ProductsModel _20_Creator_Beach_House_Lego = new ProductsModel
+        {
+            id = 20,
+            name = "Creator Beach House Lego",
+            price = (Decimal)39.95,
+            availability = "",
+            stockAvailability = 10,
+            age = "6_to_8",
+            gender = "NEUTRAL",
+            brand = "Lego"
+        };
+
+
+        public DatabaseFixture()
+        {
+            DbContextOptions<ProductsContext> _productOptions = new DbContextOptionsBuilder<ProductsContext>().UseInMemoryDatabase("Products").Options;
+            productContext = new ProductsContext(_productOptions);
+
+            productContext.Products.Add(_1_Balance_Training_Bicycle);
+            productContext.Products.Add(_2_43_Piece_dinner_Set);
+            productContext.Products.Add(_7_Best_Friends_Forever_Magnetic_Dress_Up);
+            productContext.Products.Add(_8_City_Garage_Truck_Lego);
+            productContext.Products.Add(_20_Creator_Beach_House_Lego);
+
+            productContext.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            //throw new NotImplementedException();
+        }
     }
 }
 

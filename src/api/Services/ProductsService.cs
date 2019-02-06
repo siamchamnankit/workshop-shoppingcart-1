@@ -22,7 +22,7 @@ namespace api.Services
             return productsList;
         }
 
-        public List<ProductsModel> list_products(string age = "", string gender = "")
+        private List<ProductsModel> list_products(string age = "", string gender = "")
         {
             var products = _context.Products;
             if (age != "" && gender != "") {

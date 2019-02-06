@@ -7,7 +7,5 @@ namespace api.Services
     {
         ProductsModel getProductDetail(int id);
         ProductsListModel list(string age, string gender);
-        List<ProductsModel> list_products(string age, string gender);
-
     }
 }

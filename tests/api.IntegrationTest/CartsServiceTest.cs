@@ -13,6 +13,63 @@ namespace api.IntegrationTest
     public class CartsTest
     {
         [Fact]
+        public void When_Create_New_Cart_With_43_Piece_Dinner_Set_With_1_Qty_Should_Return_Cart_Detail_With_43_Piece_Dinner_Set () 
+        {
+            var _cartOptions = new DbContextOptionsBuilder<CartsContext>().UseInMemoryDatabase("create_new_cart_carts2").Options;
+            var _cartContext = new CartsContext(_cartOptions);
+
+            var _productOptions = new DbContextOptionsBuilder<ProductsContext>().UseInMemoryDatabase("create_new_cart_products2").Options;
+            var _productContext = new ProductsContext(_productOptions);
+
+            ProductsModel productsData = new ProductsModel{
+                    id = 2,
+                    name = "43 Piece dinner Set",
+                    price = (Decimal)12.95,
+                    availability = "InStock",
+                    stockAvailability = 10,
+                    age = "3_to_5",
+                    gender = "FEMALE",
+                    brand = "CoolKidz"
+                };
+            _productContext.Products.Add(productsData);
+            _productContext.SaveChanges();
+
+            CartsService cartService = new CartsService(_cartContext, _productContext);
+
+            AddCartOutputModel cartOutput = cartService.add(productsData, 1);
+            CartsModel actualCart = cartService.getCart(cartOutput.id, 1);
+            CartsModel expectedCart = new CartsModel{
+                userId = 1,
+                total = 62.95M,
+                subtotal = 12.95M,
+                shippingFee = 50,
+                shippingMethod = "Cash on Delivery",
+                createDatetime = DateTime.Now,
+                updateDatetime = DateTime.Now
+            };
+
+            List<ProductInCartModel> productsInCart = new List<ProductInCartModel>();
+            productsInCart.Add(new ProductInCartModel{
+                    id = 2,
+                    name = "43 Piece dinner Set",
+                    price = (Decimal)12.95,
+                    availability = "InStock",
+                    stockAvailability = 10,
+                    age = "3_to_5",
+                    gender = "FEMALE",
+                    brand = "CoolKidz",
+                    quantity = 1
+                });
+
+                expectedCart.CartProducts = productsInCart;
+
+            Assert.Equal(expectedCart.CartProducts[0].name, actualCart.CartProducts[0].name);    
+
+
+        }
+
+
+        [Fact]
         public void When_Create_New_Cart_With_Product_ID2_And_Quantity2_And_Should_Be_Get_CartID1()
         {
             var _cartOptions = new DbContextOptionsBuilder<CartsContext>().UseInMemoryDatabase("create_new_cart_carts").Options;

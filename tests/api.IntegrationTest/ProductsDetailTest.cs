@@ -11,12 +11,12 @@ using Xunit;
 
 namespace api.IntegrationTest
 {
-    public class ProductsDetailTest : IClassFixture<DatabaseFixture>
+    public class ProductsDetailTest : IClassFixture<DatabaseDetailFixture>
     {
-        private DatabaseFixture _fixture;
+        private DatabaseDetailFixture _fixture;
         private ProductsService _productsService;
 
-        public ProductsDetailTest(DatabaseFixture fixture)
+        public ProductsDetailTest(DatabaseDetailFixture fixture)
         {
             this._fixture = fixture;
 

@@ -12,9 +12,51 @@ using Xunit;
 namespace api.IntegrationTest
 {
 
-    public class DatabaseFixture : IDisposable
+    public class DatabaseDetailFixture : AbstractDatabaseFixture
+    {
+        public override string DatabaseName
+        {
+            get
+            {
+                return "DatabaseDetailFixture";
+            }
+        }
+    }
+    public class DatabaseListFixture : AbstractDatabaseFixture
+    {
+        public override string DatabaseName
+        {
+            get
+            {
+                return "DatabaseListFixture";
+            }
+        }
+    }
+
+    public abstract class AbstractDatabaseFixture : IDisposable
     {
         public ProductsContext productContext;
+
+        public abstract string DatabaseName { get; }
+
+        public AbstractDatabaseFixture()
+        {
+            DbContextOptions<ProductsContext> _productOptions = new DbContextOptionsBuilder<ProductsContext>().UseInMemoryDatabase(DatabaseName).Options;
+            productContext = new ProductsContext(_productOptions);
+
+            productContext.Products.Add(_1_Balance_Training_Bicycle);
+            productContext.Products.Add(_2_43_Piece_dinner_Set);
+            productContext.Products.Add(_7_Best_Friends_Forever_Magnetic_Dress_Up);
+            productContext.Products.Add(_8_City_Garage_Truck_Lego);
+            productContext.Products.Add(_20_Creator_Beach_House_Lego);
+
+            productContext.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            //throw new NotImplementedException();
+        }
 
         public ProductsModel _1_Balance_Training_Bicycle = new ProductsModel
         {
@@ -78,23 +120,5 @@ namespace api.IntegrationTest
         };
 
 
-        public DatabaseFixture()
-        {
-            DbContextOptions<ProductsContext> _productOptions = new DbContextOptionsBuilder<ProductsContext>().UseInMemoryDatabase("Products").Options;
-            productContext = new ProductsContext(_productOptions);
-
-            productContext.Products.Add(_1_Balance_Training_Bicycle);
-            productContext.Products.Add(_2_43_Piece_dinner_Set);
-            productContext.Products.Add(_7_Best_Friends_Forever_Magnetic_Dress_Up);
-            productContext.Products.Add(_8_City_Garage_Truck_Lego);
-            productContext.Products.Add(_20_Creator_Beach_House_Lego);
-
-            productContext.SaveChanges();
-        }
-
-        public void Dispose()
-        {
-            //throw new NotImplementedException();
-        }
     }
 }

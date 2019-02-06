@@ -55,7 +55,7 @@ ${URL}     http://3.0.91.31
     Wait Until Page Contains     CoolKidz    3s
     Wait Until Page Contains     12.95    3s
     Wait Until Element Contains     label-subtotal    25.9    3s
-    Wait Until Element Contains     label-shipping-fee    25.00    3s
+    Wait Until Element Contains     label-shipping-fee    50.00    3s
 
 กดยืนยันการสั่งซื้อสินค้า
     Click Button    button-confirm-cart

@@ -16,28 +16,14 @@ namespace api.IntegrationTest
         public void When_Create_Order_With_Cart_Should_Be_Return_Order()
         {
 
-            var _orderOptions = new DbContextOptionsBuilder<OrdersContext>().UseInMemoryDatabase("create_order_orders_1").Options;
+            var _orderOptions = new DbContextOptionsBuilder<OrdersContext>().UseInMemoryDatabase("create_order_orders_2").Options;
             var _orderContext = new OrdersContext(_orderOptions);
 
-            var _cartOptions = new DbContextOptionsBuilder<CartsContext>().UseInMemoryDatabase("create_order_carts_detail_1").Options;
+            var _cartOptions = new DbContextOptionsBuilder<CartsContext>().UseInMemoryDatabase("create_order_carts_detail_2").Options;
             var _cartContext = new CartsContext(_cartOptions);
 
-            var _productOptions = new DbContextOptionsBuilder<ProductsContext>().UseInMemoryDatabase("create_order_carts_products_detail_1").Options;
-            var _productContext = new ProductsContext(_productOptions);
+            var _productContext = new DatabaseProductDummy().productContext;
 
-            ProductsModel productData = new ProductsModel{
-                id = 2,
-                name = "43 Piece dinner Set",
-                price = (Decimal)12.95,
-                availability = "InStock",
-                stockAvailability = 10,
-                age = "3_to_5",
-                gender = "FEMALE",
-                brand = "CoolKidz"
-            };
-            _productContext.Products.Add(productData);
-            _productContext.SaveChanges();
-            
             CartsModel cartModel = new CartsModel{
                 id = 1,
                 userId = 1,
@@ -67,10 +53,8 @@ namespace api.IntegrationTest
 
             
             
-            using (var context = new ProductsContext(_productOptions))
-            {
-                _productContext.Database.EnsureDeleted();
-            }
+            _productContext.Database.EnsureDeleted();
+
             using (var context = new CartsContext(_cartOptions))
             {
                 _cartContext.Database.EnsureDeleted();
@@ -84,15 +68,14 @@ namespace api.IntegrationTest
         [Fact]
         public void When_Get_Order_Id_1_Should_Be_Return_Only_This_Order() 
         {
-            var _orderOptions = new DbContextOptionsBuilder<OrdersContext>().UseInMemoryDatabase("create_order_orders_detail_2").Options;
+            var _orderOptions = new DbContextOptionsBuilder<OrdersContext>().UseInMemoryDatabase("create_order_orders_2").Options;
             var _orderContext = new OrdersContext(_orderOptions);
 
             var _cartOptions = new DbContextOptionsBuilder<CartsContext>().UseInMemoryDatabase("create_order_carts_detail_2").Options;
             var _cartContext = new CartsContext(_cartOptions);
 
-            var _productOptions = new DbContextOptionsBuilder<ProductsContext>().UseInMemoryDatabase("create_order_carts_products_detail_2").Options;
-            var _productContext = new ProductsContext(_productOptions);
-            
+            var _productContext = new DatabaseProductDummy().productContext;
+
             OrdersModel ordersModel = new OrdersModel{
                 cartId = 1,
                 userId = 1,
@@ -141,10 +124,8 @@ namespace api.IntegrationTest
             
             Assert.Equal(expectedResult.order.id, actual.order.id);
             
-            using (var context = new ProductsContext(_productOptions))
-            {
-                _productContext.Database.EnsureDeleted();
-            }
+            _productContext.Database.EnsureDeleted();
+            
             using (var context = new CartsContext(_cartOptions))
             {
                 _cartContext.Database.EnsureDeleted();

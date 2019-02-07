@@ -11,6 +11,11 @@ using Xunit;
 
 namespace api.IntegrationTest
 {
+    public class DatabaseListFixture : AbstractDatabaseFixture
+    {
+        public override string GetDatabaseName() => "DatabaseListFixture";
+    }
+
     public class ProductsListTest : IClassFixture<DatabaseListFixture>
     {
         private DatabaseListFixture _fixture;

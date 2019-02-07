@@ -12,36 +12,16 @@ using Xunit;
 namespace api.IntegrationTest
 {
 
-    public class DatabaseDetailFixture : AbstractDatabaseFixture
-    {
-        public override string DatabaseName
-        {
-            get
-            {
-                return "DatabaseDetailFixture";
-            }
-        }
-    }
-    public class DatabaseListFixture : AbstractDatabaseFixture
-    {
-        public override string DatabaseName
-        {
-            get
-            {
-                return "DatabaseListFixture";
-            }
-        }
-    }
-
     public abstract class AbstractDatabaseFixture : IDisposable
     {
         public ProductsContext productContext;
 
-        public abstract string DatabaseName { get; }
+        public abstract string GetDatabaseName();
 
         public AbstractDatabaseFixture()
         {
-            DbContextOptions<ProductsContext> _productOptions = new DbContextOptionsBuilder<ProductsContext>().UseInMemoryDatabase(DatabaseName).Options;
+            DbContextOptionsBuilder<ProductsContext> builder = new DbContextOptionsBuilder<ProductsContext>();
+            DbContextOptions<ProductsContext> _productOptions = builder.UseInMemoryDatabase(GetDatabaseName()).Options;
             productContext = new ProductsContext(_productOptions);
 
             productContext.Products.Add(_1_Balance_Training_Bicycle);

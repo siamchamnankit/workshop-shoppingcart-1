@@ -12,6 +12,8 @@ namespace api.IntegrationTest
 {
     public class CartsTest
     {
+        private const int DEFAULT_USER_ID = 1; 
+
         [Fact]
         public void When_Create_New_Cart_With_43_Piece_Dinner_Set_With_1_Qty_Should_Return_Cart_Detail_With_43_Piece_Dinner_Set () 
         {
@@ -36,10 +38,10 @@ namespace api.IntegrationTest
 
             CartsService cartService = new CartsService(_cartContext, _productContext);
 
-            AddCartOutputModel cartOutput = cartService.add(productsData, 1);
-            CartsModel actualCart = cartService.getCart(cartOutput.id, 1);
+            AddCartOutputModel cartOutput = cartService.add(productsData, DEFAULT_USER_ID);
+            CartsModel actualCart = cartService.getCart(cartOutput.id, DEFAULT_USER_ID);
             CartsModel expectedCart = new CartsModel{
-                userId = 1,
+                userId = DEFAULT_USER_ID,
                 total = 62.95M,
                 subtotal = 12.95M,
                 shippingFee = 50,
@@ -63,9 +65,13 @@ namespace api.IntegrationTest
 
                 expectedCart.CartProducts = productsInCart;
 
-            Assert.Equal(expectedCart.CartProducts[0].name, actualCart.CartProducts[0].name);    
 
-
+            Assert.Equal(expectedCart.CartProducts, actualCart.CartProducts);
+            Assert.Equal(expectedCart.userId, actualCart.userId);
+            Assert.Equal(expectedCart.total, actualCart.total);
+            Assert.Equal(expectedCart.subtotal, actualCart.subtotal);
+            Assert.Equal(expectedCart.shippingFee, actualCart.shippingFee);
+            Assert.Equal(expectedCart.shippingMethod, actualCart.shippingMethod);
         }
 
 

@@ -31,6 +31,7 @@ namespace api.IntegrationTest
         {
             ProductsModel adding_product = _fixture._2_43_Piece_dinner_Set;
             int adding_quantity = 1;
+            
             CartsContext _cartContext = createCartsContext("create_new_cart_carts2");
             CartsModel expectedCart = createCartInfo(adding_product, adding_quantity);
 

@@ -180,7 +180,7 @@
                     alert("Something went wrong!");
                 } else {
                     localStorage.setItem("cartId", "");
-                    redirectToOrderSummary();
+                    redirectToOrderSummary(res.id);
                 }
             });
         });

@@ -29,9 +29,15 @@ namespace api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ProductsContext>(options => options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<CartsContext>(options => options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<OrdersContext>(options => options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
+            var connectionString = Environment.GetEnvironmentVariable("ConnectionString");
+
+            if(connectionString == ""){
+                connectionString = "server=localhost;userid=root;password=1234;database=workshop_shoppingcart;convert zero datetime=True;CHARSET=utf8;";
+            }
+
+            services.AddDbContext<ProductsContext>(options => options.UseMySQL(connectionString));
+            services.AddDbContext<CartsContext>(options => options.UseMySQL(connectionString));
+            services.AddDbContext<OrdersContext>(options => options.UseMySQL(connectionString));
             services.AddScoped<IProductService, ProductsService>();
             services.AddScoped<ICartsService, CartsService>();
             services.AddScoped<OrdersService, OrdersService>();

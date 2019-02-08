@@ -41,6 +41,47 @@ namespace api.Models
         public string brand { get; set; }
         public int stockAvailability { get; set; }
         
+        public override bool Equals(object obj)
+        {
+            OrderProductsModel productInOrder = obj as OrderProductsModel;
+
+            if (productInOrder == null)
+                return false;
+
+            if (productInOrder.orderId != orderId)
+                return false;
+
+            if (productInOrder.productId != productId)
+                return false;
+
+            if (productInOrder.name != name)
+                return false;
+
+            if (productInOrder.gender != gender)
+                return false;
+
+            if (productInOrder.age != age)
+                return false;
+
+            if (productInOrder.price != price)
+                return false;
+
+            if (productInOrder.brand != brand)
+                return false;
+
+            if (productInOrder.stockAvailability != stockAvailability)
+                return false;
+
+            if (productInOrder.quantity != quantity)
+                return false;
+
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return productId;
+        }
     }
 
     public class CreateOrderOutputModel

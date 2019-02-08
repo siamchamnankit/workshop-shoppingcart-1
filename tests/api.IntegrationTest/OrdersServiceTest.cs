@@ -15,89 +15,17 @@ namespace api.IntegrationTest
         [Fact]
         public void When_Create_Order_With_Cart_Should_Be_Return_Order()
         {
+            var _productContext = new DatabaseProductDummy().productContext;
 
-            var _orderOptions = new DbContextOptionsBuilder<OrdersContext>().UseInMemoryDatabase("create_order_orders_1").Options;
-            var _orderContext = new OrdersContext(_orderOptions);
+            OrdersContext _orderContext = generateOrderContext("create_order_orders_2");
 
-            var _cartOptions = new DbContextOptionsBuilder<CartsContext>().UseInMemoryDatabase("create_order_carts_detail_1").Options;
-            var _cartContext = new CartsContext(_cartOptions);
+            CartsContext _cartContext = generateCartContext("create_order_carts_detail_2");
 
-            var _productOptions = new DbContextOptionsBuilder<ProductsContext>().UseInMemoryDatabase("create_order_carts_products_detail_1").Options;
-            var _productContext = new ProductsContext(_productOptions);
-
-            ProductsModel productData = new ProductsModel{
-                id = 2,
-                name = "43 Piece dinner Set",
-                price = (Decimal)12.95,
-                availability = "InStock",
-                stockAvailability = 10,
-                age = "3_to_5",
-                gender = "FEMALE",
-                brand = "CoolKidz"
-            };
-            _productContext.Products.Add(productData);
-            _productContext.SaveChanges();
-            
-            CartsModel cartModel = new CartsModel{
-                id = 1,
-                userId = 1,
-                subtotal = (Decimal)12.95,
-                shippingFee = (Decimal)50.00,
-                total = (Decimal)62.95
-            };
-            _cartContext.Carts.Add(cartModel);
-
-            CartProductsModel cartProduct = new CartProductsModel{
-                id = 1,
-                productId = 2,
-                cartId = 1,
-                quantity = 1,
-            };
-            _cartContext.CartProducts.Add(cartProduct);
-            _cartContext.SaveChanges();
-
-            OrdersService ordersService = new OrdersService(_cartContext, _productContext, _orderContext);
-            var actualResult = ordersService.create(1, 1);
-
-            //  CreateOrderOutputModel actualResult = new CreateOrderOutputModel{
-            //     id = 1
-            //  };
-
-            Assert.Equal(2, actualResult.id);
-
-            
-            
-            using (var context = new ProductsContext(_productOptions))
-            {
-                _productContext.Database.EnsureDeleted();
-            }
-            using (var context = new CartsContext(_cartOptions))
-            {
-                _cartContext.Database.EnsureDeleted();
-            }
-            using (var context = new OrdersContext(_orderOptions))
-            {
-                _orderContext.Database.EnsureDeleted();
-            }
-        }
-
-        [Fact]
-        public void When_Get_Order_Id_1_Should_Be_Return_Only_This_Order() 
-        {
-            var _orderOptions = new DbContextOptionsBuilder<OrdersContext>().UseInMemoryDatabase("create_order_orders_detail_2").Options;
-            var _orderContext = new OrdersContext(_orderOptions);
-
-            var _cartOptions = new DbContextOptionsBuilder<CartsContext>().UseInMemoryDatabase("create_order_carts_detail_2").Options;
-            var _cartContext = new CartsContext(_cartOptions);
-
-            var _productOptions = new DbContextOptionsBuilder<ProductsContext>().UseInMemoryDatabase("create_order_carts_products_detail_2").Options;
-            var _productContext = new ProductsContext(_productOptions);
-            
             OrdersModel ordersModel = new OrdersModel{
                 cartId = 1,
                 userId = 1,
-                subtotal = (Decimal)25.90,
-                total = (Decimal)75.90,
+                subtotal = (Decimal)12.95,
+                total = (Decimal)62.95,
                 shippingMethod = "Cash on Delivery",
                 shippingFee = 50,
                 fullname = "Chonnikan Tobunrueang",
@@ -108,12 +36,11 @@ namespace api.IntegrationTest
                 postcode = "10900",
                 createDatetime = DateTime.Now,
             };
-            _orderContext.Orders.Add(ordersModel);
-           
-           OrderProductsModel orderProductsModel = new OrderProductsModel{
+
+            OrderProductsModel orderProductsModel = new OrderProductsModel{
                 orderId = 1,
                 productId = 2,
-                quantity = 2,
+                quantity = 1,
                 name = "43 Piece dinner Set",
                 price = (Decimal)12.95,
                 availability = "InStock",
@@ -122,9 +49,6 @@ namespace api.IntegrationTest
                 gender = "FEMALE",
                 brand = "CoolKidz"
             };
-            _orderContext.OrderProducts.Add(orderProductsModel);
-
-            _orderContext.SaveChanges();
 
             OrderDetailOutput expectedResult = new OrderDetailOutput{
                 order = ordersModel,
@@ -137,22 +61,59 @@ namespace api.IntegrationTest
             };
 
             OrdersService ordersService = new OrdersService(_cartContext, _productContext, _orderContext);
-            var actual = ordersService.get(1);
+            CreateOrderOutputModel order = ordersService.create(1, 1);
             
-            Assert.Equal(expectedResult.order.id, actual.order.id);
-            
-            using (var context = new ProductsContext(_productOptions))
+            var actual = ordersService.get(order.id);
+
+            Assert.Equal(order.id, actual.order.id);
+            Assert.Equal(expectedResult.order.subtotal, actual.order.subtotal);
+            Assert.Equal(expectedResult.order.total, actual.order.total);
+            Assert.Equal(expectedResult.order.shippingMethod, actual.order.shippingMethod);
+            Assert.Equal(expectedResult.order.shippingFee, actual.order.shippingFee);
+            Assert.Equal(expectedResult.order.fullname, actual.order.fullname);
+            Assert.Equal(expectedResult.order.address1, actual.order.address1);
+            Assert.Equal(expectedResult.products.data, actual.products.data);
+
+
+            _productContext.Database.EnsureDeleted();
+            _cartContext.Database.EnsureDeleted();
+            _orderContext.Database.EnsureDeleted();
+        }
+
+        private static OrdersContext generateOrderContext(string orderDatabaseName)
+        {
+            var _orderOptions = new DbContextOptionsBuilder<OrdersContext>().UseInMemoryDatabase(orderDatabaseName).Options;
+            var _orderContext = new OrdersContext(_orderOptions);
+            return _orderContext;
+        }
+
+        private static CartsContext generateCartContext(string databaseName)
+        {
+            var _cartOptions = new DbContextOptionsBuilder<CartsContext>().UseInMemoryDatabase(databaseName).Options;
+            var _cartContext = new CartsContext(_cartOptions);
+
+
+            CartsModel cartModel = new CartsModel
             {
-                _productContext.Database.EnsureDeleted();
-            }
-            using (var context = new CartsContext(_cartOptions))
+                id = 1,
+                userId = 1,
+                shippingMethod = "Cash on Delivery",
+                subtotal = (Decimal)12.95,
+                shippingFee = (Decimal)50.00,
+                total = (Decimal)62.95
+            };
+            _cartContext.Carts.Add(cartModel);
+
+            CartProductsModel cartProduct = new CartProductsModel
             {
-                _cartContext.Database.EnsureDeleted();
-            }
-            using (var context = new OrdersContext(_orderOptions))
-            {
-                _orderContext.Database.EnsureDeleted();
-            }
+                id = 1,
+                productId = 2,
+                cartId = 1,
+                quantity = 1,
+            };
+            _cartContext.CartProducts.Add(cartProduct);
+            _cartContext.SaveChanges();
+            return _cartContext;
         }
     }
 }

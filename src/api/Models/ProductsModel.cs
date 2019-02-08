@@ -24,6 +24,45 @@ namespace api.Models
         public string brand { get; set; }
         public int stockAvailability { get; set; }
         public int quantity { get; set; }
+            
+        public override bool Equals(object obj)
+        {
+            ProductInCartModel productInCart = obj as ProductInCartModel;
+
+            if (productInCart == null)
+                return false;
+
+            if (productInCart.id != id)
+                return false;
+
+            if (productInCart.name != name)
+                return false;
+
+            if (productInCart.gender != gender)
+                return false;
+
+            if (productInCart.age != age)
+                return false;
+
+            if (productInCart.price != price)
+                return false;
+
+            if (productInCart.brand != brand)
+                return false;
+
+            if (productInCart.stockAvailability != stockAvailability)
+                return false;
+
+            if (productInCart.quantity != quantity)
+                return false;
+
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return id;
+        }
     }
 
     [Table("products")]

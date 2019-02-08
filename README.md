@@ -25,7 +25,7 @@ docker run --name=workshop-shoppingcart-mysql -p 3306:3306 -v /Users/${USER}/mys
 
 (ตรง -v /Users/${USER}/mysql_db ให้แก้เป็นที่อยู่โฟลเดอร์ที่ต้องการจะใช้เก็บข้อมูล)
 
-## Install API
+# Install API
 ## Run API Server on Localhost (Install dotnet before)
 cd src/api
 

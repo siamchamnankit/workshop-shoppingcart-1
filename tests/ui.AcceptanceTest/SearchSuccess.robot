@@ -1,6 +1,6 @@
 *** Settings ***
 Library    SeleniumLibrary
-# Test Teardown    ปิดหน้าเบราเซอร์
+Test Teardown    ปิดหน้าเบราเซอร์
 
 *** Variables ***
 ${URL}     http://3.0.91.31

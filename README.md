@@ -26,10 +26,6 @@ docker run --name=workshop-shoppingcart-mysql -p 3306:3306 -v /Users/${USER}/mys
 (ตรง -v /Users/${USER}/mysql_db ให้แก้เป็นที่อยู่โฟลเดอร์ที่ต้องการจะใช้เก็บข้อมูล)
 
 # Install API
-## Run API Server on Localhost (Install dotnet before)
-cd src/api
-
-dotnet run
 
 ## Build Image
 cd src/api/
@@ -37,10 +33,12 @@ cd src/api/
 docker build -t workshop-shoppingcart-api .
 
 ## Run container
-docker run --name workshop-shoppingcart-api -p 5001:5001 workshop-shoppingcart-api
+docker run --name workshop-shoppingcart-api
+\ -p 5001:5001
+\ -e ConnectionString="server=docker.for.mac.localhost;userid=root;password=1234;database=workshop_shoppingcart;convert zero datetime=True;CHARSET=utf8;" 
+\ workshop-shoppingcart-api
 
-## Run container on Localhost
-docker run --name workshop-shoppingcart-api -p 5001:5001 -e ASPNETCORE_ENVIRONMENT=Localhost workshop-shoppingcart-api
+
 
 ## Temporary Run on Localhost, not use docker
 ASPNETCORE_ENVIRONMENT=Localhost dotnet run

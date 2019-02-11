@@ -20,9 +20,20 @@ pipeline {
                 sh 'docker run --rm -e RUNNING_PROJECT=./tests/api.IntegrationTest/api.IntegrationTest.csproj workshop-shoppingcart-api-test'
             }
         }
-        stage('Deploy') {
+        stage('UI Integrate Test') {
             steps {
-                echo 'Deploying....'
+                echo 'UI Integrate Testing....'
+                echo ' # Start Database Server'
+                echo ' ## Build database docker image'
+                sh 'docker build -t workshop-shoppingcart-mysql . -f Dockerfile_mysql'
+
+                echo ' ## Run container'
+                sh 'docker run --name=workshop-shoppingcart-mysql -p 3306:3306 workshop-shoppingcart-mysql'
+
+                echo ' # Data Migration into Mysql'
+                echo ' ## run docker liquibase\'s image to migrate data from changelog.yml'
+
+                sh 'docker run --rm -e "LIQUIBASE_URL=jdbc:mysql://docker.for.mac.localhost/workshop_shoppingcart" -e "LIQUIBASE_USERNAME=root" -e "LIQUIBASE_PASSWORD=1234" -e "LIQUIBASE_CHANGELOG=data/changelog.yml" webdevops/liquibase:mysql update'
             }
         }
     }

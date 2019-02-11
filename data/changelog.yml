@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - preConditions:
+    - runningAs:
+        username: root
+  - changeSet:
+      id: initial by create table cart,cart_product,order_products,orders,products,shipping_address,shop_profile,user 
+      author: bomb0069
+      changes:
+      - sqlFile:
+          path: 1_initial_table.sql
+
+  - changeSet:
+      id: initial data in shop_profile and products
+      author: bomb0069
+      changes:
+      - sqlFile:
+          path: 2_initial_data.sql

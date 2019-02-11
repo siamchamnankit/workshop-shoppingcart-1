@@ -28,7 +28,7 @@ pipeline {
                 sh 'docker build -t workshop-shoppingcart-mysql . -f Dockerfile_mysql'
 
                 echo ' ## Run container'
-                sh 'docker run --name=workshop-shoppingcart-mysql -p 3306:3306 workshop-shoppingcart-mysql'
+                sh 'docker run --rm -d --name=workshop-shoppingcart-mysql -p 3306:3306 workshop-shoppingcart-mysql'
 
                 echo ' # Data Migration into Mysql'
                 echo ' ## run docker liquibase\'s image to migrate data from changelog.yml'

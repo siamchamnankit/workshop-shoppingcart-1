@@ -21,15 +21,13 @@ cd ../../
 docker build -t workshop-shoppingcart-mysql . -f Dockerfile_mysql
 
 ## Run container
-docker run --name=workshop-shoppingcart-mysql -p 3306:3306 -v /Users/${USER}/mysql_db:/var/lib/mysql workshop-shoppingcart-mysql
-
-(ตรง -v /Users/${USER}/mysql_db ให้แก้เป็นที่อยู่โฟลเดอร์ที่ต้องการจะใช้เก็บข้อมูล)
+docker run --name=workshop-shoppingcart-mysql -p 3306:3306 workshop-shoppingcart-mysql
 
 # Data Migration into Mysql
 ## run docker liquibase's image to migrate data from changelog.yml
 cd data
 
-docker run --rm -v $(pwd):/liquibase/ -e "LIQUIBASE_URL=jdbc:mysql://docker.for.mac.localhost/workshop_shoppingcart" -e "LIQUIBASE_USERNAME=root" -e "LIQUIBASE_PASSWORD=1234" -e "LIQUIBASE_CHANGELOG=changelog.yml" webdevops/liquibase:mysql update 
+docker run --rm -e "LIQUIBASE_URL=jdbc:mysql://docker.for.mac.localhost/workshop_shoppingcart" -e "LIQUIBASE_USERNAME=root" -e "LIQUIBASE_PASSWORD=1234" -e "LIQUIBASE_CHANGELOG=changelog.yml" webdevops/liquibase:mysql update 
 
 cd ../
 

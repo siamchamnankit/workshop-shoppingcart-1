@@ -27,7 +27,7 @@ pipeline {
                 echo ' ## Build database docker image'
                 sh 'docker build -t workshop-shoppingcart-mysql . -f Dockerfile_mysql'
 
-                sh 'sleep 15'
+                sh 'sleep 30'
 
                 echo ' ## Run container'
                 sh 'docker stop workshop-shoppingcart-mysql'

@@ -5,6 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
+                sh 'docker build -t workshop-shoppingcart-api-test .'
             }
         }
         stage('Test') {

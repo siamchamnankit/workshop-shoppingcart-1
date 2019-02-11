@@ -1,6 +1,11 @@
+
+*** Variables ***
+${URL}    http://3.0.91.31
+${BROWSER}    chrome
+
 *** Keywords ***
 เข้าหน้าแสดงรายการสินค้า พบรายการสินค้าทั้งหมด
-    Open Browser    ${URL}    chrome
+    Open Browser    ${URL}    ${BROWSER}
     Wait Until Page Contains     43 Piece dinner Set    3s
     Capture Page Screenshot
 

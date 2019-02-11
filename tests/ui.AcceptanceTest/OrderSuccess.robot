@@ -3,9 +3,6 @@ Library    SeleniumLibrary
 Resource    shopping-cart-keywords.robot
 Test Teardown    ปิดหน้าเบราเซอร์
 
-*** Variables ***
-${URL}     http://3.0.91.31
-
 *** Test Cases ***
 ผู้ใช้สามารถสั่งซื้อสินค้าได้สำเร็จ
     เข้าหน้าแสดงรายการสินค้า พบรายการสินค้าทั้งหมด

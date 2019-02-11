@@ -9,12 +9,19 @@ dotnet test
 
 cd ../../
 
-## Run Unit Test on Localhost (Install dotnet before)
+## Run Integrate Test on Localhost (Install dotnet before)
 cd tests/api.IntegrationTest/
 
 dotnet test
 
 cd ../../
+
+## Unit and Ingration Test in docker 
+docker build -t workshop-shoppingcart-api-test .
+
+docker run --rm -e RUNNING_PROJECT=./tests/api.UnitTest/api.UnitTest.csproj workshop-shoppingcart-api-test
+
+docker run --rm -e RUNNING_PROJECT=./tests/api.IntegrationTest/api.IntegrationTest.csproj workshop-shoppingcart-api-test
 
 # Install Mysql
 ## Build image
@@ -66,4 +73,4 @@ pybot --variable URL:http://localhost .
 
 ## Run Robot on Docker
 
-docker run --rm -v $(pwd)/reports:/opt/robotframework/reports -v $(pwd):/opt/robotframework/tests -e BROWSER=chrome -e ROBOT_OPTIONS=" --variable URL:http://docker.for.mac.localhost" siamchamnankit/sck-robot-framework
+docker run --rm -v $(pwd)/reports:/opt/robotframework/reports -v $(pwd):/opt/robotframework/tests -e BROWSER=chrome -e ROBOT_OPTIONS=" --variable URL:http://docker.for.mac.localhost --variable BROWSER:firefox" siamchamnankit/sck-robot-framework

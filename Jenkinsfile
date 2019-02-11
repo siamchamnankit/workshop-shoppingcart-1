@@ -27,6 +27,8 @@ pipeline {
                 echo ' ## Build database docker image'
                 sh 'docker build -t workshop-shoppingcart-mysql . -f Dockerfile_mysql'
 
+                sh 'sleep 15'
+
                 echo ' ## Run container'
                 sh 'docker run --rm -d --name=workshop-shoppingcart-mysql -p 3306:3306 workshop-shoppingcart-mysql'
 
@@ -34,6 +36,11 @@ pipeline {
                 echo ' ## run docker liquibase\'s image to migrate data from changelog.yml'
 
                 sh 'docker run --rm -e "LIQUIBASE_URL=jdbc:mysql://docker.for.mac.localhost/workshop_shoppingcart" -e "LIQUIBASE_USERNAME=root" -e "LIQUIBASE_PASSWORD=1234" -e "LIQUIBASE_CHANGELOG=data/changelog.yml" webdevops/liquibase:mysql update'
+            }
+        }
+        stage('UAT Deploy') {
+            steps {
+                echo 'UAT Deploying....'
             }
         }
     }

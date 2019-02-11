@@ -61,8 +61,9 @@ docker run --name workshop-shoppingcart-ui -p 80:80 workshop-shoppingcart-ui
 # Run Robot Framework
 cd tests/ui.AcceptanceTest/
 
-## UAT
-pybot --variable URL:http://54.254.234.208 .
-
 ## Localhost
 pybot --variable URL:http://localhost .
+
+## Run Robot on Docker
+
+docker run --rm -v $(pwd)/reports:/opt/robotframework/reports -v $(pwd):/opt/robotframework/tests -e BROWSER=chrome -e ROBOT_OPTIONS=" --variable URL:http://docker.for.mac.localhost" siamchamnankit/sck-robot-framework

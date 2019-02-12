@@ -5,14 +5,9 @@ pipeline {
         stage('Test Script') {
             steps {
                 script {
-                    def workspace = "${pwd}"
+                    def workspace = pwd()
                     echo workspace
 
-                    echo 'BASE_PATH : ' + $(BASE_PATH)
-
-                    def outter_docker_workspace = workspace.replace("/var/jenkins_home","${BASE_PATH}")
-
-                    echo outter_docker_workspace
                 }
             }
         }

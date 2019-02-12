@@ -16,6 +16,9 @@ pipeline {
 
                     echo outter_docker_workspace
                 }
+                
+                echo '$(outter_docker_workspace)'
+
             }
         }
         stage('Build') {
@@ -38,6 +41,7 @@ pipeline {
         }
         stage('UI Integrate Test') {
             steps {
+
                 echo 'UI Integrate Testing....'
                 echo '# Start Database Server'
                 echo '## Build database docker image'

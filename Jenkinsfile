@@ -8,7 +8,9 @@ pipeline {
                     def workspace = pwd()
                     echo workspace
 
-                    def myVar = ${env.BASE_PATH}
+                    echo "${env.BASE_PATH}"
+
+                    var myVar = "${env.BASE_PATH}"
 
                     def outter_docker_workspace = workspace.replace("/var/jenkins_home",myVar)
 
@@ -50,16 +52,6 @@ pipeline {
                 echo '# Data Migration into Mysql'
                 echo '## run docker liquibase\'s image to migrate data from changelog.yml'
                 
-                script {
-                    def workspace = $(pwd)
-                    echo workspace
-
-                    echo 'BASE_PATH : ' + $(BASE_PATH)
-
-                    def outter_docker_workspace = workspace.replace("/var/jenkins_home",$(BASE_PATH))
-
-                    echo outter_docker_workspace
-                }
                 /*
                 dir("data") {
                     sh 'docker run --rm -v $(pwd):/liquibase/ -e "LIQUIBASE_URL=jdbc:mysql://docker.for.mac.localhost/workshop_shoppingcart" -e "LIQUIBASE_USERNAME=root" -e "LIQUIBASE_PASSWORD=1234" -e "LIQUIBASE_CHANGELOG=/liquibase/changelog.yml" webdevops/liquibase:mysql update'
@@ -88,10 +80,12 @@ pipeline {
 
                 echo '# Run Robot Framework'
 
+                /*
                 dir("tests/ui.AcceptanceTest/") {
                     echo '## Run Robot on Docker'
                     sh 'docker run --rm -v $(pwd)/reports:/opt/robotframework/reports -v $(pwd):/opt/robotframework/tests -e BROWSER=chrome -e ROBOT_OPTIONS=" --variable URL:http://docker.for.mac.localhost --variable BROWSER:firefox" siamchamnankit/sck-robot-framework'
                 }
+                */
             }
         }
         stage('UAT Deploy') {

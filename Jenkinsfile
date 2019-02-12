@@ -36,6 +36,14 @@ pipeline {
                 echo '# Data Migration into Mysql'
                 echo '## run docker liquibase\'s image to migrate data from changelog.yml'
                 
+                def workspace = pwd()
+                echo 'workspace : ' + workspace
+
+                echo 'BASE_PATH : ' + $(BASE_PATH)
+
+                def outter_docker_workspace = workspace.replace("/var/jenkins_home",$(BASE_PATH))
+
+                echo outter_docker_workspace
                 /*
                 dir("data") {
                     sh 'docker run --rm -v $(pwd):/liquibase/ -e "LIQUIBASE_URL=jdbc:mysql://docker.for.mac.localhost/workshop_shoppingcart" -e "LIQUIBASE_USERNAME=root" -e "LIQUIBASE_PASSWORD=1234" -e "LIQUIBASE_CHANGELOG=/liquibase/changelog.yml" webdevops/liquibase:mysql update'
@@ -77,3 +85,9 @@ pipeline {
         }
     }
 }
+
+
+
+docker run --rm -v /var/jenkins_home/workspace/workshop-shoppingcart-1_master/tests/ui.AcceptanceTest/reports:/opt/robotframework/reports -v /var/jenkins_home/workspace/workshop-shoppingcart-1_master/tests/ui.AcceptanceTest:/opt/robotframework/tests -e 'BROWSER=chrome' -e 'ROBOT_OPTIONS= --variable URL:http://docker.for.mac.localhost --variable BROWSER:firefox' siamchamnankit/sck-robot-framework
+
+Unable to find image 'siamchamnankit/sck-robot-framework:latest' locally

@@ -65,6 +65,8 @@ pipeline {
                 echo '## Run container'
                 sh 'docker run --rm -d --name workshop-shoppingcart-api -p 5001:5001 -e ConnectionString="server=docker.for.mac.localhost;userid=root;password=1234;database=workshop_shoppingcart;convert zero datetime=True;CHARSET=utf8;" workshop-shoppingcart-api'
 
+                sh 'sleep 15'
+
                 echo '# Install UI'
                 echo '## Build Image'
                 

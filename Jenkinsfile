@@ -54,7 +54,7 @@ pipeline {
                 echo '# Install UI'
                 echo '## Build Image'
                 
-                dir("cd src/ui/") {
+                dir("src/ui/") {
                     sh 'docker build -t workshop-shoppingcart-ui .'
                 }
 

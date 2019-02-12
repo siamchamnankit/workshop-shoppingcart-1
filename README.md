@@ -32,11 +32,8 @@ docker run --name=workshop-shoppingcart-mysql -p 3306:3306 workshop-shoppingcart
 
 # Data Migration into Mysql
 ## run docker liquibase's image to migrate data from changelog.yml
-cd data
 
-docker run --rm -e "LIQUIBASE_URL=jdbc:mysql://docker.for.mac.localhost/workshop_shoppingcart" -e "LIQUIBASE_USERNAME=root" -e "LIQUIBASE_PASSWORD=1234" -e "LIQUIBASE_CHANGELOG=changelog.yml" webdevops/liquibase:mysql update 
-
-cd ../
+docker run --rm -v $(pwd)/data:/liquibase/ -e "LIQUIBASE_URL=jdbc:mysql://docker.for.mac.localhost/workshop_shoppingcart" -e "LIQUIBASE_USERNAME=root" -e "LIQUIBASE_PASSWORD=1234" -e "LIQUIBASE_CHANGELOG=changelog.yml" webdevops/liquibase:mysql update
 
 # Install API
 
@@ -74,3 +71,15 @@ pybot --variable URL:http://localhost .
 ## Run Robot on Docker
 
 docker run --rm -v $(pwd)/reports:/opt/robotframework/reports -v $(pwd):/opt/robotframework/tests -e BROWSER=chrome -e ROBOT_OPTIONS=" --variable URL:http://docker.for.mac.localhost --variable BROWSER:firefox" siamchamnankit/sck-robot-framework
+
+
+
+# Start Jenkins
+
+## Run Jenkins on Docker
+
+docker run --rm --name workshop-shoppingcart-ci-cd -u root -p 8080:8080 -v $(pwd)/jenkins-data:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock -v "$HOME":/home -e "BASE_PATH=$(pwd)/jenkins-data" jenkinsci/blueocean
+
+## Open Browser to create new pipeline 
+
+http://localhost:8080/blue/organizations/jenkins/pipelines 

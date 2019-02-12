@@ -10,7 +10,7 @@ pipeline {
 
                     echo "${env.BASE_PATH}"
 
-                    var myVar = "${env.BASE_PATH}"
+                    def myVar = "${env.BASE_PATH}"
 
                     def outter_docker_workspace = workspace.replace("/var/jenkins_home",myVar)
 

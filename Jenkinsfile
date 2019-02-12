@@ -8,6 +8,11 @@ pipeline {
                     def workspace = pwd()
                     echo workspace
 
+                    def myVar = ${env.BASE_PATH}
+
+                    def outter_docker_workspace = workspace.replace("/var/jenkins_home",myVar)
+
+                    echo outter_docker_workspace
                 }
             }
         }

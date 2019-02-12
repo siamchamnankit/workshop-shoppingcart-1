@@ -71,3 +71,15 @@ pybot --variable URL:http://localhost .
 ## Run Robot on Docker
 
 docker run --rm -v $(pwd)/reports:/opt/robotframework/reports -v $(pwd):/opt/robotframework/tests -e BROWSER=chrome -e ROBOT_OPTIONS=" --variable URL:http://docker.for.mac.localhost --variable BROWSER:firefox" siamchamnankit/sck-robot-framework
+
+
+
+# Start Jenkins
+
+## Run Jenkins on Docker
+
+docker run --rm --name workshop-shoppingcart-ci-cd -u root -p 8080:8080 -v $(pwd)/jenkins-data:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock -v "$HOME":/home -e "BASE_PATH=$(pwd)/jenkins-data" jenkinsci/blueocean
+
+## Open Browser to create new pipeline 
+
+http://localhost:8080/blue/organizations/jenkins/pipelines 

@@ -63,9 +63,9 @@ pipeline {
                 }
 
                 echo '## Run container'
-                sh 'docker run --rm -d --name workshop-shoppingcart-api -p 5001:5001 -e ConnectionString="server=docker.for.mac.localhost;userid=root;password=1234;database=workshop_shoppingcart;convert zero datetime=True;CHARSET=utf8;" workshop-shoppingcart-api'
+                sh 'docker stop workshop-shoppingcart-api'
 
-                sh 'sleep 15'
+                sh 'docker run --rm -d --name workshop-shoppingcart-api -p 5001:5001 -e ConnectionString="server=docker.for.mac.localhost;userid=root;password=1234;database=workshop_shoppingcart;convert zero datetime=True;CHARSET=utf8;" workshop-shoppingcart-api'
 
                 echo '# Install UI'
                 echo '## Build Image'
@@ -76,6 +76,7 @@ pipeline {
 
 
                 echo '## Run container'
+                sh 'docker stop workshop-shoppingcart-ui'
                 sh 'docker run --rm -d --name workshop-shoppingcart-ui -p 80:80 workshop-shoppingcart-ui'
 
                 echo '# Run Robot Framework'
@@ -94,7 +95,7 @@ pipeline {
 
                         echo outter_docker_workspace
     
-                        sh "docker run --rm -v $outter_docker_workspace/reports:/opt/robotframework/reports -v $outter_docker_workspace:/opt/robotframework/tests -e BROWSER=firefox -e ROBOT_OPTIONS=\" --variable URL:http://docker.for.mac.localhost\" siamchamnankit/sck-robot-framework"
+                        sh "docker run --rm -v $outter_docker_workspace/reports:/opt/robotframework/reports -v $outter_docker_workspace:/opt/robotframework/tests -e BROWSER=firefox -e ROBOT_OPTIONS=\" --variable URL:http://docker.for.mac.localhost --variable BROWSER:firefox\" siamchamnankit/sck-robot-framework"
                     }
                 }
 

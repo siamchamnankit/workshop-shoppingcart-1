@@ -22,7 +22,7 @@ pipeline {
         }
         stage('UI Integrate Test') {
             steps {
-
+                
                 echo 'UI Integrate Testing....'
                 echo '# Start Database Server'
                 echo '## Build database docker image'
@@ -41,16 +41,10 @@ pipeline {
                 dir("data") {
                     script {
                         def workspace = pwd()
-                        echo workspace
-
-                        echo "${env.BASE_PATH}"
-
                         def myVar = "${env.BASE_PATH}"
 
                         def outter_docker_workspace = workspace.replace("/var/jenkins_home",myVar)
 
-                        echo outter_docker_workspace
-    
                         sh "docker run --rm -v $outter_docker_workspace:/liquibase/ -e \"LIQUIBASE_URL=jdbc:mysql://docker.for.mac.localhost/workshop_shoppingcart\" -e \"LIQUIBASE_USERNAME=root\" -e \"LIQUIBASE_PASSWORD=1234\" -e \"LIQUIBASE_CHANGELOG=/liquibase/changelog.yml\" webdevops/liquibase:mysql update"
                     }
                 }
@@ -85,26 +79,13 @@ pipeline {
                     echo '## Run Robot on Docker'
                     script {
                         def workspace = pwd()
-                        echo workspace
-
-                        echo "${env.BASE_PATH}"
-
                         def myVar = "${env.BASE_PATH}"
 
                         def outter_docker_workspace = workspace.replace("/var/jenkins_home",myVar)
-
-                        echo outter_docker_workspace
     
                         sh "docker run --rm -v $outter_docker_workspace/reports:/opt/robotframework/reports -v $outter_docker_workspace:/opt/robotframework/tests -e BROWSER=firefox -e ROBOT_OPTIONS=\" --variable URL:http://docker.for.mac.localhost --variable BROWSER:firefox\" siamchamnankit/sck-robot-framework"
                     }
                 }
-
-                /*
-                dir("tests/ui.AcceptanceTest/") {
-                    echo '## Run Robot on Docker'
-                    sh 'docker run --rm -v $(pwd)/reports:/opt/robotframework/reports -v $(pwd):/opt/robotframework/tests -e BROWSER=chrome -e ROBOT_OPTIONS=" --variable URL:http://docker.for.mac.localhost --variable BROWSER:firefox" siamchamnankit/sck-robot-framework'
-                }
-                */
             }
         }
         stage('UAT Deploy') {

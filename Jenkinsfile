@@ -2,26 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Test Script') {
-            steps {
-                script {
-                    def workspace = pwd()
-                    echo workspace
-
-                    echo "${env.BASE_PATH}"
-
-                    def myVar = "${env.BASE_PATH}"
-
-                    def outter_docker_workspace = workspace.replace("/var/jenkins_home",myVar)
-
-                    echo outter_docker_workspace
-                    
-                    sh "docker run --rm -v $outter_docker_workspace:/liquibase/ -e \"LIQUIBASE_URL=jdbc:mysql://docker.for.mac.localhost/workshop_shoppingcart\" -e \"LIQUIBASE_USERNAME=root\" -e \"LIQUIBASE_PASSWORD=1234\" -e \"LIQUIBASE_CHANGELOG=/liquibase/changelog.yml\" webdevops/liquibase:mysql update"
-
-                }
-            }
-        }
-        stage('Build') {
+      stage('Build') {
             steps {
                 echo 'Building..'
                 sh 'docker build -t workshop-shoppingcart-api-test .'
@@ -70,14 +51,10 @@ pipeline {
 
                         echo outter_docker_workspace
     
-                        sh 'docker run --rm -v $outter_docker_workspace:/liquibase/ -e "LIQUIBASE_URL=jdbc:mysql://docker.for.mac.localhost/workshop_shoppingcart" -e "LIQUIBASE_USERNAME=root" -e "LIQUIBASE_PASSWORD=1234" -e "LIQUIBASE_CHANGELOG=/liquibase/changelog.yml" webdevops/liquibase:mysql update'
+                        sh "docker run --rm -v $outter_docker_workspace:/liquibase/ -e \"LIQUIBASE_URL=jdbc:mysql://docker.for.mac.localhost/workshop_shoppingcart\" -e \"LIQUIBASE_USERNAME=root\" -e \"LIQUIBASE_PASSWORD=1234\" -e \"LIQUIBASE_CHANGELOG=/liquibase/changelog.yml\" webdevops/liquibase:mysql update"
                     }
                 }
-                /*
-                dir("data") {
-                    sh 'docker run --rm -v $(pwd):/liquibase/ -e "LIQUIBASE_URL=jdbc:mysql://docker.for.mac.localhost/workshop_shoppingcart" -e "LIQUIBASE_USERNAME=root" -e "LIQUIBASE_PASSWORD=1234" -e "LIQUIBASE_CHANGELOG=/liquibase/changelog.yml" webdevops/liquibase:mysql update'
-                }
-                */
+
                 echo '# Install API'
 
                 echo '## Build Image'
@@ -100,6 +77,24 @@ pipeline {
                 sh 'docker run --rm -d --name workshop-shoppingcart-ui -p 80:80 workshop-shoppingcart-ui'
 
                 echo '# Run Robot Framework'
+
+                dir("tests/ui.AcceptanceTest/") {
+                    echo '## Run Robot on Docker'
+                    script {
+                        def workspace = pwd()
+                        echo workspace
+
+                        echo "${env.BASE_PATH}"
+
+                        def myVar = "${env.BASE_PATH}"
+
+                        def outter_docker_workspace = workspace.replace("/var/jenkins_home",myVar)
+
+                        echo outter_docker_workspace
+    
+                        sh "docker run --rm -v $outter_docker_workspace/reports:/opt/robotframework/reports -v $outter_docker_workspace:/opt/robotframework/tests -e BROWSER=firefox -e ROBOT_OPTIONS=\" --variable URL:http://docker.for.mac.localhost\" siamchamnankit/sck-robot-framework"
+                    }
+                }
 
                 /*
                 dir("tests/ui.AcceptanceTest/") {

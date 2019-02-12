@@ -16,7 +16,7 @@ pipeline {
 
                     echo outter_docker_workspace
                 }
-                
+
                 echo '$(outter_docker_workspace)'
 
             }
@@ -56,6 +56,23 @@ pipeline {
                 echo '# Data Migration into Mysql'
                 echo '## run docker liquibase\'s image to migrate data from changelog.yml'
                 
+
+                dir("data") {
+                    script {
+                        def workspace = pwd()
+                        echo workspace
+
+                        echo "${env.BASE_PATH}"
+
+                        def myVar = "${env.BASE_PATH}"
+
+                        def outter_docker_workspace = workspace.replace("/var/jenkins_home",myVar)
+
+                        echo outter_docker_workspace
+    
+                        sh 'docker run --rm -v $(outter_docker_workspace):/liquibase/ -e "LIQUIBASE_URL=jdbc:mysql://docker.for.mac.localhost/workshop_shoppingcart" -e "LIQUIBASE_USERNAME=root" -e "LIQUIBASE_PASSWORD=1234" -e "LIQUIBASE_CHANGELOG=/liquibase/changelog.yml" webdevops/liquibase:mysql update'
+                    }
+                }
                 /*
                 dir("data") {
                     sh 'docker run --rm -v $(pwd):/liquibase/ -e "LIQUIBASE_URL=jdbc:mysql://docker.for.mac.localhost/workshop_shoppingcart" -e "LIQUIBASE_USERNAME=root" -e "LIQUIBASE_PASSWORD=1234" -e "LIQUIBASE_CHANGELOG=/liquibase/changelog.yml" webdevops/liquibase:mysql update'

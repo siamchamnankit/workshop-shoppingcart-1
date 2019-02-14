@@ -1,6 +1,6 @@
 *** Settings ***
 Library    SeleniumLibrary
-Resource    shopping-cart-keywords.robot
+Resource    Resource/shopping-cart-keywords.robot
 Test Teardown    ปิดหน้าเบราเซอร์
 
 *** Test Cases ***

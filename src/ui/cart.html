@@ -141,8 +141,8 @@
 
         function getCart(){
 
-            //let cart_url = getApiURL("api/carts/")+cart_id;
-            let cart_url = "assets/data/cart.json"
+            let cart_url = getApiURL("api/carts/")+cart_id;
+            //let cart_url = "assets/data/cart.json"
             $.ajax({
                 method: "GET",
                 url: cart_url,
@@ -153,7 +153,9 @@
                 }
                 $("#label-shipping-method").text(res.shippingMethod);
                 $("#label-discount").text(res.discount.toFixed(2));
-                $("#label-discount-code").text("Discount ( " + res.discountCode + " )");
+                if(res.discount > 0){
+                    $("#label-discount-code").text("Discount ( " + res.discountCode + " )");
+                }
                 $("#label-shipping-fee").text(res.shippingFee.toFixed(2));
                 $("#label-subtotal").text(res.subtotal.toFixed(2));
                 $("#label-total").text(res.total.toFixed(2));

@@ -75,11 +75,10 @@ pipeline {
 
                 echo '# Run Robot Framework'
 
-                dir("tests/ui.AcceptanceTest/") {
-                    stage('## Run Robot on Docker') {
-                        parallel {
-                            stage('Test On Chrome') {
-
+                stage('## Run Robot on Docker') {
+                    parallel {
+                        stage('Test On Chrome') {
+                            dir("tests/ui.AcceptanceTest/") {
                                 script {
                                     def workspace = pwd()
                                     def myVar = "${env.BASE_PATH}"
@@ -89,8 +88,9 @@ pipeline {
                                     sh "docker run --rm -v $outter_docker_workspace/reports:/opt/robotframework/reports -v $outter_docker_workspace:/opt/robotframework/tests -e ROBOT_OPTIONS=\" --variable URL:http://docker.for.mac.localhost --variable BROWSER:chrome\" siamchamnankit/sck-robot-framework"
                                 }
                             }
-                            stage('Test On Firefox') {
-
+                        }
+                        stage('Test On Firefox') {
+                            dir("tests/ui.AcceptanceTest/") {
                                 script {
                                     def workspace = pwd()
                                     def myVar = "${env.BASE_PATH}"
@@ -103,6 +103,7 @@ pipeline {
                         }
                     }
                 }
+            
             }
         }
         stage('UAT Deploy') {

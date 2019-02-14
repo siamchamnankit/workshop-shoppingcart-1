@@ -1,0 +1,29 @@
+version: '3'
+services:
+  mysql:
+    build:
+      context: .
+      dockerfile: Dockerfile_mysql
+    image: workshop-shoppingcart-mysql
+    ports:
+      - "3306:3306"
+  api:
+    depends_on:
+      - mysql
+    build:
+      context: ./src/api
+    image: workshop-shoppingcart-api
+    ports:
+      - "5001:5001"
+    environment:
+      - ConnectionString=server=docker.for.mac.localhost;userid=root;password=1234;database=workshop_shoppingcart;convert zero datetime=True;CHARSET=utf8;
+  ui:
+    depends_on:
+      - mysql
+      - api
+    build:
+      context: ./src/ui
+    image: workshop-shoppingcart-ui
+    ports:
+      - "80:80"
+

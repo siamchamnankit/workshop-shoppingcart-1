@@ -24,15 +24,16 @@ pipeline {
             steps {
                 
                 echo 'UI Integrate Testing....'
-                echo '# Start Database Server'
-                echo '## Build database docker image'
-                sh 'docker build -t workshop-shoppingcart-mysql . -f Dockerfile_mysql'
+                stage('Test On Chrome') {
+                    echo '## Build database docker image'
+                    sh 'docker build -t workshop-shoppingcart-mysql . -f Dockerfile_mysql'
 
-                echo '## Run container'
-                sh 'docker stop workshop-shoppingcart-mysql'
-                sh 'docker run --rm -d --name=workshop-shoppingcart-mysql -p 3306:3306 workshop-shoppingcart-mysql'
+                    echo '## Run container'
+                    sh 'docker stop workshop-shoppingcart-mysql'
+                    sh 'docker run --rm -d --name=workshop-shoppingcart-mysql -p 3306:3306 workshop-shoppingcart-mysql'
 
-                sh 'sleep 15'
+                    sh 'sleep 15'
+                }
 
                 echo '# Data Migration into Mysql'
                 echo '## run docker liquibase\'s image to migrate data from changelog.yml'
@@ -76,14 +77,31 @@ pipeline {
                 echo '# Run Robot Framework'
 
                 dir("tests/ui.AcceptanceTest/") {
-                    echo '## Run Robot on Docker'
-                    script {
-                        def workspace = pwd()
-                        def myVar = "${env.BASE_PATH}"
+                    stage('## Run Robot on Docker') {
+                        parallel {
+                            stage('Test On Chrome') {
 
-                        def outter_docker_workspace = workspace.replace("/var/jenkins_home",myVar)
-    
-                        sh "docker run --rm -v $outter_docker_workspace/reports:/opt/robotframework/reports -v $outter_docker_workspace:/opt/robotframework/tests -e ROBOT_OPTIONS=\" --variable URL:http://docker.for.mac.localhost --variable BROWSER:firefox\" siamchamnankit/sck-robot-framework"
+                                script {
+                                    def workspace = pwd()
+                                    def myVar = "${env.BASE_PATH}"
+
+                                    def outter_docker_workspace = workspace.replace("/var/jenkins_home",myVar)
+                
+                                    sh "docker run --rm -v $outter_docker_workspace/reports:/opt/robotframework/reports -v $outter_docker_workspace:/opt/robotframework/tests -e ROBOT_OPTIONS=\" --variable URL:http://docker.for.mac.localhost --variable BROWSER:chrome\" siamchamnankit/sck-robot-framework"
+                                }
+                            }
+                            stage('Test On Firefox') {
+
+                                script {
+                                    def workspace = pwd()
+                                    def myVar = "${env.BASE_PATH}"
+
+                                    def outter_docker_workspace = workspace.replace("/var/jenkins_home",myVar)
+                
+                                    sh "docker run --rm -v $outter_docker_workspace/reports:/opt/robotframework/reports -v $outter_docker_workspace:/opt/robotframework/tests -e ROBOT_OPTIONS=\" --variable URL:http://docker.for.mac.localhost --variable BROWSER:firefox\" siamchamnankit/sck-robot-framework"
+                                }
+                            }
+                        }
                     }
                 }
             }

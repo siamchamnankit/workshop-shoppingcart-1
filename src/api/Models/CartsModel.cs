@@ -46,4 +46,10 @@ namespace api.Models
         public int id { get; set; }
         public int quantity { get; set; }
     }
+
+    public class ApplyCartCouponModel 
+    {
+        public int id { get; set; }
+        public string coupon { get; set; }
+    }
 }

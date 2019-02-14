@@ -66,6 +66,24 @@ namespace api.IntegrationTest
             Assert.Equal(125.80M, actualResult.total);
         }
 
+        [Fact]
+        public void When_Calculate_Cart_With_Products_Price_150_And_Apply_Coupon_200_Should_Be_Total_equal_50()
+        {
+            _productsInCart.Add(new ProductInCartModel{price = 150.00M, quantity = 1});
+            
+            CouponModel coupon = new CouponModel{
+                code = "VALENTINE200",
+                discount = 200.00M,
+                min_spending = 150,
+                limit = 100,
+                count = 50,
+            };
+
+            var actualResult = _cartsService.calculate(_cartModel, _productsInCart, coupon);
+
+            Assert.Equal(50M, actualResult.total);
+        }
+
 
       
     }

@@ -84,7 +84,14 @@ namespace api.Services
            return cartProductModel;
         }
 
-        public CartsModel calculate(CartsModel cart, List<ProductInCartModel> productsInCart) {
+        public void applyCoupon(CartsModel cartModel, CouponModel coupon){
+            List<ProductInCartModel> productsInCart = this.getProductInCart(cartModel.id);
+            cartModel = this.calculate(cartModel, productsInCart, coupon);
+            _context.Carts.Update(cartModel);
+            _context.SaveChanges();  
+        }
+
+        public CartsModel calculate(CartsModel cart, List<ProductInCartModel> productsInCart, CouponModel coupon = null) {
             if (productsInCart.Count() == 0) 
                 return cart; 
             
@@ -96,6 +103,13 @@ namespace api.Services
             {
                 subtotal += productInCart.price * productInCart.quantity;
             }
+            
+            if(coupon != null){
+                cart.discountCode = coupon.code;
+                cart.discount = (subtotal <= coupon.discount)? subtotal : coupon.discount;
+                subtotal = (subtotal <= coupon.discount)? 0 : coupon.discount - subtotal;
+            }
+
             total = subtotal + shippingFee;
             cart.subtotal = subtotal;
             cart.total = total;

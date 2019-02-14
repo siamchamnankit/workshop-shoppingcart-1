@@ -79,27 +79,31 @@ pipeline {
         stage('Run UI Integrate Test') {
             parallel {
                 stage('Test On Chrome') {
-                    dir("tests/ui.AcceptanceTest/") {
-                        script {
-                            def workspace = pwd()
-                            def myVar = "${env.BASE_PATH}"
+                    steps {
+                        dir("tests/ui.AcceptanceTest/") {
+                            script {
+                                def workspace = pwd()
+                                def myVar = "${env.BASE_PATH}"
 
-                            def outter_docker_workspace = workspace.replace("/var/jenkins_home",myVar)
-        
-                            sh "docker run --rm -v $outter_docker_workspace/reports:/opt/robotframework/reports -v $outter_docker_workspace:/opt/robotframework/tests -e ROBOT_OPTIONS=\" --variable URL:http://docker.for.mac.localhost --variable BROWSER:chrome\" siamchamnankit/sck-robot-framework"
+                                def outter_docker_workspace = workspace.replace("/var/jenkins_home",myVar)
+            
+                                sh "docker run --rm -v $outter_docker_workspace/reports:/opt/robotframework/reports -v $outter_docker_workspace:/opt/robotframework/tests -e ROBOT_OPTIONS=\" --variable URL:http://docker.for.mac.localhost --variable BROWSER:chrome\" siamchamnankit/sck-robot-framework"
+                            }
                         }
                     }
                 }
                 stage('Test On Firefox') {
-                    dir("tests/ui.AcceptanceTest/") {
-                        script {
-                            def workspace = pwd()
-                            def myVar = "${env.BASE_PATH}"
+                    steps {
+                        dir("tests/ui.AcceptanceTest/") {
+                            script {
+                                def workspace = pwd()
+                                def myVar = "${env.BASE_PATH}"
 
-                            def outter_docker_workspace = workspace.replace("/var/jenkins_home",myVar)
-        
-                            sh "docker run --rm -v $outter_docker_workspace/reports:/opt/robotframework/reports -v $outter_docker_workspace:/opt/robotframework/tests -e ROBOT_OPTIONS=\" --variable URL:http://docker.for.mac.localhost --variable BROWSER:firefox\" siamchamnankit/sck-robot-framework"
-                        }
+                                def outter_docker_workspace = workspace.replace("/var/jenkins_home",myVar)
+            
+                                sh "docker run --rm -v $outter_docker_workspace/reports:/opt/robotframework/reports -v $outter_docker_workspace:/opt/robotframework/tests -e ROBOT_OPTIONS=\" --variable URL:http://docker.for.mac.localhost --variable BROWSER:firefox\" siamchamnankit/sck-robot-framework"
+                            }
+                        }                        
                     }
                 }
             }

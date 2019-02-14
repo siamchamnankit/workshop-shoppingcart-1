@@ -47,6 +47,28 @@ ${BROWSER}    chrome
     Wait Until Element Contains     label-shipping-fee    50.00    3s
     Capture Page Screenshot
 
+แสดงรายการสินค้าที่อยู่ในตะกร้าสินค้าและมีราคารวมค่าสินค้าเท่ากับ    140    0   50    190
+    [Arguments]      ${subtotal}    ${discount}    ${shipping-fee}    ${total}
+    Wait Until Page Contains     43 Piece dinner Set    3s
+    Wait Until Page Contains     CoolKidz    3s
+    Wait Until Page Contains     140    3s
+    Wait Until Element Contains     label-subtotal    ${subtotal}    3s
+    Wait Until Element Contains     label-discount    ${discount}    3s
+    Wait Until Element Contains     label-shipping-fee    ${subtotal}    3s
+    Wait Until Element Contains     label-total    ${total}    3s
+    Capture Page Screenshot
+
+ใส่คูปองส่วนลด
+    [Arguments]      ${coupon-code}
+    Input Text     discount-coupon    ${coupon-code}
+    Click Button    apply-coupon
+
+แสดงข้อความไม่สามารถร่วมรายการการใช้งานคูปองได้
+    Wait Until Element Contains     coupon-error-message    ไม่สามารถร่วมการนี้ได้    3s
+
+แสดงข้อความคูปองถูกใช้งานเต็มจำนวนได้
+    Wait Until Element Contains     coupon-error-message    คูปองนี้ถูกใช้งานเต็มจำนวนแล้ว    3s
+
 กดยืนยันการสั่งซื้อสินค้า
     Click Button    button-confirm-cart
 

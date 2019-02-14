@@ -1,0 +1,24 @@
+{
+    "id": 1,
+    "userId": 1,
+    "subtotal": 150.00,
+    "total": 200.00,
+    "discountCode": "VALENTINE200",
+    "discount": 150.00,
+    "shippingMethod": "Cash on Delivery",
+    "shippingFee": 50.00,
+    "shippingId": 0,
+    "createDatetime": "2019-02-14T10:59:39",
+    "updateDatetime": "2019-02-14T10:59:39",
+    "CartProducts": [{
+        "id": 2,
+        "name": "43 Piece dinner Set",
+        "gender": "FEMALE",
+        "age": "3_to_5",
+        "price": 12.95,
+        "availability": "InStock",
+        "brand": "CoolKidz",
+        "stockAvailability": 100,
+        "quantity": 1
+    }]
+}

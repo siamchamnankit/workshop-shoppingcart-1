@@ -54,20 +54,38 @@
             </div>
                 
             <div class="row">
-                <div class="col-md-6 remarks">
-                    <div class="remark-item">
-                        <label>Shipping method</label>
-                        <div class="remark-value" id="label-shipping-method">Cash on Delivery</div>
+                <div class="col-md-6 ">
+                    <div class="remarks">
+                        <div class="remark-item">
+                            <label>Shipping method</label>
+                            <div class="remark-value" id="label-shipping-method">Cash on Delivery</div>
+                        </div>
+                        <div class="remark-item">
+                            <label>Shipping Fee</label>
+                            <div class="remark-value">50.00 THB</div>
+                        </div>
                     </div>
-                    <div class="remark-item">
-                        <label>Shipping Fee</label>
-                        <div class="remark-value" id="label-shipping-fee">50.00 THB</div>
+                    <div class="coupon">
+                        <label>Apply Discount Coupon</label>
+                        <div class="form-group">
+                            <input type="text" name="discount-code" id="discount-code" class="form-control coupon-input" />
+                            <button class="button-apply-coupon btn btn-primary" id="button-apply-coupon">Apply</button>
+                        </div>
                     </div>
+                    
                 </div>
                 <div class="col-md-6 totals">
                     <div class="totals-item">
                         <label>Subtotal</label>
                         <div class="totals-value" id="label-subtotal">71.97</div>
+                    </div>
+                    <div class="totals-item">
+                        <label id="label-discount-code">Discount</label>
+                        <div class="totals-value" id="label-discount">0</div>
+                    </div>
+                    <div class="totals-item">
+                        <label>Shipping Fee</label>
+                        <div class="totals-value" id="label-shipping-fee">50.00</div>
                     </div>
                     <div class="totals-item">
                         <label>Total</label>
@@ -101,38 +119,63 @@
      }
  
      $(document).ready(function() {
-         let cart_url = getApiURL("api/carts/")+cart_id;
+        getCart();
 
-         $.ajax({
-             method: "GET",
-             url: cart_url,
-             dataType: "json",
-         }).done(function(res) {
-             if (!res) {
-                 redirectToIndex();
-             }
-          
-             $("#label-shipping-method").text(res.shippingMethod);
-             $("#label-shipping-fee").text(res.shippingFee.toFixed(2));
-             $("#label-subtotal").text(res.subtotal.toFixed(2));
-             $("#label-total").text(res.total.toFixed(2));
+        $('#button-apply-coupon').click(function(){
+            $(this).attr('disabled', 'disabled');
+            let cart_url = getApiURL("api/carts/applyCounpon");
+                    $.ajax({
+                        method: "POST",
+                        url: cart_url,
+                        dataType: "json",
+                        data: JSON.stringify({ "id": cart_id, "coupon": $('#discount-code').val() }),
+                        contentType: "application/json"
+                    }).done(function(res) {
+                        if (!res.id) {
+                            alert("Something went wrong!");
+                        } else {
+                            getCart();
+                        }
+                    });
+        });
 
-              $(res.CartProducts).each(function (index, row) {
-                        $('#products').append(`
+        function getCart(){
+
+            //let cart_url = getApiURL("api/carts/")+cart_id;
+            let cart_url = "assets/data/cart.json"
+            $.ajax({
+                method: "GET",
+                url: cart_url,
+                dataType: "json",
+            }).done(function(res) {
+                if (!res) {
+                    redirectToIndex();
+                }
+                $("#label-shipping-method").text(res.shippingMethod);
+                $("#label-discount").text(res.discount.toFixed(2));
+                $("#label-discount-code").text("Discount ( " + res.discountCode + " )");
+                $("#label-shipping-fee").text(res.shippingFee.toFixed(2));
+                $("#label-subtotal").text(res.subtotal.toFixed(2));
+                $("#label-total").text(res.total.toFixed(2));
+
+                $(res.CartProducts).each(function (index, row) {
+                    $('#products').append(`
                         <div class="product-details">
-                        <div class="product-title">` + row.name + ` &nbsp by &nbsp ` + row.brand + `</div>
-                        <div class="product-description">Gender &nbsp` + row.gender + ` &nbsp  Age &nbsp` + row.age + `</div>
-                        <div class="product-availability">` + row.availability + `</div>
-                        <button class="remove-product">Delete</button>
+                            <div class="product-title">` + row.name + ` &nbsp by &nbsp ` + row.brand + `</div>
+                            <div class="product-description">Gender &nbsp` + row.gender + ` &nbsp  Age &nbsp` + row.age + `</div>
+                            <div class="product-availability">` + row.availability + `</div>
+                            <button class="remove-product">Delete</button>
                         </div>
                         <div class="product-quantity">
                             <input type="number" value="` + row.quantity + `" min="1">
                         </div>
                         <div class="product-price" style="display: none" >` + row.price + `</div>
                         <div class="product-line-price">` + row.price + `</div>
-                    `)
-                    });
-         });
+                        `)
+                });
+                
+            });
+        }
      });
      </script>
   </body>

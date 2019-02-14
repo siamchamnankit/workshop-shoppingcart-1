@@ -173,6 +173,15 @@ label {
 .checkout:hover {
   background-color: #494;
 }
+
+.coupon-input {
+  width: 200px;
+  display: inline;
+}
+
+
+
+
  
 /* Make adjustments for tablet */
 @media screen and (max-width: 650px) {

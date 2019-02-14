@@ -8,16 +8,20 @@ pipeline {
                 sh 'docker build -t workshop-shoppingcart-api-test .'
             }
         }
-        stage('Unit Test') {
-            steps {
-                echo 'Unit Testing..'
-                sh 'docker run --rm -e RUNNING_PROJECT=./tests/api.UnitTest/api.UnitTest.csproj workshop-shoppingcart-api-test'
-            }
-        }
-        stage('Integrate Test') {
-            steps {
-                echo 'Integrate Testing..'
-                sh 'docker run --rm -e RUNNING_PROJECT=./tests/api.IntegrationTest/api.IntegrationTest.csproj workshop-shoppingcart-api-test'
+        stage('Run Unit and Integrate Test') {
+            parallel {
+                stage('Unit Test') {
+                    steps {
+                        echo 'Unit Testing..'
+                        sh 'docker run --rm -e RUNNING_PROJECT=./tests/api.UnitTest/api.UnitTest.csproj workshop-shoppingcart-api-test'
+                    }
+                }
+                stage('Integrate Test') {
+                    steps {
+                        echo 'Integrate Testing..'
+                        sh 'docker run --rm -e RUNNING_PROJECT=./tests/api.IntegrationTest/api.IntegrationTest.csproj workshop-shoppingcart-api-test'
+                    }
+                }
             }
         }
         stage('Setup Integrate Test Environment') {
@@ -87,12 +91,26 @@ pipeline {
 
                                 def outter_docker_workspace = workspace.replace("/var/jenkins_home",myVar)
             
-                                sh "docker run --rm -v $outter_docker_workspace/reports:/opt/robotframework/reports -v $outter_docker_workspace:/opt/robotframework/tests -e ROBOT_OPTIONS=\" --variable URL:http://docker.for.mac.localhost --variable BROWSER:chrome\" siamchamnankit/sck-robot-framework"
+                                sh "docker run --rm -v $outter_docker_workspace/reports:/opt/robotframework/reports -v $outter_docker_workspace:/opt/robotframework/tests -e ROBOT_OPTIONS=\" --variable URL:http://docker.for.mac.localhost --variable BROWSER:firefox\" siamchamnankit/sck-robot-framework"
                             }
                         }
                     }
                 }
                 stage('Test On Firefox') {
+                    steps {
+                        dir("tests/ui.AcceptanceTest/") {
+                            script {
+                                def workspace = pwd()
+                                def myVar = "${env.BASE_PATH}"
+
+                                def outter_docker_workspace = workspace.replace("/var/jenkins_home",myVar)
+            
+                                sh "docker run --rm -v $outter_docker_workspace/reports:/opt/robotframework/reports -v $outter_docker_workspace:/opt/robotframework/tests -e ROBOT_OPTIONS=\" --variable URL:http://docker.for.mac.localhost --variable BROWSER:firefox\" siamchamnankit/sck-robot-framework"
+                            }
+                        }                        
+                    }
+                }
+                stage('Test On Safari') {
                     steps {
                         dir("tests/ui.AcceptanceTest/") {
                             script {

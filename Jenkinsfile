@@ -1,8 +1,6 @@
 pipeline {
     agent any
-    environment {
-        PATH = "$PATH:/usr/local/bin"
-    }
+
     stages {
       stage('Build') {
             steps {
@@ -29,12 +27,14 @@ pipeline {
         stage('Setup Integrate Test Environment') {
             steps {
                 
-                echo '# Start Server'
-                echo '## Build Docker Image for DB, API, UI'
-                sh 'docker-compose build'
+                echo 'UI Integrate Testing....'
+                echo '# Start Database Server'
+                echo '## Build database docker image'
+                sh 'docker build -t workshop-shoppingcart-mysql . -f Dockerfile_mysql'
 
-                echo '## Start Container for DB, API, UI'
-                sh 'docker-compose up'
+                echo '## Run container'
+                sh 'docker stop workshop-shoppingcart-mysql'
+                sh 'docker run --rm -d --name=workshop-shoppingcart-mysql -p 3306:3306 workshop-shoppingcart-mysql'
 
                 sh 'sleep 15'
 
@@ -52,6 +52,32 @@ pipeline {
                         sh "docker run --rm -v $outter_docker_workspace:/liquibase/ -e \"LIQUIBASE_URL=jdbc:mysql://docker.for.mac.localhost/workshop_shoppingcart\" -e \"LIQUIBASE_USERNAME=root\" -e \"LIQUIBASE_PASSWORD=1234\" -e \"LIQUIBASE_CHANGELOG=/liquibase/changelog.yml\" webdevops/liquibase:mysql update"
                     }
                 }
+
+                echo '# Install API'
+
+                echo '## Build Image'
+                dir("src/api/") {
+                    sh 'docker build -t workshop-shoppingcart-api .'
+                }
+
+                echo '## Run container'
+                sh 'docker stop workshop-shoppingcart-api'
+
+                sh 'docker run --rm -d --name workshop-shoppingcart-api -p 5001:5001 -e ConnectionString="server=docker.for.mac.localhost;userid=root;password=1234;database=workshop_shoppingcart;convert zero datetime=True;CHARSET=utf8;" workshop-shoppingcart-api'
+
+                echo '# Install UI'
+                echo '## Build Image'
+                
+                dir("src/ui/") {
+                    sh 'docker build -t workshop-shoppingcart-ui .'
+                }
+
+
+                echo '## Run container'
+                sh 'docker stop workshop-shoppingcart-ui'
+                sh 'docker run --rm -d --name workshop-shoppingcart-ui -p 80:80 workshop-shoppingcart-ui'
+
+                echo '# Run Robot Framework'
             }
         }
         stage('Run UI Integrate Test') {

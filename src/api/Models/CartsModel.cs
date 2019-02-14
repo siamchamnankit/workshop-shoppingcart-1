@@ -13,6 +13,8 @@ namespace api.Models
         public int userId { get; set; }
         public decimal subtotal { get; set; }
         public decimal total { get; set; }
+        public string discountCode { get; set; }
+        public decimal discount { get; set; }
         public string shippingMethod { get; set; }
         public decimal shippingFee { get; set; }
         public int shippingId { get; set; }

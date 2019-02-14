@@ -15,3 +15,10 @@ databaseChangeLog:
       changes:
       - sqlFile:
           path: 2_initial_data.sql
+
+  - changeSet:
+      id: change cart table to support coupon feature
+      author: nathawat
+      changes:
+      - sqlFile:
+          path: 3_add_discount_column.sql

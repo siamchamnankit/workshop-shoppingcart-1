@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - preConditions:
+    - runningAs:
+        username: root
+
+  - changeSet:
+      id: initial data into table product to support coupon feature
+      author: nathawat
+      changes:
+      - sqlFile:
+          path: 3_1_add_product_for_coupon_discount.sql

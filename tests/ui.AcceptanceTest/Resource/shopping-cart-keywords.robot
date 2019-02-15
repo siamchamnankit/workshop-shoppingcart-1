@@ -24,10 +24,22 @@ ${BROWSER}    chrome
     Click Element    link-product-detail-id-2
     Capture Page Screenshot
 
+เลือกสินค้า
+    [Arguments]      ${product_id}
+    Click Element    link-product-detail-id-${product_id}
+    Capture Page Screenshot
+
 แสดงรายละเอียดสินค้า 43 Piece dinner Set
     Wait Until Element Contains     label-product-name    43 Piece dinner Set    3s
     Wait Until Element Contains     label-product-brand    CoolKidz    3s
     Wait Until Element Contains     label-product-price    12.95    3s
+    Capture Page Screenshot
+
+แสดงรายละเอียดสินค้า
+    [Arguments]      ${product_name}      ${product_brand}      ${product_price}
+    Wait Until Element Contains     label-product-name    ${product_name}    3s
+    Wait Until Element Contains     label-product-brand    ${product_brand}    3s
+    Wait Until Element Contains     label-product-price    ${product_price}    3s
     Capture Page Screenshot
 
 เพิ่มจำนวนสินค้าที่ต้องการจะซื้อเป็น 2 ชิ้น
@@ -45,6 +57,18 @@ ${BROWSER}    chrome
     Wait Until Page Contains     12.95    3s
     Wait Until Element Contains     label-subtotal    ${subtotal}    3s
     Wait Until Element Contains     label-shipping-fee    50.00    3s
+    Capture Page Screenshot
+
+
+แสดงรายการสินค้าที่อยู่ในตะกร้าสินค้าและมีราคารวมค่าสินค้าดังนี้
+    [Arguments]       ${product_name}      ${product_brand}      ${product_price}     ${discount}    ${shipping-fee}    ${total}
+    Wait Until Page Contains     ${product_name}    3s
+    Wait Until Page Contains     ${product_brand}    3s
+    Wait Until Page Contains     ${product_price}    3s
+    Wait Until Element Contains     label-subtotal    ${product_price}    3s
+    Wait Until Element Contains     label-discount    ${discount}    3s
+    Wait Until Element Contains     label-shipping-fee    ${product_price}    3s
+    Wait Until Element Contains     label-total    ${total}    3s
     Capture Page Screenshot
 
 แสดงรายการสินค้าที่อยู่ในตะกร้าสินค้าและมีราคารวมค่าสินค้าเท่ากับ    140    0   50    190

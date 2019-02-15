@@ -93,6 +93,10 @@ ${BROWSER}    chrome
 แสดงข้อความคูปองถูกใช้งานเต็มจำนวนได้
     Wait Until Element Contains     coupon-error-message    คูปองนี้ถูกใช้งานเต็มจำนวนแล้ว    3s
 
+แสดงข้อความ
+    [Arguments]      ${error-message}
+    Wait Until Element Contains     coupon-error-message    ${error-message}    3s
+
 กดยืนยันการสั่งซื้อสินค้า
     Click Button    button-confirm-cart
 

@@ -53,6 +53,20 @@ pipeline {
                     }
                 }
 
+                echo '# Data Migration for ui.AcceptanceTest'
+                echo '## run docker liquibase\'s image to migrate data from changelog.yml'
+                
+
+                dir("data/ui.AcceptanceTest") {
+                    script {
+                        def workspace = pwd()
+                        def myVar = "${env.BASE_PATH}"
+
+                        def outter_docker_workspace = workspace.replace("/var/jenkins_home",myVar)
+
+                        sh "docker run --rm -v $outter_docker_workspace:/liquibase/ -e \"LIQUIBASE_URL=jdbc:mysql://docker.for.mac.localhost/workshop_shoppingcart\" -e \"LIQUIBASE_USERNAME=root\" -e \"LIQUIBASE_PASSWORD=1234\" -e \"LIQUIBASE_CHANGELOG=/liquibase/changelog.yml\" webdevops/liquibase:mysql update"
+                    }
+                }
                 echo '# Install API'
 
                 echo '## Build Image'

@@ -8,6 +8,7 @@ ${BROWSER}    chrome
 
 *** Test Cases ***
 Open first page success
+    [Tags]    Success Case    First Page Feature
     เปิดหน้าแรก
     พบชื่อร้านค้า    SCK Shop
 

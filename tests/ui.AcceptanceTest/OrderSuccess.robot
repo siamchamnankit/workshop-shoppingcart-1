@@ -5,6 +5,7 @@ Test Teardown    ปิดหน้าเบราเซอร์
 
 *** Test Cases ***
 ผู้ใช้สามารถสั่งซื้อสินค้าได้สำเร็จ
+    [Tags]    Success Case    Order Feature
     เข้าหน้าแสดงรายการสินค้า พบรายการสินค้าทั้งหมด
     เลือกสินค้า 43 Piece dinner Set
     แสดงรายละเอียดสินค้า 43 Piece dinner Set

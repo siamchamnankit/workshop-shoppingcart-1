@@ -3,12 +3,17 @@ Library    SeleniumLibrary
 Resource    ../Resource/shopping-cart-keywords.robot
 Test Teardown    ปิดหน้าเบราเซอร์
 Test Template    ซื้อสินค้าและสามารถใช้คูปองเป็นส่วนลดได้
+Force Tags    Success Case    Coupon Feature
 
 *** Test Cases ***                         product_id    product_name    product_brand    product_price    discount    coupon_no    transport_fee    total    discount_after_used    total_after_used
 ซื้อสินค้าราคามากกว่าขั้นต่ำและคูปองยังไม่ครบจำนวน         32        Lego Set A          Lego             150             0      VALENTINE200       50           200              150                  50
+    [Tags]    Not Implement
 ซื้อสินค้าราคาเท่ากับยอดขั้นต่ำและคูปองยังไม่ครบจำนวน       33        Lego Set B          Lego             350             0      VALENTINE02        50           400              200                 200
+    [Tags]    Not Implement
 ซื้อสินค้าราคาเท่ากับยอดขั้นต่ำและคูปองที่ใช้เป็นใบสุดท้าย      32        Lego Set A          Lego             150             0      VALENTINE03        50           200              150                  50
+    [Tags]    Not Implement
 ซื้อสินค้าราคามากกว่ายอดขั้นต่ำและคคูปองที่ใช้เป็นใบสุดท้าย    33        Lego Set B          Lego             350             0      VALENTINE04        50           200              200                  50
+    [Tags]    Not Implement
 
 *** Keywords ***
 ซื้อสินค้าและสามารถใช้คูปองเป็นส่วนลดได้

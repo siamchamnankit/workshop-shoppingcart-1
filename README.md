@@ -21,6 +21,9 @@
 >docker run --rm -e RUNNING_PROJECT=./tests/api.IntegrationTest/api.IntegrationTest.csproj workshop-shoppingcart-api-test
 
 # SonarQube
+## Run Sonar Code Analyser
+>./sonarqube.sh
+
 https://sonarcloud.io/dashboard?id=workshop-shoppingcart
 
 

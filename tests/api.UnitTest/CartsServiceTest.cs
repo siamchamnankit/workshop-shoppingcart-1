@@ -67,6 +67,27 @@ namespace api.IntegrationTest
         }
 
         [Fact]
+        public void When_Calculate_Cart_With_Price_500_Shipping_Fee_Should_Be_0()
+        {
+            _productsInCart.Add(new ProductInCartModel{price = 500M, quantity = 1});
+
+            var actualResult = _cartsService.calculate(_cartModel, _productsInCart);
+
+            Assert.Equal(500M, actualResult.total);
+        }
+
+        [Fact]
+        public void When_Calculate_Cart_With_Price_501_Shipping_Fee_Should_Be_0()
+        {
+            _productsInCart.Add(new ProductInCartModel{price = 501M, quantity = 1});
+
+            var actualResult = _cartsService.calculate(_cartModel, _productsInCart);
+
+            Assert.Equal(501M, actualResult.total);
+        }
+
+
+        [Fact]
         public void When_Calculate_Cart_With_Products_Price_150_And_Apply_Coupon_200_Should_Be_Total_equal_50()
         {
             _productsInCart.Add(new ProductInCartModel{price = 150.00M, quantity = 1});

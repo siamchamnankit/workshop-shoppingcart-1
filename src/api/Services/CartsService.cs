@@ -103,6 +103,9 @@ namespace api.Services
             {
                 subtotal += productInCart.price * productInCart.quantity;
             }
+
+            if (subtotal >= 500)
+                shippingFee = 0 ;
             
             if(coupon != null){
                 cart.discountCode = coupon.code;

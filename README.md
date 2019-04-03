@@ -1,7 +1,4 @@
-﻿# SonarQube
-https://sonarcloud.io/dashboard?id=workshop-shoppingcart
-
-# Unit and Ingration Test
+﻿# Unit and Ingration Test
 ## Run Unit Test on Localhost (Install dotnet before)
 >cd tests/api.UnitTest/
 
@@ -22,6 +19,10 @@ https://sonarcloud.io/dashboard?id=workshop-shoppingcart
 >docker run --rm -e RUNNING_PROJECT=./tests/api.UnitTest/api.UnitTest.csproj workshop-shoppingcart-api-test
 
 >docker run --rm -e RUNNING_PROJECT=./tests/api.IntegrationTest/api.IntegrationTest.csproj workshop-shoppingcart-api-test
+
+# SonarQube
+https://sonarcloud.io/dashboard?id=workshop-shoppingcart
+
 
 # Install Mysql
 ## Build image
